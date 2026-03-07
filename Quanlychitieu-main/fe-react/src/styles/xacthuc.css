@@ -1,0 +1,239 @@
+/* ============================================
+   AUTH PAGES — Light Clean Theme
+   ============================================ */
+
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: linear-gradient(145deg, #e8edf5 0%, #f0f4f8 40%, #e2e8f0 100%);
+}
+
+.login-box {
+    width: 100%;
+    max-width: 400px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 40px 36px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+    animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(14px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.login-box.register-box {
+    max-width: 440px;
+    padding: 34px 34px;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.logo {
+    font-size: 42px;
+    margin-bottom: 10px;
+}
+
+.login-header h1 {
+    font-size: 24px;
+    font-weight: 800;
+    color: #4f7df5;
+    margin-bottom: 4px;
+    letter-spacing: -0.3px;
+}
+
+.login-header p {
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #1e293b;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 11px 14px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #1e293b;
+    transition: all 0.2s ease;
+}
+
+.form-group input::placeholder {
+    color: #94a3b8;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #4f7df5;
+    box-shadow: 0 0 0 3px rgba(79, 125, 245, 0.1);
+    background: #ffffff;
+}
+
+.form-remember {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+    font-size: 13px;
+}
+
+.form-remember label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #475569;
+}
+
+.form-remember input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: #4f7df5;
+}
+
+.forgot-password {
+    color: #4f7df5;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.forgot-password:hover {
+    color: #3b6ce4;
+}
+
+.terms-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 18px 0;
+    font-size: 13px;
+}
+
+.terms-checkbox input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    cursor: pointer;
+    accent-color: #4f7df5;
+    flex-shrink: 0;
+}
+
+.terms-checkbox label {
+    cursor: pointer;
+    color: #475569;
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+.terms-checkbox a {
+    color: #4f7df5;
+    text-decoration: none;
+}
+
+.terms-checkbox a:hover {
+    color: #3b6ce4;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    background: #4f7df5;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 6px;
+}
+
+.btn-submit:hover {
+    background: #3b6ce4;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(79, 125, 245, 0.25);
+}
+
+.btn-submit:active {
+    transform: translateY(0);
+}
+
+.btn-submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.login-footer {
+    text-align: center;
+    margin-top: 22px;
+    font-size: 14px;
+    color: #64748b;
+}
+
+.login-footer a {
+    color: #4f7df5;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.login-footer a:hover {
+    color: #3b6ce4;
+}
+
+@media (max-width: 480px) {
+    .login-box {
+        padding: 28px 20px;
+    }
+
+    .login-box.register-box {
+        padding: 24px 20px;
+    }
+
+    .login-header h1 {
+        font-size: 22px;
+    }
+
+    .logo {
+        font-size: 36px;
+    }
+
+    .form-remember {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}

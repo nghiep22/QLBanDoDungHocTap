@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QL Ngân Quỹ - Quản Lý Chi Tiêu Cá Nhân</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <h1>QL Ngân Quỹ</h1>
+            </div>
+            <div class="header-search">
+                <input type="text" placeholder="Tìm kiếm giao dịch...">
+            </div>
+            <div class="header-right">
+                <!-- Guest (chưa đăng nhập) -->
+                <div id="guestActions" style="display:none; gap:10px; align-items:center;">
+                    <a href="dangnhap.html" class="btn btn-outline btn-sm">Đăng nhập</a>
+                    <a href="dangky.html" class="btn btn-primary btn-sm">Đăng ký</a>
+                </div>
+
+                <!-- User (đã đăng nhập) -->
+                <div class="avatar-dropdown" id="userActions" style="display:none;">
+                    <img src="https://via.placeholder.com/40" alt="Avatar" class="avatar-img">
+                    <span class="user-name" id="headerUserName">Người dùng</span>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item">Hồ sơ</a>
+                        <a href="#" class="dropdown-item">Đổi mật khẩu</a>
+                        <a href="#" class="dropdown-item" id="btnLogoutUser">Đăng xuất</a>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navbar -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-item active">Tổng quan</a>
+            <a href="giaodich.html" class="nav-item">Giao dịch</a>
+            <a href="vi.html" class="nav-item">Ví</a>
+            <a href="danhmuc.html" class="nav-item">Danh mục</a>
+            <a href="ngansach.html" class="nav-item">Ngân sách</a>
+            <a href="muctieu.html" class="nav-item">Mục tiêu</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container">
+        <div class="grid">
+            <!-- Cột Trái (70%) -->
+            <div class="left">
+                <!-- Card: Tổng quan tháng này -->
+                <div class="card">
+                    <h2>Tổng quan tháng này</h2>
+                    <div class="cards-mini">
+                        <div class="stat">
+                            <span class="stat-label">Thu</span>
+                            <span class="stat-value stat-income">+12,500,000 ₫</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Chi</span>
+                            <span class="stat-value stat-expense">-8,300,000 ₫</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Chênh lệch</span>
+                            <span class="stat-value stat-balance">+4,200,000 ₫</span>
+                        </div>
+                    </div>
+                    <div class="wallets-summary">
+                        <h3>Số dư các ví:</h3>
+                        <div class="wallets-list">
+                            <div class="wallet-item">
+                                <span class="wallet-name">Tiền mặt</span>
+                                <span class="wallet-balance">2,500,000 ₫</span>
+                            </div>
+                            <div class="wallet-item">
+                                <span class="wallet-name">Vietcombank</span>
+                                <span class="wallet-balance">15,000,000 ₫</span>
+                            </div>
+                            <div class="wallet-item">
+                                <span class="wallet-name">MoMo</span>
+                                <span class="wallet-balance">1,200,000 ₫</span>
+                            </div>
+                            <div class="wallet-item">
+                                <span class="wallet-name">Ngân hàng ACB</span>
+                                <span class="wallet-balance">8,500,000 ₫</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card: Giao dịch gần đây -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Giao dịch gần đây</h2>
+                        <button class="btn btn-primary" id="btnAddTransaction">+ Thêm giao dịch</button>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Ngày</th>
+                                    <th>Loại</th>
+                                    <th>Danh mục</th>
+                                    <th>Ví</th>
+                                    <th>Số tiền</th>
+                                    <th>Ghi chú</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>12/12/2024</td>
+                                    <td><span class="badge badge-income">THU</span></td>
+                                    <td>Lương</td>
+                                    <td>Vietcombank</td>
+                                    <td class="amount-income">+5,000,000 ₫</td>
+                                    <td>Lương tháng 12</td>
+                                </tr>
+                                <tr>
+                                    <td>11/12/2024</td>
+                                    <td><span class="badge badge-expense">CHI</span></td>
+                                    <td>Ăn uống</td>
+                                    <td>MoMo</td>
+                                    <td class="amount-expense">-250,000 ₫</td>
+                                    <td>Ăn trưa với bạn</td>
+                                </tr>
+                                <tr>
+                                    <td>10/12/2024</td>
+                                    <td><span class="badge badge-expense">CHI</span></td>
+                                    <td>Giao thông</td>
+                                    <td>Tiền mặt</td>
+                                    <td class="amount-expense">-50,000 ₫</td>
+                                    <td>Xăng xe</td>
+                                </tr>
+                                <tr>
+                                    <td>09/12/2024</td>
+                                    <td><span class="badge badge-income">THU</span></td>
+                                    <td>Freelance</td>
+                                    <td>Vietcombank</td>
+                                    <td class="amount-income">+2,000,000 ₫</td>
+                                    <td>Dự án web design</td>
+                                </tr>
+                                <tr>
+                                    <td>08/12/2024</td>
+                                    <td><span class="badge badge-expense">CHI</span></td>
+                                    <td>Mua sắm</td>
+                                    <td>MoMo</td>
+                                    <td class="amount-expense">-1,200,000 ₫</td>
+                                    <td>Quần áo mùa đông</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Card: Chuyển tiền giữa ví -->
+                <div class="card">
+                    <h2>Chuyển tiền giữa ví</h2>
+                    <form class="transfer-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Ví nguồn</label>
+                                <select name="walletSource" id="walletSource">
+                                    <option value="">-- Chọn ví --</option>
+                                    <option value="1">Tiền mặt</option>
+                                    <option value="2">Vietcombank</option>
+                                    <option value="3">MoMo</option>
+                                    <option value="4">Ngân hàng ACB</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Ví đích</label>
+                                <select name="walletTarget" id="walletTarget">
+                                    <option value="">-- Chọn ví --</option>
+                                    <option value="1">Tiền mặt</option>
+                                    <option value="2">Vietcombank</option>
+                                    <option value="3">MoMo</option>
+                                    <option value="4">Ngân hàng ACB</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Số tiền</label>
+                                <input type="number" name="amount" id="transferAmount" placeholder="Nhập số tiền">
+                            </div>
+                            <div class="form-group">
+                                <label>Ngày chuyển</label>
+                                <input type="date" name="transferDate" id="transferDate">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Ghi chú</label>
+                            <textarea name="transferNote" id="transferNote" placeholder="Ghi chú (không bắt buộc)" rows="2"></textarea>
+                        </div>
+                        <button type="button" class="btn btn-success" id="btnTransfer">Chuyển tiền</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Cột Phải (30%) -->
+            <div class="right">
+                <!-- Card: Ngân sách -->
+                <div class="card">
+                    <h2>Ngân sách</h2>
+                    <div class="budget-list">
+                        <div class="budget-item">
+                            <div class="budget-header">
+                                <span class="budget-name">Ăn uống</span>
+                                <span class="budget-used">3,500,000 / 5,000,000 ₫</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 70%;"></div>
+                            </div>
+                        </div>
+                        <div class="budget-item">
+                            <div class="budget-header">
+                                <span class="budget-name">Giao thông</span>
+                                <span class="budget-used">450,000 / 1,000,000 ₫</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 45%;"></div>
+                            </div>
+                        </div>
+                        <div class="budget-item">
+                            <div class="budget-header">
+                                <span class="budget-name">Mua sắm</span>
+                                <span class="budget-used">2,100,000 / 2,000,000 ₫</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar warning" style="width: 105%;"></div>
+                            </div>
+                            <div class="alert-warning">⚠️ Vượt ngân sách</div>
+                        </div>
+                        <div class="budget-item">
+                            <div class="budget-header">
+                                <span class="budget-name">Giáo dục</span>
+                                <span class="budget-used">800,000 / 2,000,000 ₫</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 40%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card: Mục tiêu tiết kiệm -->
+                <div class="card">
+                    <div class="card-header-small">
+                        <h2>Mục tiêu tiết kiệm</h2>
+                    </div>
+                    <div class="goal-list">
+                        <div class="goal-item">
+                            <div class="goal-header">
+                                <span class="goal-name">Du lịch Nhật Bản</span>
+                                <span class="goal-deadline">Hạn: 06/2025</span>
+                            </div>
+                            <div class="goal-progress">
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: 65%;"></div>
+                                </div>
+                                <span class="goal-amount">65,000,000 / 100,000,000 ₫</span>
+                            </div>
+                            <button class="btn btn-outline btn-sm" id="btnContribute">Đóng góp</button>
+                        </div>
+                        <div class="goal-item">
+                            <div class="goal-header">
+                                <span class="goal-name">Mua ô tô</span>
+                                <span class="goal-deadline">Hạn: 12/2025</span>
+                            </div>
+                            <div class="goal-progress">
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: 42%;"></div>
+                                </div>
+                                <span class="goal-amount">210,000,000 / 500,000,000 ₫</span>
+                            </div>
+                            <button class="btn btn-outline btn-sm">Đóng góp</button>
+                        </div>
+                        <div class="goal-item">
+                            <div class="goal-header">
+                                <span class="goal-name">Quỹ khẩn cấp</span>
+                                <span class="goal-deadline">Hạn: 12/2026</span>
+                            </div>
+                            <div class="goal-progress">
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: 55%;"></div>
+                                </div>
+                                <span class="goal-amount">55,000,000 / 100,000,000 ₫</span>
+                            </div>
+                            <button class="btn btn-outline btn-sm">Đóng góp</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card: Thông báo -->
+                <div class="card">
+                    <h2>Thông báo</h2>
+                    <div class="notification-list">
+                        <div class="notification-item unread">
+                            <div class="notification-dot"></div>
+                            <div class="notification-content">
+                                <p class="notification-title">Giao dịch thành công</p>
+                                <p class="notification-desc">Bạn đã chuyển 500,000 ₫ vào ví MoMo</p>
+                                <span class="notification-time">10 phút trước</span>
+                            </div>
+                        </div>
+                        <div class="notification-item unread">
+                            <div class="notification-dot"></div>
+                            <div class="notification-content">
+                                <p class="notification-title">Cảnh báo ngân sách</p>
+                                <p class="notification-desc">Danh mục "Mua sắm" đã vượt ngân sách 5%</p>
+                                <span class="notification-time">2 giờ trước</span>
+                            </div>
+                        </div>
+                        <div class="notification-item read">
+                            <div class="notification-content">
+                                <p class="notification-title">Mục tiêu cập nhật</p>
+                                <p class="notification-desc">Tiến độ mục tiêu "Du lịch Nhật Bản" đã đạt 65%</p>
+                                <span class="notification-time">1 ngày trước</span>
+                            </div>
+                        </div>
+                        <div class="notification-item read">
+                            <div class="notification-content">
+                                <p class="notification-title">Giao dịch thành công</p>
+                                <p class="notification-desc">Nhận 2,000,000 ₫ từ Freelance (Dự án web)</p>
+                                <span class="notification-time">2 ngày trước</span>
+                            </div>
+                        </div>
+                        <div class="notification-item read">
+                            <div class="notification-content">
+                                <p class="notification-title">Ngân sách được tạo</p>
+                                <p class="notification-desc">Bạn vừa tạo ngân sách cho danh mục "Giáo dục"</p>
+                                <span class="notification-time">5 ngày trước</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 QL Ngân Quỹ. Quản lý chi tiêu thông minh cho tương lai tốt hơn.</p>
+    </footer>
+
+    <!-- Modal: Thêm giao dịch -->
+    <div class="modal" id="modalAddTransaction">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Thêm giao dịch</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form class="modal-form">
+                <div class="form-group">
+                    <label>Loại giao dịch</label>
+                    <select name="transactionType" id="transactionType">
+                        <option value="">-- Chọn loại --</option>
+                        <option value="THU">Thu</option>
+                        <option value="CHI">Chi</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Danh mục</label>
+                    <select name="categoryId" id="categoryId">
+                        <option value="">-- Chọn danh mục --</option>
+                        <option value="1">Lương</option>
+                        <option value="2">Ăn uống</option>
+                        <option value="3">Giao thông</option>
+                        <option value="4">Mua sắm</option>
+                        <option value="5">Giáo dục</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Ví</label>
+                    <select name="walletId" id="walletId">
+                        <option value="">-- Chọn ví --</option>
+                        <option value="1">Tiền mặt</option>
+                        <option value="2">Vietcombank</option>
+                        <option value="3">MoMo</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Số tiền</label>
+                    <input type="number" name="soTien" id="soTien" placeholder="Nhập số tiền" required>
+                </div>
+                <div class="form-group">
+                    <label>Ngày giao dịch</label>
+                    <input type="date" name="ngayGD" id="ngayGD" required>
+                </div>
+                <div class="form-group">
+                    <label>Ghi chú</label>
+                    <textarea name="ghiChu" id="ghiChu" placeholder="Ghi chú..." rows="3"></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary">Lưu giao dịch</button>
+                    <button type="button" class="btn btn-outline modal-cancel">Hủy</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Thêm ví -->
+    <div class="modal" id="modalAddWallet">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Thêm ví mới</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form class="modal-form">
+                <div class="form-group">
+                    <label>Tên ví</label>
+                    <input type="text" name="tenVi" id="tenVi" placeholder="Vd: Ví tiền mặt" required>
+                </div>
+                <div class="form-group">
+                    <label>Loại ví</label>
+                    <select name="loaiVi" id="loaiVi">
+                        <option value="">-- Chọn loại --</option>
+                        <option value="TIEN_MAT">Tiền mặt</option>
+                        <option value="NGAN_HANG">Ngân hàng</option>
+                        <option value="VI_DI_DONG">Ví điện tử</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Số dư ban đầu</label>
+                    <input type="number" name="soDuBanDau" id="soDuBanDau" placeholder="Nhập số tiền">
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary">Tạo ví</button>
+                    <button type="button" class="btn btn-outline modal-cancel">Hủy</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Thêm danh mục -->
+    <div class="modal" id="modalAddCategory">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Thêm danh mục</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form class="modal-form">
+                <div class="form-group">
+                    <label>Tên danh mục</label>
+                    <input type="text" name="tenDanhMuc" id="tenDanhMuc" placeholder="Vd: Ăn uống" required>
+                </div>
+                <div class="form-group">
+                    <label>Loại</label>
+                    <select name="loai" id="loaiDanhMuc">
+                        <option value="">-- Chọn loại --</option>
+                        <option value="THU">Thu</option>
+                        <option value="CHI">Chi</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Biểu tượng (Icon)</label>
+                    <input type="text" name="icon" id="icon" placeholder="Vd: 🍽️">
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary">Tạo danh mục</button>
+                    <button type="button" class="btn btn-outline modal-cancel">Hủy</button>
+                </div>
+            </form>
+        </div>
+    </div>
+ <!-- Modal: Đóng góp mục tiêu -->
+    <!-- Modal: Đóng góp mục tiêu -->
+    <div class="modal" id="modalContributeGoal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Đóng góp mục tiêu</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form class="modal-form">
+                <div class="form-group">
+                    <label>Chọn mục tiêu</label>
+                    <select name="goalId" id="goalId">
+                        <option value="">-- Chọn mục tiêu --</option>
+                        <option value="1">Du lịch Nhật Bản</option>
+                        <option value="2">Mua ô tô</option>
+                        <option value="3">Quỹ khẩn cấp</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Số tiền đóng góp</label>
+                    <input type="number" name="contributionAmount" id="contributionAmount" placeholder="Nhập số tiền" required>
+                </div>
+                <div class="form-group">
+                    <label>Ghi chú</label>
+                    <textarea name="contributionNote" id="contributionNote" placeholder="Ghi chú..." rows="2"></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-success">Đóng góp</button>
+                    <button type="button" class="btn btn-outline modal-cancel">Hủy</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="auth-client.js"></script>
+    <script>
+      (function(){
+        var guest = document.getElementById("guestActions");
+        var userBox = document.getElementById("userActions");
+        var nameEl = document.getElementById("headerUserName");
+        var btnLogout = document.getElementById("btnLogoutUser");
+        var user = window.AUTH && AUTH.getUser ? AUTH.getUser() : null;
+        var token = window.AUTH && AUTH.getToken ? AUTH.getToken() : null;
+        if(token && user){
+          if(guest) guest.style.display = "none";
+          if(userBox) userBox.style.display = "flex";
+          if(nameEl) nameEl.textContent = (user.hoTen || user.HoTen || user.tenDangNhap || user.TenDangNhap || "Người dùng");
+        }else{
+          if(userBox) userBox.style.display = "none";
+          if(guest) guest.style.display = "flex";
+        }
+        if(btnLogout){
+          btnLogout.addEventListener("click", function(e){
+            e.preventDefault();
+            AUTH.clearSession();
+            window.location.href = "index.html";
+          });
+        }
+      })();
+    </script>
+</body>
+</html>
