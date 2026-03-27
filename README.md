@@ -157,5 +157,6 @@ Các thông tin được xử lý bao gồm
 * Giảm thất thoát và sai sót
 * Theo dõi doanh thu rõ ràng
 * Hỗ trợ phát triển kinh doanh
+* Link mô tả bài toán
 https://docs.google.com/document/d/1x74oEznlx0FSXscAhjWCqXMWDU2oPpWL/edit?usp=sharing&ouid=118364669253315725744&rtpof=true&sd=true
 
