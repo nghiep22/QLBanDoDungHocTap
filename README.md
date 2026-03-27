@@ -1,170 +1,170 @@
-# Web Quản Lý Chi Tiêu Gia Đình
+Dưới đây là bản **chuyển đổi từ chi tiêu → bán đồ dùng học tập**, 
+
+---
+
+# Web Quản Lý Bán Đồ Dùng Học Tập
 
 ## 1. Giới thiệu
 
-Web quản lý chi tiêu gia đình là hệ thống giúp người dùng theo dõi và quản lý các khoản thu nhập và chi tiêu hằng ngày.
+Web quản lý bán đồ dùng học tập là hệ thống giúp cửa hàng theo dõi và quản lý các hoạt động kinh doanh hằng ngày.
 
-Ứng dụng giúp các thành viên trong gia đình kiểm soát tài chính, biết được tiền được sử dụng vào đâu. Hệ thống hỗ trợ ghi lại các khoản thu, các khoản chi và cung cấp các báo cáo thống kê để theo dõi tình hình tài chính.
+Ứng dụng giúp quản lý sản phẩm, kho hàng, đơn hàng, khách hàng và nhân viên. Hệ thống hỗ trợ ghi nhận quá trình nhập hàng, bán hàng và cung cấp các báo cáo thống kê để theo dõi tình hình kinh doanh.
 
-Nhờ đó, người dùng có thể lập kế hoạch chi tiêu hợp lý, tiết kiệm và quản lý tài chính gia đình hiệu quả hơn.
+Nhờ đó, người dùng có thể kiểm soát hàng hóa, doanh thu và vận hành cửa hàng hiệu quả hơn.
+
+---
 
 ## 2. Chức năng chính
 
-Hệ thống cung cấp các chức năng quản lý tài chính cơ bản cho gia đình.
+Hệ thống cung cấp các chức năng quản lý bán hàng cơ bản.
 
 Quản lý tài khoản
 
 * Đăng ký tài khoản
 * Đăng nhập hệ thống
 
-Quản lý thu nhập
+Quản lý sản phẩm
 
-* Thêm khoản thu nhập
-* Chỉnh sửa khoản thu nhập
-* Xóa khoản thu nhập
-* Xem danh sách các khoản thu
+* Thêm sản phẩm
+* Chỉnh sửa sản phẩm
+* Xóa sản phẩm
+* Xem danh sách sản phẩm
 
-Ví dụ nguồn thu
+Ví dụ sản phẩm
 
-* Lương
-* Thưởng
-* Thu nhập kinh doanh
-* Các nguồn thu khác
+* Bút viết
+* Vở học sinh
+* Thước kẻ
+* Màu vẽ
+* Ba lô
+* Dụng cụ học tập khác
 
-Quản lý chi tiêu
+Quản lý kho
 
-* Thêm khoản chi
-* Chỉnh sửa khoản chi
-* Xóa khoản chi
-* Xem danh sách các khoản chi
+* Theo dõi số lượng tồn
+* Cập nhật khi nhập hàng
+* Cập nhật khi bán hàng
 
-Phân loại chi tiêu
+Quản lý nhập hàng
 
-Các khoản chi được phân loại theo danh mục
+* Tạo hóa đơn nhập
+* Thêm sản phẩm vào hóa đơn nhập
+* Cập nhật số lượng tồn kho
 
-* Ăn uống
-* Điện nước
-* Mua sắm
-* Học phí
-* Đi lại
-* Giải trí
-* Chi tiêu sinh hoạt khác
+Quản lý đơn hàng
+
+* Tạo đơn hàng
+* Chỉnh sửa đơn hàng
+* Xóa đơn hàng
+* Xem danh sách đơn hàng
+
+Phân loại sản phẩm
+
+Các sản phẩm được phân loại theo danh mục
+
+* Văn phòng phẩm
+* Sách và vở
+* Dụng cụ vẽ
+* Ba lô và túi
+* Thiết bị học tập
 
 Thống kê và báo cáo
 
 Hệ thống hỗ trợ
 
-* Thống kê thu chi theo ngày
-* Thống kê thu chi theo tháng
-* Thống kê thu chi theo năm
+* Thống kê doanh thu theo ngày
+* Thống kê doanh thu theo tháng
+* Thống kê doanh thu theo năm
 
-Kết quả được hiển thị dưới dạng bảng dữ liệu hoặc biểu đồ.
+Kết quả được hiển thị dưới dạng bảng dữ liệu hoặc biểu đồ
+
+---
 
 ## 3. Cách hoạt động của hệ thống
 
-1. Người dùng đăng nhập vào hệ thống bằng tài khoản cá nhân
-2. Sau khi đăng nhập người dùng có thể nhập các khoản thu nhập hoặc chi tiêu phát sinh
-3. Hệ thống kiểm tra quyền của người dùng trước khi cho phép thực hiện thao tác
-4. Dữ liệu thu nhập và chi tiêu được lưu trữ trong cơ sở dữ liệu
-5. Hệ thống tự động tính toán tổng thu nhập tổng chi tiêu và số tiền còn lại
-6. Kết quả được hiển thị dưới dạng bảng hoặc biểu đồ để người dùng dễ theo dõi
+1. Người dùng đăng nhập vào hệ thống bằng tài khoản
+2. Sau khi đăng nhập người dùng có thể quản lý sản phẩm, nhập hàng hoặc tạo đơn hàng
+3. Hệ thống kiểm tra quyền của người dùng trước khi cho phép thao tác
+4. Dữ liệu được lưu trữ trong cơ sở dữ liệu
+5. Khi bán hàng hệ thống tự động trừ số lượng trong kho
+6. Khi nhập hàng hệ thống tự động cộng số lượng vào kho
+7. Kết quả được hiển thị dưới dạng bảng hoặc báo cáo để người dùng theo dõi
+
+---
 
 ## 4. Phân quyền người dùng
 
-Bố mẹ quản lý tài chính
+Quản trị viên
 
-Là người quản lý chính tài chính của gia đình trong hệ thống.
+Là người quản lý toàn bộ hệ thống
 
 Quyền hạn
 
-* Quản lý toàn bộ thu nhập và chi tiêu
-* Thêm các khoản thu nhập của gia đình
-* Thêm các khoản chi tiêu của gia đình
-* Chỉnh sửa hoặc xóa các khoản thu chi
-* Xem toàn bộ lịch sử giao dịch của gia đình
+* Quản lý tài khoản
+* Quản lý sản phẩm
+* Quản lý kho
+* Quản lý đơn hàng
+* Xem báo cáo thống kê
 
-Các khoản thu nhập có thể thêm
+Nhân viên
 
-* Lương
-* Thưởng
-* Thu nhập kinh doanh
-* Các nguồn thu khác
+Là người trực tiếp bán hàng và nhập hàng
 
-Các khoản chi tiêu
+Quyền hạn
 
-* Ăn uống
-* Điện nước
-* Mua sắm
-* Học phí
-* Đi lại
-* Chi tiêu sinh hoạt khác
+* Thêm và cập nhật sản phẩm
+* Tạo đơn hàng
+* Tạo hóa đơn nhập
+* Theo dõi kho
 
-Báo cáo tài chính
+Các thao tác chính
 
-Bố mẹ có thể xem
+* Bán hàng cho khách
+* Nhập hàng từ nhà cung cấp
+* Kiểm tra tồn kho
 
-* Tổng thu nhập
-* Tổng chi tiêu
-* Số tiền còn lại
-* Lịch sử chi tiêu của các thành viên
+Khách hàng
 
-Con cái thành viên gia đình
+Là người mua hàng
 
-Là người dùng trong gia đình nhưng có quyền hạn hạn chế hơn.
+Quyền
 
-Quyền xem
-
-* Danh sách chi tiêu
-* Tổng chi tiêu
-* Thống kê chi tiêu
-
-Quyền thêm chi tiêu cá nhân
-
-Ví dụ
-
-* Tiền ăn vặt
-* Tiền học tập
-* Tiền mua sách
-* Tiền giải trí
-
-Khi thêm chi tiêu cần nhập
-
-* Số tiền
-* Danh mục chi tiêu
-* Ngày chi tiêu
-* Ghi chú
+* Xem sản phẩm
+* Tạo đơn hàng
+* Theo dõi đơn hàng
 
 Hạn chế
 
-Con cái không được phép
+* Không được quản lý sản phẩm
+* Không được truy cập dữ liệu hệ thống
 
-* Thêm thu nhập của gia đình
-* Chỉnh sửa thu nhập
-* Xóa thu nhập do bố mẹ nhập
-
-Chỉ được quản lý các khoản chi tiêu cá nhân của mình.
+---
 
 ## 5. Vai trò của hệ thống
 
 Hệ thống có các nhiệm vụ
 
-* Kiểm tra quyền của người dùng
+* Kiểm tra quyền người dùng
 * Lưu trữ dữ liệu trong cơ sở dữ liệu
-* Xử lý và tính toán các thông tin tài chính
-* Hiển thị báo cáo và thống kê cho người dùng
+* Xử lý nghiệp vụ nhập và bán hàng
+* Cập nhật tồn kho tự động
+* Hiển thị báo cáo và thống kê
 
 Các thông tin được xử lý bao gồm
 
-* Tổng thu nhập
-* Tổng chi tiêu
-* Số dư tài chính
+* Số lượng tồn kho
+* Doanh thu bán hàng
+* Số lượng sản phẩm bán ra
+
+---
 
 ## 6. Mục tiêu của hệ thống
 
-* Giúp gia đình quản lý tài chính dễ dàng hơn
-* Theo dõi chi tiêu rõ ràng
-* Hạn chế chi tiêu không cần thiết
-* Tạo thói quen quản lý tiền hiệu quả
+* Giúp quản lý cửa hàng hiệu quả hơn
+* Kiểm soát hàng hóa chính xác
+* Giảm thất thoát và sai sót
+* Theo dõi doanh thu rõ ràng
+* Hỗ trợ phát triển kinh doanh
 
-
+---
 
