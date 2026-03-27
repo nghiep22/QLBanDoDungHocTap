@@ -1,6 +1,3 @@
-Dưới đây là bản **chuyển đổi từ chi tiêu → bán đồ dùng học tập**, 
-
----
 
 # Web Quản Lý Bán Đồ Dùng Học Tập
 
