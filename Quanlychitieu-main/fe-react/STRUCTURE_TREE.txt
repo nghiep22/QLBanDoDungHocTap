@@ -1,0 +1,165 @@
+fe-react/
+├── public/
+│   ├── images/                  # Ảnh tĩnh
+│   └── index.html
+│
+├── src/
+│   ├── assets/                  # Tài nguyên import qua bundler
+│   │   ├── images/              # Ảnh, icons
+│   │   │   └── react.svg
+│   │   ├── fonts/               # Font chữ
+│   │   │   └── .gitkeep
+│   │   └── styles/              # CSS global
+│   │       ├── global.css       # Style toàn cục (từ chung.css)
+│   │       └── auth.css         # Style xác thực (từ xacthuc.css)
+│   │
+│   ├── components/              # Component dùng chung (shared)
+│   │   ├── Header/
+│   │   │   ├── Header.tsx
+│   │   │   └── Header.css
+│   │   ├── Footer/
+│   │   │   ├── Footer.tsx
+│   │   │   └── Footer.css
+│   │   ├── Layout/
+│   │   │   ├── Layout.tsx
+│   │   │   └── Layout.css
+│   │   ├── Modal/
+│   │   │   ├── Modal.tsx
+│   │   │   └── Modal.css
+│   │   ├── ProtectedRoute/
+│   │   │   └── ProtectedRoute.tsx
+│   │   └── index.ts             # Re-export tất cả components
+│   │
+│   ├── pages/                   # Mỗi trang = 1 thư mục
+│   │   ├── Dashboard/
+│   │   │   ├── Dashboard.tsx    # (từ TrangTongQuan.tsx)
+│   │   │   └── Dashboard.css
+│   │   ├── Login/
+│   │   │   ├── Login.tsx        # (từ TrangDangNhap.tsx)
+│   │   │   └── Login.css
+│   │   ├── Register/
+│   │   │   ├── Register.tsx     # (từ TrangDangKy.tsx)
+│   │   │   └── Register.css
+│   │   ├── Transaction/
+│   │   │   ├── Transaction.tsx  # (từ TrangGiaoDich.tsx)
+│   │   │   └── Transaction.css
+│   │   ├── Wallet/
+│   │   │   ├── Wallet.tsx       # (từ TrangVi.tsx)
+│   │   │   └── Wallet.css
+│   │   ├── Category/
+│   │   │   ├── Category.tsx     # (từ TrangDanhMuc.tsx)
+│   │   │   └── Category.css
+│   │   ├── Budget/
+│   │   │   ├── Budget.tsx       # (từ TrangNganSach.tsx)
+│   │   │   └── Budget.css
+│   │   ├── Goal/
+│   │   │   ├── Goal.tsx         # (từ TrangMucTieu.tsx)
+│   │   │   └── Goal.css
+│   │   ├── Admin/
+│   │   │   ├── Admin.tsx        # (từ TrangQuanTri.tsx)
+│   │   │   └── Admin.css
+│   │   └── index.ts
+│   │
+│   ├── services/                # Gọi API, tách theo domain
+│   │   ├── auth.service.ts      # (từ dichVuXacThuc.ts)
+│   │   ├── wallet.service.ts    # (từ dichVuVi.ts)
+│   │   ├── category.service.ts  # (từ dichVuDanhMuc.ts)
+│   │   ├── transaction.service.ts # (từ dichVuGiaoDich.ts)
+│   │   └── transfer.service.ts  # (từ dichVuChuyenTien.ts)
+│   │
+│   ├── hooks/                   # Custom React hooks
+│   │   ├── useAuth.ts
+│   │   └── useFetch.ts
+│   │
+│   ├── types/                   # TypeScript interfaces/types
+│   │   ├── user.type.ts         # (từ TaiKhoan.ts)
+│   │   ├── wallet.type.ts       # (từ Vi.ts)
+│   │   ├── category.type.ts     # (từ DanhMuc.ts)
+│   │   ├── transaction.type.ts  # (từ GiaoDich.ts)
+│   │   ├── transfer.type.ts     # (từ ChuyenTien.ts)
+│   │   └── budget.type.ts       # (từ NganSach.ts)
+│   │
+│   ├── contexts/                # React Context providers
+│   │   └── AuthContext.tsx      # (từ NguCanhXacThuc.tsx)
+│   │
+│   ├── config/                  # Cấu hình app (API base URL, env...)
+│   │   ├── api.ts
+│   │   ├── axios.ts             # (từ caiDatApi.ts)
+│   │   └── constants.ts
+│   │
+│   ├── utils/                   # Helper functions
+│   │   ├── format.ts
+│   │   ├── formatDate.ts        # (từ dinhDangNgay.ts)
+│   │   ├── formatMoney.ts       # (từ dinhDangTien.ts)
+│   │   └── storage.ts           # (từ luuTru.ts)
+│   │
+│   ├── routes/                  # Cấu hình routing
+│   │   └── index.tsx
+│   │
+│   ├── App.tsx
+│   └── main.tsx
+│
+├── package.json
+├── tsconfig.json
+├── tsconfig.app.json
+├── tsconfig.node.json
+├── vite.config.ts
+├── eslint.config.js
+├── .gitignore
+├── PROJECT_STRUCTURE.md         # Tài liệu cấu trúc chi tiết
+└── STRUCTURE_TREE.txt           # File này
+
+===========================================
+MAPPING TÊN FILE CŨ → MỚI
+===========================================
+
+PAGES (trang/ → pages/):
+- TrangDangNhap.tsx    → Login/Login.tsx
+- TrangDangKy.tsx      → Register/Register.tsx
+- TrangTongQuan.tsx    → Dashboard/Dashboard.tsx
+- TrangGiaoDich.tsx    → Transaction/Transaction.tsx
+- TrangVi.tsx          → Wallet/Wallet.tsx
+- TrangDanhMuc.tsx     → Category/Category.tsx
+- TrangNganSach.tsx    → Budget/Budget.tsx
+- TrangMucTieu.tsx     → Goal/Goal.tsx
+- TrangQuanTri.tsx     → Admin/Admin.tsx
+
+SERVICES (dichvu/ → services/):
+- dichVuXacThuc.ts     → auth.service.ts
+- dichVuVi.ts          → wallet.service.ts
+- dichVuDanhMuc.ts     → category.service.ts
+- dichVuGiaoDich.ts    → transaction.service.ts
+- dichVuChuyenTien.ts  → transfer.service.ts
+- caiDatApi.ts         → config/axios.ts
+
+TYPES (kieu/ → types/):
+- TaiKhoan.ts          → user.type.ts
+- Vi.ts                → wallet.type.ts
+- DanhMuc.ts           → category.type.ts
+- GiaoDich.ts          → transaction.type.ts
+- ChuyenTien.ts        → transfer.type.ts
+- NganSach.ts          → budget.type.ts
+
+UTILS (tienich/ → utils/):
+- dinhDangNgay.ts      → formatDate.ts
+- dinhDangTien.ts      → formatMoney.ts
+- luuTru.ts            → storage.ts
+
+CONTEXTS (ngucanh/ → contexts/):
+- NguCanhXacThuc.tsx   → AuthContext.tsx
+
+STYLES (styles/ → assets/styles/):
+- chung.css            → global.css
+- xacthuc.css          → auth.css
+
+===========================================
+CẤU TRÚC ĐÃ HOÀN THÀNH
+===========================================
+
+✅ Đã tổ chức lại theo cấu trúc chuẩn
+✅ Đã tạo thư mục assets/images, assets/fonts, assets/styles
+✅ Đã tạo thư mục hooks với useAuth và useFetch
+✅ Đã tạo thư mục routes với routing config
+✅ Đã tạo CSS files cho từng page
+✅ Đã xóa các thư mục cũ (trang, dichvu, kieu, tienich, ngucanh, styles)
+✅ Đã tạo tài liệu PROJECT_STRUCTURE.md

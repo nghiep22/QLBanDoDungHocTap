@@ -1,73 +1,107 @@
-# React + TypeScript + Vite
+# Quản lý chi tiêu - Frontend React
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Ứng dụng quản lý chi tiêu cá nhân được xây dựng với React, TypeScript, và Vite.
 
-Currently, two official plugins are available:
+## 🚀 Cài đặt
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```bash
+# Cài đặt dependencies
+npm install
 
-## React Compiler
+# Chạy development server
+npm run dev
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+# Build production
+npm run build
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Preview production build
+npm run preview
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 📁 Cấu trúc dự án
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+src/
+├── assets/          # Tài nguyên tĩnh (images, fonts, styles)
+├── components/      # Components dùng chung
+├── pages/          # Các trang của ứng dụng
+├── services/       # API services
+├── hooks/          # Custom React hooks
+├── types/          # TypeScript types
+├── contexts/       # React Context
+├── config/         # Cấu hình
+├── utils/          # Helper functions
+└── routes/         # Routing configuration
+```
+
+## 🎯 Tính năng
+
+- ✅ Đăng nhập / Đăng ký
+- ✅ Quản lý ví tiền
+- ✅ Quản lý giao dịch thu chi
+- ✅ Quản lý danh mục
+- ✅ Lập ngân sách
+- ✅ Đặt mục tiêu tài chính
+- ✅ Dashboard tổng quan
+
+## 🔧 Công nghệ sử dụng
+
+- **React 18** - UI Library
+- **TypeScript** - Type safety
+- **Vite** - Build tool
+- **React Router** - Routing
+- **Axios** - HTTP client
+- **CSS3** - Styling
+
+## 🌐 API Configuration
+
+API Gateway mặc định: `http://localhost:7001`
+
+Có thể thay đổi trong file `src/config/axios.ts`
+
+## 📝 Scripts
+
+- `npm run dev` - Chạy development server (port 5173)
+- `npm run build` - Build production
+- `npm run preview` - Preview production build
+- `npm run lint` - Chạy ESLint
+
+## 🎨 Pages
+
+- `/login` - Trang đăng nhập
+- `/register` - Trang đăng ký
+- `/dashboard` - Tổng quan
+- `/transactions` - Quản lý giao dịch
+- `/wallets` - Quản lý ví
+- `/categories` - Quản lý danh mục
+- `/budgets` - Quản lý ngân sách
+- `/goals` - Quản lý mục tiêu
+- `/admin` - Trang quản trị (chỉ admin)
+
+## 🔐 Authentication
+
+Ứng dụng sử dụng JWT token để xác thực. Token được lưu trong localStorage hoặc sessionStorage tùy theo lựa chọn "Ghi nhớ đăng nhập".
+
+## 📦 Dependencies chính
+
+```json
+{
+  "react": "^18.3.1",
+  "react-dom": "^18.3.1",
+  "react-router-dom": "^7.1.3",
+  "axios": "^1.7.9",
+  "typescript": "~5.6.2",
+  "vite": "^6.0.5"
+}
+```
+
+## 🚧 Development
+
+1. Clone repository
+2. Cài đặt dependencies: `npm install`
+3. Chạy dev server: `npm run dev`
+4. Mở browser tại: `http://localhost:5173`
+
+## 📄 License
+
+MIT

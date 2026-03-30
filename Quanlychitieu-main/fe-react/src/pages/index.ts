@@ -1,0 +1,9 @@
+export { default as Login } from './Login/Login';
+export { default as Register } from './Register/Register';
+export { default as Dashboard } from './Dashboard/Dashboard';
+export { default as Transaction } from './Transaction/Transaction';
+export { default as Wallet } from './Wallet/Wallet';
+export { default as Category } from './Category/Category';
+export { default as Budget } from './Budget/Budget';
+export { default as Goal } from './Goal/Goal';
+export { default as Admin } from './Admin/Admin';

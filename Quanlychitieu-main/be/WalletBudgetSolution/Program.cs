@@ -3,7 +3,11 @@ using DAL;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+    });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -20,7 +24,7 @@ builder.Services.AddScoped<IWalletTransfer_BLL, WalletTransfer_BLL>();
 builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("FE", p =>
-        p.WithOrigins("http://127.0.0.1:5500", "http://localhost:5500")
+        p.WithOrigins("http://127.0.0.1:5500", "http://localhost:5500", "http://localhost:5173", "http://localhost:5174")
          .AllowAnyHeader()
          .AllowAnyMethod()
     );
