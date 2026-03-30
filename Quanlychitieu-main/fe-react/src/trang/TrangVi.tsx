@@ -128,9 +128,9 @@ export default function TrangVi() {
                         <label>Loại ví</label>
                         <select value={formTao.loaiVi} onChange={e => setFormTao({ ...formTao, loaiVi: e.target.value })} required>
                             <option value="">-- Chọn --</option>
-                            <option value="TIEN_MAT">Tiền mặt</option>
-                            <option value="NGAN_HANG">Ngân hàng</option>
-                            <option value="VI_DI_DONG">Ví điện tử</option>
+                            <option value="Tiền mặt">Tiền mặt</option>
+                            <option value="Ngân hàng">Ngân hàng</option>
+                            <option value="Ví điện tử">Ví điện tử</option>
                         </select>
                     </div>
                     <div className="form-group"><label>Số dư ban đầu</label><input type="number" value={formTao.soDuBanDau || ''} onChange={e => setFormTao({ ...formTao, soDuBanDau: Number(e.target.value) })} placeholder="0" /></div>
@@ -147,9 +147,9 @@ export default function TrangVi() {
                     <div className="form-group">
                         <label>Loại ví</label>
                         <select value={formSua.loaiVi} onChange={e => setFormSua({ ...formSua, loaiVi: e.target.value })}>
-                            <option value="TIEN_MAT">Tiền mặt</option>
-                            <option value="NGAN_HANG">Ngân hàng</option>
-                            <option value="VI_DI_DONG">Ví điện tử</option>
+                            <option value="Tiền mặt">Tiền mặt</option>
+                            <option value="Ngân hàng">Ngân hàng</option>
+                            <option value="Ví điện tử">Ví điện tử</option>
                         </select>
                     </div>
                     <div className="form-group"><label>Số dư ban đầu</label><input type="number" value={formSua.soDuBanDau || ''} onChange={e => setFormSua({ ...formSua, soDuBanDau: Number(e.target.value) })} placeholder="0" /></div>
