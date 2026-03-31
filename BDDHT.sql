@@ -5,7 +5,7 @@ USE BANDODUNGHOCTAP ;
 -- 1. BẢNG TÀI KHOẢN & PHÂN QUYỀN
 CREATE TABLE VaiTro (
     vaiTro_id   INT PRIMARY KEY IDENTITY(1,1),
-    tenVaiTro   NVARCHAR(50) NOT NULL,          -- 'admin', 'nhan_vien', 'khach_hang'
+    tenVaiTro   NVARCHAR(50) NOT NULL,          -- 'admin', 'khach_hang'
     moTa        NVARCHAR(255)
 );
 
@@ -19,21 +19,7 @@ CREATE TABLE TaiKhoan (
     CONSTRAINT FK_TaiKhoan_VaiTro FOREIGN KEY (vaiTro_id) REFERENCES VaiTro(vaiTro_id)
 );
 
--- 2. NHÂN VIÊN
-CREATE TABLE NhanVien (
-    nhanVien_id INT PRIMARY KEY IDENTITY(1,1),
-    taiKhoan_id INT UNIQUE,
-    hoTen       NVARCHAR(100) NOT NULL,
-    soDienThoai VARCHAR(15),
-    email       VARCHAR(100),
-    diaChi      NVARCHAR(255),
-    chucVu      NVARCHAR(50),
-    ngayVaoLam  DATE,
-    trangThai   BIT DEFAULT 1,
-    CONSTRAINT FK_NhanVien_TaiKhoan FOREIGN KEY (taiKhoan_id) REFERENCES TaiKhoan(taiKhoan_id)
-);
-
--- 3. KHÁCH HÀNG
+-- 2. KHÁCH HÀNG
 CREATE TABLE KhachHang (
     khachHang_id    INT PRIMARY KEY IDENTITY(1,1),
     taiKhoan_id     INT UNIQUE,
@@ -47,7 +33,7 @@ CREATE TABLE KhachHang (
     CONSTRAINT FK_KhachHang_TaiKhoan FOREIGN KEY (taiKhoan_id) REFERENCES TaiKhoan(taiKhoan_id)
 );
 
--- 4. NHÀ CUNG CẤP
+-- 3. NHÀ CUNG CẤP
 CREATE TABLE NhaCungCap (
     nhaCungCap_id   INT PRIMARY KEY IDENTITY(1,1),
     tenNCC          NVARCHAR(150) NOT NULL,
@@ -59,7 +45,7 @@ CREATE TABLE NhaCungCap (
     trangThai       BIT DEFAULT 1
 );
 
--- 5. DANH MỤC & SẢN PHẨM
+-- 4. DANH MỤC & SẢN PHẨM
 CREATE TABLE LoaiDoHocTap (
     loai_id     INT PRIMARY KEY IDENTITY(1,1),
     tenLoai     NVARCHAR(100) NOT NULL,
@@ -83,7 +69,7 @@ CREATE TABLE DoHocTap (
     CONSTRAINT FK_DoHocTap_NCC FOREIGN KEY (nhaCungCap_id) REFERENCES NhaCungCap(nhaCungCap_id)
 );
 
--- 6. KHO HÀNG
+-- 5. KHO HÀNG
 CREATE TABLE Kho (
     kho_id          INT PRIMARY KEY IDENTITY(1,1),
     sanPham_id      INT NOT NULL UNIQUE,
@@ -94,18 +80,18 @@ CREATE TABLE Kho (
     CONSTRAINT FK_Kho_SanPham FOREIGN KEY (sanPham_id) REFERENCES DoHocTap(sanPham_id)
 );
 
--- 7. HÓA ĐƠN NHẬP
+-- 6. HÓA ĐƠN NHẬP (Admin quản lý)
 CREATE TABLE HoaDonNhap (
     hdNhap_id       INT PRIMARY KEY IDENTITY(1,1),
     nhaCungCap_id   INT NOT NULL,
-    nhanVien_id     INT NOT NULL,
+    taiKhoan_id     INT NOT NULL,               -- Admin tạo hóa đơn nhập
     maHDNhap        VARCHAR(50) UNIQUE,
     ngayNhap        DATETIME DEFAULT GETDATE(),
     tongTien        DECIMAL(15,0) DEFAULT 0,
     ghiChu          NVARCHAR(MAX),
     trangThai       NVARCHAR(30) DEFAULT N'da_nhap',
     CONSTRAINT FK_HDN_NCC FOREIGN KEY (nhaCungCap_id) REFERENCES NhaCungCap(nhaCungCap_id),
-    CONSTRAINT FK_HDN_NV FOREIGN KEY (nhanVien_id) REFERENCES NhanVien(nhanVien_id)
+    CONSTRAINT FK_HDN_TK FOREIGN KEY (taiKhoan_id) REFERENCES TaiKhoan(taiKhoan_id)
 );
 
 CREATE TABLE ChiTietHDNhap (
@@ -114,12 +100,12 @@ CREATE TABLE ChiTietHDNhap (
     sanPham_id      INT NOT NULL,
     soLuong         INT NOT NULL,
     giaNhap         DECIMAL(12,0) NOT NULL,
-    thanhTien       AS (soLuong * giaNhap), -- Cột tính toán trong SQL Server
+    thanhTien       AS (soLuong * giaNhap),
     CONSTRAINT FK_CTHDN_HD FOREIGN KEY (hdNhap_id) REFERENCES HoaDonNhap(hdNhap_id),
     CONSTRAINT FK_CTHDN_SP FOREIGN KEY (sanPham_id) REFERENCES DoHocTap(sanPham_id)
 );
 
--- 8. KHUYẾN MÃI
+-- 7. KHUYẾN MÃI
 CREATE TABLE KhuyenMai (
     km_id           INT PRIMARY KEY IDENTITY(1,1),
     tenKM           NVARCHAR(150) NOT NULL,
@@ -143,11 +129,10 @@ CREATE TABLE KM_LoaiSP (
     CONSTRAINT FK_KM_LSP_L FOREIGN KEY (loai_id) REFERENCES LoaiDoHocTap(loai_id)
 );
 
--- 9. ĐƠN HÀNG
+-- 8. ĐƠN HÀNG
 CREATE TABLE DonHang (
     donHang_id      INT PRIMARY KEY IDENTITY(1,1),
     khachHang_id    INT,
-    nhanVien_id     INT,
     km_id           INT,
     maDonHang       VARCHAR(50) UNIQUE,
     ngayDat         DATETIME DEFAULT GETDATE(),
@@ -160,7 +145,6 @@ CREATE TABLE DonHang (
     tongThanhToan   DECIMAL(15,0) DEFAULT 0,
     ghiChu          NVARCHAR(MAX),
     CONSTRAINT FK_DH_KH FOREIGN KEY (khachHang_id) REFERENCES KhachHang(khachHang_id),
-    CONSTRAINT FK_DH_NV FOREIGN KEY (nhanVien_id) REFERENCES NhanVien(nhanVien_id),
     CONSTRAINT FK_DH_KM FOREIGN KEY (km_id) REFERENCES KhuyenMai(km_id)
 );
 
@@ -175,9 +159,9 @@ CREATE TABLE ChiTietDonHang (
     CONSTRAINT FK_CTDH_SP FOREIGN KEY (sanPham_id) REFERENCES DoHocTap(sanPham_id)
 );
 
-GO -- Sử dung GO để kết thúc lô lệnh trước khi tạo View/Trigger
+GO
 
--- 10. THỐNG KÊ (VIEW)
+-- 9. THỐNG KÊ (VIEW)
 CREATE VIEW V_DoanhThuNgay AS
 SELECT
     CAST(ngayDat AS DATE) AS ngay,
@@ -202,8 +186,8 @@ GROUP BY sp.sanPham_id, sp.tenSanPham
 ORDER BY tongSoLuongBan DESC;
 GO
 
--- 11. TRIGGER (SQL SERVER)
--- Cập nhật kho sau khi bán (Khi trạng thái chuyển thành 'da_giao')
+-- 10. TRIGGER
+-- Cập nhật kho sau khi bán
 CREATE TRIGGER trg_CapNhatKhoSauBan
 ON DonHang
 AFTER UPDATE
@@ -234,10 +218,9 @@ BEGIN
 END;
 GO
 
--- 12. DỮ LIỆU MẪU
+-- 11. DỮ LIỆU MẪU
 INSERT INTO VaiTro (tenVaiTro, moTa) VALUES
-(N'quan_tri', N'Quản trị viên toàn quyền'),
-(N'nhan_vien', N'Nhân viên bán hàng & kho'),
+(N'admin', N'Quản trị viên toàn quyền'),
 (N'khach_hang', N'Khách hàng mua sắm');
 
 INSERT INTO LoaiDoHocTap (tenLoai, moTa) VALUES
@@ -252,23 +235,23 @@ INSERT INTO NhaCungCap (tenNCC, soDienThoai, email, diaChi) VALUES
 (N'Tập đoàn Hồng Hà', '02438256789', 'contact@hongha.vn', N'Hà Nội'),
 (N'Deli Vietnam', '02839999888', 'vn@deli.com', N'TP.HCM');
 
+-- Tài khoản (mật khẩu: 123456 - plain text, chưa hash)
+-- LƯU Ý: Backend hiện tại so sánh mật khẩu trực tiếp, không dùng bcrypt
 INSERT INTO TaiKhoan (tenDangNhap, matKhau, vaiTro_id) VALUES
-('admin', '$2b$10$hashedpassword_admin', 1),
-('nv001', '$2b$10$hashedpassword_nv001', 2),
-('kh001', '$2b$10$hashedpassword_kh001', 3);
-
-INSERT INTO NhanVien (taiKhoan_id, hoTen, soDienThoai, email, chucVu) VALUES
-(2, N'Nguyễn Văn An', '0912345678', 'an.nv@hocvui.vn', N'Nhân viên bán hàng');
+('admin', '123456', 1),
+('user1', '123456', 2),
+('user2', '123456', 2);
 
 INSERT INTO KhachHang (taiKhoan_id, hoTen, soDienThoai, email) VALUES
-(3, N'Trần Thị Bình', '0987654321', 'binh@gmail.com');
+(2, N'Nguyễn Văn A', '0912345678', 'vana@gmail.com'),
+(3, N'Trần Thị B', '0987654321', 'thib@gmail.com');
 
-INSERT INTO DoHocTap (loai_id, nhaCungCap_id, maSanPham, tenSanPham, giaBan, giaNhap) VALUES
-(1, 1, 'SP001', N'Bút bi Thiên Long TL-027 (hộp 10 cái)', 45000, 28000),
-(2, 2, 'SP002', N'Vở ô ly Hồng Hà 200 trang', 18000, 10000),
-(3, 3, 'SP003', N'Màu sáp Deli 24 màu', 35000, 20000),
-(4, 1, 'SP004', N'Hộp bút đa năng in 3D', 45000, 25000),
-(1, 3, 'SP005', N'Thước kẻ nhựa 30cm Deli', 8000, 4000);
+INSERT INTO DoHocTap (loai_id, nhaCungCap_id, maSanPham, tenSanPham, giaBan, giaNhap, hinhAnh) VALUES
+(1, 1, 'SP001', N'Bút bi Thiên Long TL-027 (hộp 10 cái)', 45000, 28000, 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400'),
+(2, 2, 'SP002', N'Vở ô ly Hồng Hà 200 trang', 18000, 10000, 'https://images.unsplash.com/photo-1544816155-12df9643f363?w=400'),
+(3, 3, 'SP003', N'Màu sáp Deli 24 màu', 35000, 20000, 'https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=400'),
+(4, 1, 'SP004', N'Hộp bút đa năng in 3D', 45000, 25000, 'https://images.unsplash.com/photo-1588075592446-265fd1e6e76f?w=400'),
+(1, 3, 'SP005', N'Thước kẻ nhựa 30cm Deli', 8000, 4000, 'https://images.unsplash.com/photo-1611532736579-6b16e2b50449?w=400');
 
 INSERT INTO Kho (sanPham_id, soLuongTon, soLuongToiThieu, viTriKho) VALUES
 (1, 150, 20, N'Kệ A1'), (2, 90, 15, N'Kệ A2'),
