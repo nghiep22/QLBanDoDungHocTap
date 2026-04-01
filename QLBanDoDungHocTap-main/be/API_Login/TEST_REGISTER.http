@@ -1,0 +1,58 @@
+### Test Register API - Đăng ký tài khoản mới
+POST https://localhost:5010/api/auth/register
+Content-Type: application/json
+
+{
+  "tenDangNhap": "testuser",
+  "matKhau": "123456",
+  "vaiTro_Id": 2
+}
+
+### Test Register via API Gateway
+POST http://localhost:5000/api/auth/register
+Content-Type: application/json
+
+{
+  "tenDangNhap": "testuser2",
+  "matKhau": "123456",
+  "vaiTro_Id": 2
+}
+
+### Test Login after Register
+POST https://localhost:5010/api/auth/login
+Content-Type: application/json
+
+{
+  "tenDangNhap": "testuser",
+  "matKhau": "123456"
+}
+
+### Test Register - Username already exists (should fail)
+POST https://localhost:5010/api/auth/register
+Content-Type: application/json
+
+{
+  "tenDangNhap": "testuser",
+  "matKhau": "123456",
+  "vaiTro_Id": 2
+}
+
+### Test Register - Short username (should fail)
+POST https://localhost:5010/api/auth/register
+Content-Type: application/json
+
+{
+  "tenDangNhap": "ab",
+  "matKhau": "123456",
+  "vaiTro_Id": 2
+}
+
+### Test Register - Short password (should fail)
+POST https://localhost:5010/api/auth/register
+Content-Type: application/json
+
+{
+  "tenDangNhap": "testuser3",
+  "matKhau": "12345",
+  "vaiTro_Id": 2
+}

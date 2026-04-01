@@ -41,6 +41,35 @@ namespace API_Login.Controllers
             });
         }
 
+        [HttpPost("register")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+        {
+            var (success, message, taiKhoan) = await _taiKhoanBll.DangKyAsync(
+                request.TenDangNhap, 
+                request.MatKhau, 
+                request.VaiTro_Id
+            );
+
+            if (!success)
+                return BadRequest(new { message });
+
+            // Auto login after registration
+            var token = _jwtTokenService.GenerateToken(taiKhoan!);
+
+            return Ok(new
+            {
+                message = "Đăng ký thành công",
+                token,
+                user = new
+                {
+                    taiKhoan!.TaiKhoan_Id,
+                    taiKhoan.TenDangNhap,
+                    taiKhoan.VaiTro_Id
+                }
+            });
+        }
+
         [HttpGet("me")]
         [Authorize]
         public IActionResult Me()

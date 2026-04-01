@@ -1,5 +1,4 @@
 using BLL;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 
@@ -7,7 +6,6 @@ namespace API_SanPham.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
     public class DoHocTapController : ControllerBase
     {
         private readonly IDoHocTap_BLL _bll;

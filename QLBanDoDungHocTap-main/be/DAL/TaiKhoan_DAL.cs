@@ -42,5 +42,42 @@ namespace DAL
                 NgayTao = reader.GetDateTime(reader.GetOrdinal("ngayTao"))
             };
         }
+
+        public async Task<bool> CheckTenDangNhapExistsAsync(string tenDangNhap)
+        {
+            const string sql = "SELECT COUNT(1) FROM TaiKhoan WHERE tenDangNhap = @user";
+
+            using var conn = new SqlConnection(_connectionString);
+            using var cmd = new SqlCommand(sql, conn);
+
+            cmd.Parameters.Add("@user", SqlDbType.VarChar, 100).Value = tenDangNhap;
+
+            await conn.OpenAsync();
+
+            var count = (int)await cmd.ExecuteScalarAsync();
+            return count > 0;
+        }
+
+        public async Task<int> CreateAsync(TaiKhoan taiKhoan)
+        {
+            const string sql = @"
+                INSERT INTO TaiKhoan (tenDangNhap, matKhau, vaiTro_id, trangThai, ngayTao)
+                VALUES (@tenDangNhap, @matKhau, @vaiTro_id, @trangThai, @ngayTao);
+                SELECT CAST(SCOPE_IDENTITY() as int);";
+
+            using var conn = new SqlConnection(_connectionString);
+            using var cmd = new SqlCommand(sql, conn);
+
+            cmd.Parameters.Add("@tenDangNhap", SqlDbType.VarChar, 100).Value = taiKhoan.TenDangNhap;
+            cmd.Parameters.Add("@matKhau", SqlDbType.VarChar, 255).Value = taiKhoan.MatKhau;
+            cmd.Parameters.Add("@vaiTro_id", SqlDbType.Int).Value = taiKhoan.VaiTro_Id;
+            cmd.Parameters.Add("@trangThai", SqlDbType.Bit).Value = taiKhoan.TrangThai;
+            cmd.Parameters.Add("@ngayTao", SqlDbType.DateTime).Value = taiKhoan.NgayTao;
+
+            await conn.OpenAsync();
+
+            var newId = (int)await cmd.ExecuteScalarAsync();
+            return newId;
+        }
     }
 }
