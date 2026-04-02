@@ -46,20 +46,6 @@ export const Login = () => {
 
         {error && <S.ErrorMessage>{error}</S.ErrorMessage>}
 
-        <S.InfoBox>
-          <strong>⚠️ Lưu ý quan trọng:</strong>
-          <p>Backend cần đang chạy tại: http://localhost:5000</p>
-          <p>Xem file: <code>HUONG_DAN_CHAY_BACKEND.md</code></p>
-          <br />
-          <strong>Tài khoản test:</strong>
-          <p>Admin: <strong>admin</strong> / <strong>123456</strong></p>
-          <p>User: <strong>user1</strong> / <strong>123456</strong></p>
-          <br />
-          <strong>Nếu không đăng nhập được:</strong>
-          <p>Chạy script <code>UPDATE_PASSWORD.sql</code> trong database</p>
-          <small>Xem file HUONG_DAN_DANG_NHAP.md để biết thêm chi tiết</small>
-        </S.InfoBox>
-
         <S.Form onSubmit={handleSubmit}>
           <S.FormGroup>
             <S.Label>Tên đăng nhập</S.Label>

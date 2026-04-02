@@ -1,20 +1,22 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
 import { SanPham, LoaiSanPham } from '../../types';
 import { mockSanPhams } from '../../data/products';
 import * as S from './styles';
 
-const mockLoais: LoaiSanPham[] = [
-  { id: 0, ten: 'Tất cả' },
-  { id: 1, ten: 'Bút viết' },
-  { id: 2, ten: 'Văn phòng phẩm' },
-  { id: 3, ten: 'Dụng cụ học tập' },
-  { id: 4, ten: 'Mỹ thuật' },
+const danhMucList: (LoaiSanPham & { slug: string })[] = [
+  { id: 1, ten: 'Bút viết', slug: 'but-viet' },
+  { id: 2, ten: 'Văn phòng phẩm', slug: 'van-phong-pham' },
+  { id: 3, ten: 'Dụng cụ học tập', slug: 'dung-cu-hoc-tap' },
+  { id: 4, ten: 'Mỹ thuật', slug: 'my-thuat' },
+  { id: 5, ten: 'Giấy in', slug: 'giay-in' },
+  { id: 6, ten: 'Bút cao cấp', slug: 'but-cao-cap' },
 ];
 
 export const Home = () => {
+  const navigate = useNavigate();
   const [sanPhams, setSanPhams] = useState<SanPham[]>([]);
-  const [loaiDaChon, setLoaiDaChon] = useState(0);
   const [dangTai, setDangTai] = useState(true);
 
   useEffect(() => {
@@ -24,10 +26,6 @@ export const Home = () => {
       setDangTai(false);
     }, 500);
   }, []);
-
-  const sanPhamLoc = loaiDaChon === 0 
-    ? sanPhams 
-    : sanPhams.filter(sp => sp.loaiId === loaiDaChon);
 
   return (
     <S.Container>
@@ -41,13 +39,13 @@ export const Home = () => {
       <S.FilterSection>
         <S.FilterTitle>Danh mục sản phẩm</S.FilterTitle>
         <S.FilterButtons>
-          {mockLoais.map(loai => (
+          {danhMucList.map(dm => (
             <S.FilterButton
-              key={loai.id}
-              active={loaiDaChon === loai.id}
-              onClick={() => setLoaiDaChon(loai.id)}
+              key={dm.id}
+              active={false}
+              onClick={() => navigate(`/danh-muc/${dm.slug}`)}
             >
-              {loai.ten}
+              {dm.ten}
             </S.FilterButton>
           ))}
         </S.FilterButtons>
@@ -56,14 +54,13 @@ export const Home = () => {
       <S.Section>
         <S.SectionHeader>
           <S.SectionTitle>Sản phẩm nổi bật</S.SectionTitle>
-          <S.ViewAllLink to="/san-pham">Xem tất cả →</S.ViewAllLink>
         </S.SectionHeader>
 
         {dangTai ? (
           <S.LoadingText>Đang tải...</S.LoadingText>
         ) : (
           <S.ProductGrid>
-            {sanPhamLoc.map(sp => (
+            {sanPhams.slice(0, 8).map(sp => (
               <ProductCard key={sp.id} sanPham={sp} />
             ))}
           </S.ProductGrid>

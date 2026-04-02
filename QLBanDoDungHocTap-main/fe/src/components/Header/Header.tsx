@@ -32,6 +32,11 @@ export const Header = () => {
               {isAuthenticated ? (
                 <>
                   <span>Xin chào, {user?.tenDangNhap}</span>
+                  {user?.vaiTro_Id === 1 && (
+                    <Link to="/admin" style={{ color: '#ffd700', fontWeight: 'bold' }}>
+                      Quản trị
+                    </Link>
+                  )}
                   <button onClick={xuLyDangXuat} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}>
                     Đăng xuất
                   </button>

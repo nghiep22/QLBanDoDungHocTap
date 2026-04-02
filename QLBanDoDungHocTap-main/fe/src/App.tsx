@@ -8,6 +8,7 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import { Header } from './components/Header/Header';
 import { Footer } from './components/Footer/Footer';
 import { Home } from './pages/Home/Home';
+import { Category } from './pages/Category/Category';
 import { Cart } from './pages/Cart/Cart';
 import { Login } from './pages/Login/Login';
 import { Register } from './pages/Register/Register';
@@ -43,7 +44,7 @@ function App() {
                     <Header />
                     <Routes>
                       <Route path="/" element={<Home />} />
-                      <Route path="/danh-muc/:slug" element={<Home />} />
+                      <Route path="/danh-muc/:slug" element={<Category />} />
                       <Route path="/gio-hang" element={<Cart />} />
                     </Routes>
                     <Footer />
