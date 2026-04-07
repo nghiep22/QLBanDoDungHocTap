@@ -68,16 +68,12 @@ export const Header = () => {
                 onChange={(e) => setTimKiem(e.target.value)}
               />
               <S.SearchButton type="submit">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                </svg>
+                Tìm
               </S.SearchButton>
             </S.SearchForm>
 
             <S.CartButton to="/gio-hang">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M9 2L7 6M17 2L19 6M3 6H21M19 6L18 20H6L5 6M10 11V16M14 11V16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-              </svg>
+              Giỏ hàng
               {tongSoLuong > 0 && <S.CartBadge>{tongSoLuong}</S.CartBadge>}
             </S.CartButton>
           </S.HeaderContent>
