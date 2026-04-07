@@ -1,15 +1,15 @@
 import { useState } from 'react';
-import { useAuth } from '../../context/AuthContext';
+import { useDangNhap } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import * as S from './styles';
 
 export const Admin = () => {
-  const { user, logout } = useAuth();
+  const { nguoiDung, dangXuat } = useDangNhap();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
 
   const handleLogout = () => {
-    logout();
+    dangXuat();
     navigate('/dang-nhap');
   };
 
@@ -22,9 +22,9 @@ export const Admin = () => {
         </S.Logo>
 
         <S.UserInfo>
-          <S.Avatar>{user?.tenDangNhap.charAt(0).toUpperCase()}</S.Avatar>
+          <S.Avatar>{nguoiDung?.tenDangNhap.charAt(0).toUpperCase()}</S.Avatar>
           <div>
-            <S.UserName>{user?.tenDangNhap}</S.UserName>
+            <S.UserName>{nguoiDung?.tenDangNhap}</S.UserName>
             <S.UserRole>Quản trị viên</S.UserRole>
           </div>
         </S.UserInfo>

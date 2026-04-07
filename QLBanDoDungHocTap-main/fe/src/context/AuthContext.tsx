@@ -1,64 +1,120 @@
+// ============================================
+// CONTEXT QUẢN LÝ TRẠNG THÁI ĐĂNG NHẬP
+// ============================================
+
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { apiService, LoginRequest } from '../services/api';
+import { dichVuApi } from '../services/api';
+import { NguoiDung, YeuCauDangNhap, KetQuaDangNhap } from '../types';
 
-interface User {
-  taiKhoan_Id: number;
-  tenDangNhap: string;
-  vaiTro_Id: number;
+// ============================================
+// ĐỊNH NGHĨA KIỂU DỮ LIỆU CHO CONTEXT
+// ============================================
+interface KieuAuthContext {
+  nguoiDung: NguoiDung | null;           // Thông tin người dùng hiện tại
+  token: string | null;                   // JWT token
+  dangNhap: (duLieu: YeuCauDangNhap) => Promise<KetQuaDangNhap>;  // Hàm đăng nhập
+  dangXuat: () => void;                   // Hàm đăng xuất
+  daDangNhap: boolean;                    // Trạng thái đã đăng nhập chưa
+  dangTai: boolean;                       // Trạng thái đang tải
 }
 
-interface AuthContextType {
-  user: User | null;
-  token: string | null;
-  login: (data: LoginRequest) => Promise<{ user: User; token: string }>;
-  logout: () => void;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-}
+// ============================================
+// TẠO CONTEXT
+// ============================================
+const AuthContext = createContext<KieuAuthContext | undefined>(undefined);
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
+// ============================================
+// PROVIDER - CUNG CẤP STATE CHO TOÀN ỨNG DỤNG
+// ============================================
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  // State quản lý thông tin người dùng
+  const [nguoiDung, setNguoiDung] = useState<NguoiDung | null>(null);
+  
+  // State quản lý token
   const [token, setToken] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  
+  // State quản lý trạng thái loading
+  const [dangTai, setDangTai] = useState(true);
 
+  // ============================================
+  // EFFECT: TỰ ĐỘNG ĐĂNG NHẬP KHI MỞ APP
+  // Kiểm tra localStorage có token không
+  // ============================================
   useEffect(() => {
-    const savedToken = localStorage.getItem('token');
-    const savedUser = localStorage.getItem('user');
+    const tokenDaLuu = localStorage.getItem('token');
+    const nguoiDungDaLuu = localStorage.getItem('user');
 
-    if (savedToken && savedUser) {
-      setToken(savedToken);
-      setUser(JSON.parse(savedUser));
+    // Nếu có token và user đã lưu → Tự động đăng nhập
+    if (tokenDaLuu && nguoiDungDaLuu) {
+      setToken(tokenDaLuu);
+      setNguoiDung(JSON.parse(nguoiDungDaLuu));
+      console.log('✅ Tự động đăng nhập từ localStorage');
     }
-    setIsLoading(false);
+    
+    setDangTai(false);
   }, []);
 
-  const login = async (data: LoginRequest) => {
-    const response = await apiService.login(data);
-    setToken(response.token);
-    setUser(response.user);
-    localStorage.setItem('token', response.token);
-    localStorage.setItem('user', JSON.stringify(response.user));
-    return response;
+  // ============================================
+  // HÀM ĐĂNG NHẬP
+  // ============================================
+  const dangNhap = async (duLieu: YeuCauDangNhap): Promise<KetQuaDangNhap> => {
+    try {
+      console.log('🔵 Bắt đầu đăng nhập...');
+      
+      // Gọi API đăng nhập
+      const ketQua = await dichVuApi.dangNhap(duLieu);
+      
+      // Lưu token và thông tin user vào state
+      setToken(ketQua.token);
+      setNguoiDung(ketQua.user);
+      
+      // Lưu vào localStorage để persistent (giữ khi refresh)
+      localStorage.setItem('token', ketQua.token);
+      localStorage.setItem('user', JSON.stringify(ketQua.user));
+      
+      console.log('✅ Đăng nhập thành công, đã lưu vào localStorage');
+      
+      return ketQua;
+    } catch (loi) {
+      console.error('❌ Lỗi trong hàm dangNhap:', loi);
+      throw loi;
+    }
   };
 
-  const logout = () => {
+  // ============================================
+  // HÀM ĐĂNG XUẤT
+  // ============================================
+  const dangXuat = () => {
+    console.log('🔵 Đăng xuất...');
+    
+    // Xóa state
     setToken(null);
-    setUser(null);
+    setNguoiDung(null);
+    
+    // Xóa localStorage
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    
+    console.log('✅ Đã đăng xuất và xóa localStorage');
   };
 
+  // ============================================
+  // TÍNH TOÁN TRẠNG THÁI ĐÃ ĐĂNG NHẬP
+  // ============================================
+  const daDangNhap = !!token;
+
+  // ============================================
+  // CUNG CẤP STATE VÀ FUNCTIONS CHO TOÀN APP
+  // ============================================
   return (
     <AuthContext.Provider
       value={{
-        user,
+        nguoiDung,
         token,
-        login,
-        logout,
-        isAuthenticated: !!token,
-        isLoading,
+        dangNhap,
+        dangXuat,
+        daDangNhap,
+        dangTai,
       }}
     >
       {children}
@@ -66,10 +122,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const useAuth = () => {
+// ============================================
+// HOOK - SỬ DỤNG CONTEXT Ở BẤT KỲ ĐÂU
+// ============================================
+export const useDangNhap = () => {
   const context = useContext(AuthContext);
+  
   if (!context) {
-    throw new Error('useAuth must be used within AuthProvider');
+    throw new Error('useDangNhap phải được sử dụng trong AuthProvider');
   }
+  
   return context;
 };
+
+// Export tên cũ để tương thích
+export const useAuth = useDangNhap;

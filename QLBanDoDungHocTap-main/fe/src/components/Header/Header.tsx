@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
-import { useAuth } from '../../context/AuthContext';
+import { useDangNhap } from '../../context/AuthContext';
 import * as S from './styles';
 
 export const Header = () => {
   const [timKiem, setTimKiem] = useState('');
   const { tongSoLuong } = useCart();
-  const { user, isAuthenticated, logout } = useAuth();
+  const { nguoiDung, daDangNhap, dangXuat } = useDangNhap();
   const navigate = useNavigate();
 
   const xuLyTimKiem = (e: React.FormEvent) => {
@@ -16,7 +16,7 @@ export const Header = () => {
   };
 
   const xuLyDangXuat = () => {
-    logout();
+    dangXuat();
     navigate('/');
   };
 
@@ -29,10 +29,10 @@ export const Header = () => {
               <span>Hotline: 1900 866 819</span>
             </S.TopBarLeft>
             <S.TopBarRight>
-              {isAuthenticated ? (
+              {daDangNhap ? (
                 <>
-                  <span>Xin chào, {user?.tenDangNhap}</span>
-                  {user?.vaiTro_Id === 1 && (
+                  <span>Xin chào, {nguoiDung?.tenDangNhap}</span>
+                  {nguoiDung?.vaiTro_Id === 1 && (
                     <Link to="/admin" style={{ color: '#ffd700', fontWeight: 'bold' }}>
                       Quản trị
                     </Link>

@@ -1,52 +1,96 @@
+// ============================================
+// TRANG ĐĂNG NHẬP
+// ============================================
+
 import { useState, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import { useDangNhap } from '../../context/AuthContext';
 import * as S from './styles';
 
 export const Login = () => {
-  const [tenDangNhap, setTenDangNhap] = useState('');
-  const [matKhau, setMatKhau] = useState('');
-  const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  // ============================================
+  // STATE QUẢN LÝ FORM
+  // ============================================
+  const [tenDangNhap, setTenDangNhap] = useState('');  // Tên đăng nhập
+  const [matKhau, setMatKhau] = useState('');          // Mật khẩu
+  const [thongBaoLoi, setThongBaoLoi] = useState(''); // Thông báo lỗi
+  const [dangXuLy, setDangXuLy] = useState(false);    // Đang xử lý request
 
-  const { login } = useAuth();
-  const navigate = useNavigate();
+  // ============================================
+  // HOOKS
+  // ============================================
+  const { dangNhap } = useDangNhap();  // Lấy hàm đăng nhập từ Context
+  const dieuHuong = useNavigate();      // Hook điều hướng trang
 
-  const handleSubmit = async (e: FormEvent) => {
+  // ============================================
+  // XỬ LÝ SUBMIT FORM ĐĂNG NHẬP
+  // ============================================
+  const xuLySubmit = async (e: FormEvent) => {
+    // Ngăn form reload trang
     e.preventDefault();
-    setError('');
-    setIsLoading(true);
+    
+    // Reset thông báo lỗi cũ
+    setThongBaoLoi('');
+    
+    // Bật trạng thái đang xử lý
+    setDangXuLy(true);
 
     try {
-      const response = await login({ tenDangNhap, matKhau });
+      console.log('🔵 Bắt đầu xử lý đăng nhập...');
       
-      // Redirect based on role: admin (vaiTro_Id = 1) -> /admin, customer (vaiTro_Id = 2) -> /
-      if (response.user.vaiTro_Id === 1) {
-        navigate('/admin');
+      // Gọi hàm đăng nhập từ Context
+      const ketQua = await dangNhap({ 
+        tenDangNhap, 
+        matKhau 
+      });
+      
+      console.log('✅ Đăng nhập thành công, chuẩn bị điều hướng...');
+      
+      // ============================================
+      // PHÂN QUYỀN: Điều hướng theo vai trò
+      // ============================================
+      if (ketQua.user.vaiTro_Id === 1) {
+        // Admin → Trang quản trị
+        console.log('→ Điều hướng đến trang Admin');
+        dieuHuong('/admin');
       } else {
-        navigate('/');
+        // User thường → Trang chủ
+        console.log('→ Điều hướng đến trang chủ');
+        dieuHuong('/');
       }
-    } catch (err: any) {
-      setError(err.message || 'Đăng nhập thất bại');
+      
+    } catch (loi: any) {
+      // Xử lý lỗi
+      console.error('❌ Lỗi đăng nhập:', loi);
+      setThongBaoLoi(loi.message || 'Đăng nhập thất bại');
     } finally {
-      setIsLoading(false);
+      // Tắt trạng thái đang xử lý
+      setDangXuLy(false);
     }
   };
 
+  // ============================================
+  // RENDER GIAO DIỆN
+  // ============================================
   return (
     <S.Container>
       <S.FormWrapper>
+        {/* Logo */}
         <S.Logo>
           <h1>THIÊN LONG</h1>
           <span>Shop</span>
         </S.Logo>
 
+        {/* Tiêu đề */}
         <S.Title>Đăng nhập</S.Title>
         <S.Subtitle>Chào mừng bạn quay trở lại!</S.Subtitle>
 
-        {error && <S.ErrorMessage>{error}</S.ErrorMessage>}
+        {/* Hiển thị thông báo lỗi (nếu có) */}
+        {thongBaoLoi && <S.ErrorMessage>{thongBaoLoi}</S.ErrorMessage>}
 
-        <S.Form onSubmit={handleSubmit}>
+        {/* Form đăng nhập */}
+        <S.Form onSubmit={xuLySubmit}>
+          {/* Input tên đăng nhập */}
           <S.FormGroup>
             <S.Label>Tên đăng nhập</S.Label>
             <S.Input
@@ -55,9 +99,11 @@ export const Login = () => {
               onChange={(e) => setTenDangNhap(e.target.value)}
               placeholder="Nhập tên đăng nhập"
               required
+              disabled={dangXuLy}
             />
           </S.FormGroup>
 
+          {/* Input mật khẩu */}
           <S.FormGroup>
             <S.Label>Mật khẩu</S.Label>
             <S.Input
@@ -66,18 +112,22 @@ export const Login = () => {
               onChange={(e) => setMatKhau(e.target.value)}
               placeholder="Nhập mật khẩu"
               required
+              disabled={dangXuLy}
             />
           </S.FormGroup>
 
-          <S.SubmitButton type="submit" disabled={isLoading}>
-            {isLoading ? 'Đang đăng nhập...' : 'Đăng nhập'}
+          {/* Nút submit */}
+          <S.SubmitButton type="submit" disabled={dangXuLy}>
+            {dangXuLy ? 'Đang đăng nhập...' : 'Đăng nhập'}
           </S.SubmitButton>
         </S.Form>
 
+        {/* Footer */}
         <S.Footer>
           <small>Chức năng đăng ký đang được phát triển</small>
         </S.Footer>
 
+        {/* Link quay về trang chủ */}
         <S.BackToHome to="/">← Quay về trang chủ</S.BackToHome>
       </S.FormWrapper>
     </S.Container>

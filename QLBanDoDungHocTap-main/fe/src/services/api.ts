@@ -1,32 +1,23 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+// ============================================
+// DỊCH VỤ API - GỌI BACKEND
+// ============================================
 
-export interface LoginRequest {
-  tenDangNhap: string;
-  matKhau: string;
-}
+import { YeuCauDangNhap, YeuCauDangKy, KetQuaDangNhap } from '../types';
 
-export interface LoginResponse {
-  token: string;
-  user: {
-    taiKhoan_Id: number;
-    tenDangNhap: string;
-    vaiTro_Id: number;
-  };
-}
+// URL gốc của API backend
+const URL_API_GOC = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
-export interface RegisterRequest {
-  tenDangNhap: string;
-  matKhau: string;
-  xacNhanMatKhau: string;
-}
-
-class ApiService {
-  private getHeaders(includeAuth = false): HeadersInit {
+class DichVuApi {
+  // ============================================
+  // HÀM PHỤ TRỢ: Tạo headers cho request
+  // ============================================
+  private taoHeaders(coToken = false): HeadersInit {
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
     };
 
-    if (includeAuth) {
+    // Nếu cần token, lấy từ localStorage
+    if (coToken) {
       const token = localStorage.getItem('token');
       if (token) {
         headers['Authorization'] = `Bearer ${token}`;
@@ -36,89 +27,131 @@ class ApiService {
     return headers;
   }
 
-  async login(data: LoginRequest): Promise<LoginResponse> {
+  // ============================================
+  // API ĐĂNG NHẬP
+  // ============================================
+  async dangNhap(duLieu: YeuCauDangNhap): Promise<KetQuaDangNhap> {
     try {
-      console.log('🔵 Login request:', {
-        url: `${API_BASE_URL}/login/api/auth/login`,
-        data: { ...data, matKhau: '***' }
+      console.log('🔵 Gửi yêu cầu đăng nhập:', {
+        url: `${URL_API_GOC}/login/api/auth/login`,
+        duLieu: { ...duLieu, matKhau: '***' } // Ẩn mật khẩu khi log
       });
 
-      const response = await fetch(`${API_BASE_URL}/login/api/auth/login`, {
+      // Gửi request POST đến backend
+      const phanHoi = await fetch(`${URL_API_GOC}/login/api/auth/login`, {
         method: 'POST',
-        headers: this.getHeaders(),
-        body: JSON.stringify(data),
+        headers: this.taoHeaders(),
+        body: JSON.stringify(duLieu),
       });
 
-      console.log('🔵 Response status:', response.status, response.statusText);
-      console.log('🔵 Response headers:', Object.fromEntries(response.headers.entries()));
+      console.log('🔵 Trạng thái phản hồi:', phanHoi.status, phanHoi.statusText);
 
-      const text = await response.text();
-      console.log('🔵 Response text:', text);
+      // Đọc nội dung phản hồi
+      const noiDung = await phanHoi.text();
+      console.log('🔵 Nội dung phản hồi:', noiDung);
       
-      if (!response.ok) {
-        let errorMessage = 'Đăng nhập thất bại';
+      // Kiểm tra lỗi
+      if (!phanHoi.ok) {
+        let thongBaoLoi = 'Đăng nhập thất bại';
         try {
-          const error = JSON.parse(text);
-          errorMessage = error.message || errorMessage;
+          const loi = JSON.parse(noiDung);
+          thongBaoLoi = loi.message || thongBaoLoi;
         } catch {
-          errorMessage = text || errorMessage;
+          thongBaoLoi = noiDung || thongBaoLoi;
         }
-        console.error('❌ Login failed:', errorMessage);
-        throw new Error(errorMessage);
+        console.error('❌ Đăng nhập thất bại:', thongBaoLoi);
+        throw new Error(thongBaoLoi);
       }
 
+      // Parse JSON và trả về
       try {
-        const parsed = JSON.parse(text);
-        console.log('✅ Login success:', { ...parsed, token: '***' });
-        return parsed;
-      } catch (e) {
-        console.error('❌ JSON parse error:', e);
+        const ketQua = JSON.parse(noiDung);
+        console.log('✅ Đăng nhập thành công:', { ...ketQua, token: '***' });
+        return ketQua;
+      } catch (loi) {
+        console.error('❌ Lỗi parse JSON:', loi);
         throw new Error('Lỗi phản hồi từ server');
       }
-    } catch (error: any) {
-      console.error('❌ Login error:', error);
-      if (error.message) throw error;
+    } catch (loi: any) {
+      console.error('❌ Lỗi đăng nhập:', loi);
+      if (loi.message) throw loi;
       throw new Error('Không thể kết nối đến server. Vui lòng kiểm tra backend đã chạy chưa.');
     }
   }
 
-  async register(data: RegisterRequest): Promise<void> {
+  // ============================================
+  // API ĐĂNG KÝ
+  // ============================================
+  async dangKy(duLieu: YeuCauDangKy): Promise<KetQuaDangNhap> {
     try {
-      const response = await fetch(`${API_BASE_URL}/login/api/auth/register`, {
-        method: 'POST',
-        headers: this.getHeaders(),
-        body: JSON.stringify(data),
+      console.log('🔵 Gửi yêu cầu đăng ký:', {
+        url: `${URL_API_GOC}/login/api/auth/register`,
+        duLieu: { ...duLieu, matKhau: '***' }
       });
 
-      const text = await response.text();
+      // Gửi request POST đến backend
+      const phanHoi = await fetch(`${URL_API_GOC}/login/api/auth/register`, {
+        method: 'POST',
+        headers: this.taoHeaders(),
+        body: JSON.stringify(duLieu),
+      });
 
-      if (!response.ok) {
-        let errorMessage = 'Đăng ký thất bại';
+      // Đọc nội dung phản hồi
+      const noiDung = await phanHoi.text();
+      console.log('🔵 Nội dung phản hồi đăng ký:', noiDung);
+
+      // Kiểm tra lỗi
+      if (!phanHoi.ok) {
+        let thongBaoLoi = 'Đăng ký thất bại';
         try {
-          const error = JSON.parse(text);
-          errorMessage = error.message || errorMessage;
+          const loi = JSON.parse(noiDung);
+          thongBaoLoi = loi.message || thongBaoLoi;
         } catch {
-          errorMessage = text || errorMessage;
+          thongBaoLoi = noiDung || thongBaoLoi;
         }
-        throw new Error(errorMessage);
+        console.error('❌ Đăng ký thất bại:', thongBaoLoi);
+        throw new Error(thongBaoLoi);
       }
-    } catch (error: any) {
-      if (error.message) throw error;
+
+      // Parse JSON và trả về
+      try {
+        const ketQua = JSON.parse(noiDung);
+        console.log('✅ Đăng ký thành công:', { ...ketQua, token: '***' });
+        return ketQua;
+      } catch (loi) {
+        console.error('❌ Lỗi parse JSON:', loi);
+        throw new Error('Lỗi phản hồi từ server');
+      }
+    } catch (loi: any) {
+      console.error('❌ Lỗi đăng ký:', loi);
+      if (loi.message) throw loi;
       throw new Error('Không thể kết nối đến server. Vui lòng kiểm tra backend đã chạy chưa.');
     }
   }
 
-  async getMe(): Promise<any> {
-    const response = await fetch(`${API_BASE_URL}/login/api/auth/me`, {
-      headers: this.getHeaders(true),
-    });
+  // ============================================
+  // API LẤY THÔNG TIN NGƯỜI DÙNG HIỆN TẠI
+  // ============================================
+  async layThongTinCuaToi(): Promise<any> {
+    try {
+      const phanHoi = await fetch(`${URL_API_GOC}/login/api/auth/me`, {
+        headers: this.taoHeaders(true), // Có token
+      });
 
-    if (!response.ok) {
-      throw new Error('Không thể lấy thông tin người dùng');
+      if (!phanHoi.ok) {
+        throw new Error('Không thể lấy thông tin người dùng');
+      }
+
+      return phanHoi.json();
+    } catch (loi: any) {
+      console.error('❌ Lỗi lấy thông tin:', loi);
+      throw loi;
     }
-
-    return response.json();
   }
 }
 
-export const apiService = new ApiService();
+// Export instance để sử dụng
+export const dichVuApi = new DichVuApi();
+
+// Export class để test (nếu cần)
+export default DichVuApi;

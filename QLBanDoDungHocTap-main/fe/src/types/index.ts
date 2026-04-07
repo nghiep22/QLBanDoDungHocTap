@@ -1,3 +1,37 @@
+// ============================================
+// ĐỊNH NGHĨA KIỂU DỮ LIỆU - AUTHENTICATION
+// ============================================
+
+// Interface cho thông tin người dùng
+export interface NguoiDung {
+  taiKhoan_Id: number;
+  tenDangNhap: string;
+  vaiTro_Id: number;
+}
+
+// Interface cho request đăng nhập
+export interface YeuCauDangNhap {
+  tenDangNhap: string;
+  matKhau: string;
+}
+
+// Interface cho request đăng ký
+export interface YeuCauDangKy {
+  tenDangNhap: string;
+  matKhau: string;
+  vaiTro_Id?: number;
+}
+
+// Interface cho response đăng nhập/đăng ký
+export interface KetQuaDangNhap {
+  token: string;
+  user: NguoiDung;
+}
+
+// ============================================
+// ĐỊNH NGHĨA KIỂU DỮ LIỆU - SẢN PHẨM
+// ============================================
+
 export interface SanPham {
   id: number;
   ma: string;
@@ -21,6 +55,10 @@ export interface LoaiSanPham {
   moTa?: string;
   icon?: string;
 }
+
+// ============================================
+// ĐỊNH NGHĨA KIỂU DỮ LIỆU - GIỎ HÀNG & ĐỠN HÀNG
+// ============================================
 
 export interface GioHang {
   sanPham: SanPham;
