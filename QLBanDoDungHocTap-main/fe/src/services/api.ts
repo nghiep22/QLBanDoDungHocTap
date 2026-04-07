@@ -2,7 +2,15 @@
 // DỊCH VỤ API - GỌI BACKEND
 // ============================================
 
-import { YeuCauDangNhap, YeuCauDangKy, KetQuaDangNhap } from '../types';
+import { 
+  YeuCauDangNhap, 
+  YeuCauDangKy, 
+  KetQuaDangNhap,
+  SanPhamAPI,
+  TaoSanPhamRequest,
+  CapNhatSanPhamRequest,
+  NhaCungCapAPI
+} from '../types';
 
 // URL gốc của API backend
 const URL_API_GOC = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
@@ -147,6 +155,94 @@ class DichVuApi {
       console.error('❌ Lỗi lấy thông tin:', loi);
       throw loi;
     }
+  }
+
+  // ============================================
+  // QUẢN LÝ SẢN PHẨM
+  // ============================================
+  
+  // Lấy danh sách tất cả sản phẩm
+  async layDanhSachSanPham(loaiId?: number, trangThai?: boolean): Promise<SanPhamAPI[]> {
+    const params = new URLSearchParams();
+    if (loaiId) params.append('loaiId', loaiId.toString());
+    if (trangThai !== undefined) params.append('trangThai', trangThai.toString());
+    
+    const url = params.toString() ? `/api/dohoctap?${params}` : '/api/dohoctap';
+    const response = await fetch(`${URL_API_GOC}${url}`);
+    
+    if (!response.ok) {
+      throw new Error('Không thể lấy danh sách sản phẩm');
+    }
+    
+    return response.json();
+  }
+  
+  // Lấy chi tiết một sản phẩm
+  async layChiTietSanPham(id: number): Promise<SanPhamAPI> {
+    const response = await fetch(`${URL_API_GOC}/api/dohoctap/${id}`);
+    
+    if (!response.ok) {
+      throw new Error('Không tìm thấy sản phẩm');
+    }
+    
+    return response.json();
+  }
+  
+  // Tạo sản phẩm mới
+  async taoSanPham(data: TaoSanPhamRequest): Promise<{ id: number }> {
+    const response = await fetch(`${URL_API_GOC}/api/dohoctap`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Không thể tạo sản phẩm');
+    }
+    
+    return response.json();
+  }
+  
+  // Cập nhật sản phẩm
+  async capNhatSanPham(id: number, data: CapNhatSanPhamRequest): Promise<void> {
+    const response = await fetch(`${URL_API_GOC}/api/dohoctap/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Không thể cập nhật sản phẩm');
+    }
+  }
+  
+  // Xóa sản phẩm
+  async xoaSanPham(id: number): Promise<void> {
+    const response = await fetch(`${URL_API_GOC}/api/dohoctap/${id}`, {
+      method: 'DELETE',
+    });
+    
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Không thể xóa sản phẩm');
+    }
+  }
+  
+  // Lấy danh sách nhà cung cấp
+  async layDanhSachNhaCungCap(): Promise<NhaCungCapAPI[]> {
+    const response = await fetch(`${URL_API_GOC}/api/nhacungcap`);
+    
+    if (!response.ok) {
+      throw new Error('Không thể lấy danh sách nhà cung cấp');
+    }
+    
+    return response.json();
   }
 }
 

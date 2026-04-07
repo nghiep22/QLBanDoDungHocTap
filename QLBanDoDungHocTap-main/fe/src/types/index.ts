@@ -32,6 +32,57 @@ export interface KetQuaDangNhap {
 // ĐỊNH NGHĨA KIỂU DỮ LIỆU - SẢN PHẨM
 // ============================================
 
+// Interface sản phẩm từ API backend
+export interface SanPhamAPI {
+  sanPham_Id: number;
+  loai_Id: number;
+  nhaCungCap_Id: number;
+  maSanPham?: string;
+  tenSanPham: string;
+  moTa?: string;
+  giaBan: number;
+  giaNhap: number;
+  hinhAnh?: string;
+  trangThai: boolean;
+  ngayTao: string;
+}
+
+// Interface để tạo sản phẩm mới
+export interface TaoSanPhamRequest {
+  loai_Id: number;
+  nhaCungCap_Id: number;
+  maSanPham?: string;
+  tenSanPham: string;
+  moTa?: string;
+  giaBan: number;
+  giaNhap: number;
+  hinhAnh?: string;
+}
+
+// Interface để cập nhật sản phẩm
+export interface CapNhatSanPhamRequest extends TaoSanPhamRequest {
+  trangThai: boolean;
+}
+
+// Interface loại sản phẩm
+export interface LoaiSanPhamAPI {
+  loai_Id: number;
+  tenLoai: string;
+  moTa?: string;
+  hinhAnh?: string;
+}
+
+// Interface nhà cung cấp
+export interface NhaCungCapAPI {
+  nhaCungCap_Id: number;
+  tenNCC: string;
+  soDienThoai?: string;
+  email?: string;
+  diaChi?: string;
+  trangThai: boolean;
+}
+
+// Interface sản phẩm cho frontend (tương thích với code cũ)
 export interface SanPham {
   id: number;
   ma: string;

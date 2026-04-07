@@ -2,17 +2,15 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
 import { SanPham, LoaiSanPham } from '../../types';
-import { mockSanPhams } from '../../data/products';
+import { dichVuApi } from '../../services/api';
+import { chuyendoidanhsachsanpham, danhsachloaisanpham } from '../../utils/sanpham';
 import * as S from './styles';
 
-const danhMucList: (LoaiSanPham & { slug: string })[] = [
-  { id: 1, ten: 'Bút viết', slug: 'but-viet' },
-  { id: 2, ten: 'Văn phòng phẩm', slug: 'van-phong-pham' },
-  { id: 3, ten: 'Dụng cụ học tập', slug: 'dung-cu-hoc-tap' },
-  { id: 4, ten: 'Mỹ thuật', slug: 'my-thuat' },
-  { id: 5, ten: 'Giấy in', slug: 'giay-in' },
-  { id: 6, ten: 'Bút cao cấp', slug: 'but-cao-cap' },
-];
+const danhMucList: (LoaiSanPham & { slug: string })[] = danhsachloaisanpham.map(l => ({
+  id: l.id,
+  ten: l.ten,
+  slug: l.slug,
+}));
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -20,11 +18,19 @@ export const Home = () => {
   const [dangTai, setDangTai] = useState(true);
 
   useEffect(() => {
-    // Simulate API call
-    setTimeout(() => {
-      setSanPhams(mockSanPhams);
-      setDangTai(false);
-    }, 500);
+    const taidulieu = async () => {
+      try {
+        const apiSanPhams = await dichVuApi.layDanhSachSanPham(undefined, true);
+        const sanphams = chuyendoidanhsachsanpham(apiSanPhams);
+        setSanPhams(sanphams);
+      } catch (error) {
+        console.error('Lỗi tải sản phẩm:', error);
+      } finally {
+        setDangTai(false);
+      }
+    };
+
+    taidulieu();
   }, []);
 
   return (

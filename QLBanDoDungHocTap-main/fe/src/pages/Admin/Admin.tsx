@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useDangNhap } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { QuanLySanPham } from './QuanLySanPham';
 import * as S from './styles';
 
 export const Admin = () => {
@@ -54,6 +55,10 @@ export const Admin = () => {
             📈 Báo cáo
           </S.MenuItem>
         </S.Menu>
+
+        <S.HomeButton onClick={() => navigate('/')}>
+          🏠 Quay lại trang chủ
+        </S.HomeButton>
 
         <S.LogoutButton onClick={handleLogout}>
           🚪 Đăng xuất
@@ -109,7 +114,9 @@ export const Admin = () => {
             </S.DashboardGrid>
           )}
 
-          {activeTab !== 'dashboard' && (
+          {activeTab === 'products' && <QuanLySanPham />}
+
+          {activeTab !== 'dashboard' && activeTab !== 'products' && (
             <S.ComingSoon>
               <h2>🚧 Đang phát triển</h2>
               <p>Chức năng {activeTab} đang được xây dựng</p>

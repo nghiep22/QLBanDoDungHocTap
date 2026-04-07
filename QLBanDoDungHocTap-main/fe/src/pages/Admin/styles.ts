@@ -112,6 +112,28 @@ export const LogoutButton = styled.button`
   }
 `;
 
+export const HomeButton = styled.button`
+  margin: 0 20px 10px 20px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: ${({ theme }) => theme.colors.primary};
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+
+  &:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+`;
+
 export const MainContent = styled.main`
   flex: 1;
   margin-left: 260px;

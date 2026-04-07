@@ -1,0 +1,321 @@
+import { useState, useEffect } from 'react';
+import { dichVuApi } from '../../services/api';
+import type { SanPhamAPI, TaoSanPhamRequest, CapNhatSanPhamRequest, NhaCungCapAPI } from '../../types';
+import * as S from './QuanLySanPham.styles.ts';
+
+export const QuanLySanPham = () => {
+  const [danhsachsanpham, setDanhsachsanpham] = useState<SanPhamAPI[]>([]);
+  const [danhsachnhacungcap, setDanhsachnhacungcap] = useState<NhaCungCapAPI[]>([]);
+  const [dangtai, setDangtai] = useState(false);
+  const [hienthiform, setHienthiform] = useState(false);
+  const [sanphamdangchinhsua, setSanphamdangchinhsua] = useState<SanPhamAPI | null>(null);
+  const [thongbao, setThongbao] = useState<{ loai: 'thanh_cong' | 'loi'; noidung: string } | null>(null);
+
+  // Form data
+  const [formdulieu, setFormdulieu] = useState<TaoSanPhamRequest>({
+    loai_Id: 1,
+    nhaCungCap_Id: 1,
+    maSanPham: '',
+    tenSanPham: '',
+    moTa: '',
+    giaBan: 0,
+    giaNhap: 0,
+    hinhAnh: '',
+  });
+
+  // Danh sách loại sản phẩm (hardcode từ database)
+  const danhsachloai = [
+    { id: 1, ten: 'Văn phòng phẩm' },
+    { id: 2, ten: 'Sách & Vở' },
+    { id: 3, ten: 'Dụng cụ vẽ' },
+    { id: 4, ten: 'Ba lô & Túi' },
+    { id: 5, ten: 'Điện tử học tập' },
+  ];
+
+  useEffect(() => {
+    taidulieu();
+  }, []);
+
+  const taidulieu = async () => {
+    setDangtai(true);
+    try {
+      const [sanpham, nhacungcap] = await Promise.all([
+        dichVuApi.layDanhSachSanPham(),
+        dichVuApi.layDanhSachNhaCungCap(),
+      ]);
+      setDanhsachsanpham(sanpham);
+      setDanhsachnhacungcap(nhacungcap);
+    } catch (error) {
+      hienthithongbao('loi', 'Không thể tải dữ liệu');
+    } finally {
+      setDangtai(false);
+    }
+  };
+
+  const hienthithongbao = (loai: 'thanh_cong' | 'loi', noidung: string) => {
+    setThongbao({ loai, noidung });
+    setTimeout(() => setThongbao(null), 3000);
+  };
+
+  const moform = (sanpham?: SanPhamAPI) => {
+    if (sanpham) {
+      setSanphamdangchinhsua(sanpham);
+      setFormdulieu({
+        loai_Id: sanpham.loai_Id,
+        nhaCungCap_Id: sanpham.nhaCungCap_Id,
+        maSanPham: sanpham.maSanPham || '',
+        tenSanPham: sanpham.tenSanPham,
+        moTa: sanpham.moTa || '',
+        giaBan: sanpham.giaBan,
+        giaNhap: sanpham.giaNhap,
+        hinhAnh: sanpham.hinhAnh || '',
+      });
+    } else {
+      setSanphamdangchinhsua(null);
+      setFormdulieu({
+        loai_Id: 1,
+        nhaCungCap_Id: 1,
+        maSanPham: '',
+        tenSanPham: '',
+        moTa: '',
+        giaBan: 0,
+        giaNhap: 0,
+        hinhAnh: '',
+      });
+    }
+    setHienthiform(true);
+  };
+
+  const dongform = () => {
+    setHienthiform(false);
+    setSanphamdangchinhsua(null);
+  };
+
+  const xulynhap = (field: keyof TaoSanPhamRequest, value: any) => {
+    setFormdulieu(prev => ({ ...prev, [field]: value }));
+  };
+
+  const xulyluu = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!formdulieu.tenSanPham.trim()) {
+      hienthithongbao('loi', 'Vui lòng nhập tên sản phẩm');
+      return;
+    }
+
+    setDangtai(true);
+    try {
+      if (sanphamdangchinhsua) {
+        // Cập nhật
+        const dulieucapnhat: CapNhatSanPhamRequest = {
+          ...formdulieu,
+          trangThai: true,
+        };
+        await dichVuApi.capNhatSanPham(sanphamdangchinhsua.sanPham_Id, dulieucapnhat);
+        hienthithongbao('thanh_cong', 'Cập nhật sản phẩm thành công');
+      } else {
+        // Tạo mới
+        await dichVuApi.taoSanPham(formdulieu);
+        hienthithongbao('thanh_cong', 'Thêm sản phẩm thành công');
+      }
+      dongform();
+      taidulieu();
+    } catch (error: any) {
+      hienthithongbao('loi', error.message || 'Có lỗi xảy ra');
+    } finally {
+      setDangtai(false);
+    }
+  };
+
+  const xulyxoa = async (id: number) => {
+    if (!confirm('Bạn có chắc muốn xóa sản phẩm này?')) return;
+
+    setDangtai(true);
+    try {
+      await dichVuApi.xoaSanPham(id);
+      hienthithongbao('thanh_cong', 'Xóa sản phẩm thành công');
+      taidulieu();
+    } catch (error: any) {
+      hienthithongbao('loi', error.message || 'Không thể xóa sản phẩm');
+    } finally {
+      setDangtai(false);
+    }
+  };
+
+  return (
+    <S.Container>
+      <S.Header>
+        <h2>Quản lý sản phẩm</h2>
+        <S.Button onClick={() => moform()}>+ Thêm sản phẩm</S.Button>
+      </S.Header>
+
+      {thongbao && (
+        <S.Thongbao $loai={thongbao.loai}>
+          {thongbao.noidung}
+        </S.Thongbao>
+      )}
+
+      {dangtai && <S.Loading>Đang tải...</S.Loading>}
+
+      <S.Table>
+        <thead>
+          <tr>
+            <th>Mã SP</th>
+            <th>Tên sản phẩm</th>
+            <th>Loại</th>
+            <th>Giá bán</th>
+            <th>Giá nhập</th>
+            <th>Trạng thái</th>
+            <th>Thao tác</th>
+          </tr>
+        </thead>
+        <tbody>
+          {danhsachsanpham.map(sp => (
+            <tr key={sp.sanPham_Id}>
+              <td>{sp.maSanPham || '-'}</td>
+              <td>
+                <S.ProductInfo>
+                  {sp.hinhAnh && <S.ProductImage src={sp.hinhAnh} alt={sp.tenSanPham} />}
+                  <span>{sp.tenSanPham}</span>
+                </S.ProductInfo>
+              </td>
+              <td>{danhsachloai.find(l => l.id === sp.loai_Id)?.ten}</td>
+              <td>{sp.giaBan.toLocaleString()}đ</td>
+              <td>{sp.giaNhap.toLocaleString()}đ</td>
+              <td>
+                <S.Badge $active={sp.trangThai}>
+                  {sp.trangThai ? 'Đang bán' : 'Ngừng bán'}
+                </S.Badge>
+              </td>
+              <td>
+                <S.ActionButtons>
+                  <S.EditButton onClick={() => moform(sp)}>Sửa</S.EditButton>
+                  <S.DeleteButton onClick={() => xulyxoa(sp.sanPham_Id)}>Xóa</S.DeleteButton>
+                </S.ActionButtons>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </S.Table>
+
+      {hienthiform && (
+        <S.Modal onClick={dongform}>
+          <S.ModalContent onClick={(e: React.MouseEvent) => e.stopPropagation()}>
+            <S.ModalHeader>
+              <h3>{sanphamdangchinhsua ? 'Cập nhật sản phẩm' : 'Thêm sản phẩm mới'}</h3>
+              <S.CloseButton onClick={dongform}>×</S.CloseButton>
+            </S.ModalHeader>
+
+            <S.Form onSubmit={xulyluu}>
+              <S.FormRow>
+                <S.FormGroup>
+                  <label>Mã sản phẩm</label>
+                  <input
+                    type="text"
+                    value={formdulieu.maSanPham}
+                    onChange={e => xulynhap('maSanPham', e.target.value)}
+                    placeholder="VD: SP001"
+                  />
+                </S.FormGroup>
+
+                <S.FormGroup>
+                  <label>Tên sản phẩm *</label>
+                  <input
+                    type="text"
+                    value={formdulieu.tenSanPham}
+                    onChange={e => xulynhap('tenSanPham', e.target.value)}
+                    placeholder="Nhập tên sản phẩm"
+                    required
+                  />
+                </S.FormGroup>
+              </S.FormRow>
+
+              <S.FormRow>
+                <S.FormGroup>
+                  <label>Loại sản phẩm *</label>
+                  <select
+                    value={formdulieu.loai_Id}
+                    onChange={e => xulynhap('loai_Id', parseInt(e.target.value))}
+                    required
+                  >
+                    {danhsachloai.map(loai => (
+                      <option key={loai.id} value={loai.id}>{loai.ten}</option>
+                    ))}
+                  </select>
+                </S.FormGroup>
+
+                <S.FormGroup>
+                  <label>Nhà cung cấp *</label>
+                  <select
+                    value={formdulieu.nhaCungCap_Id}
+                    onChange={e => xulynhap('nhaCungCap_Id', parseInt(e.target.value))}
+                    required
+                  >
+                    {danhsachnhacungcap.map(ncc => (
+                      <option key={ncc.nhaCungCap_Id} value={ncc.nhaCungCap_Id}>
+                        {ncc.tenNCC}
+                      </option>
+                    ))}
+                  </select>
+                </S.FormGroup>
+              </S.FormRow>
+
+              <S.FormRow>
+                <S.FormGroup>
+                  <label>Giá nhập *</label>
+                  <input
+                    type="number"
+                    value={formdulieu.giaNhap}
+                    onChange={e => xulynhap('giaNhap', parseFloat(e.target.value))}
+                    min="0"
+                    required
+                  />
+                </S.FormGroup>
+
+                <S.FormGroup>
+                  <label>Giá bán *</label>
+                  <input
+                    type="number"
+                    value={formdulieu.giaBan}
+                    onChange={e => xulynhap('giaBan', parseFloat(e.target.value))}
+                    min="0"
+                    required
+                  />
+                </S.FormGroup>
+              </S.FormRow>
+
+              <S.FormGroup>
+                <label>URL hình ảnh</label>
+                <input
+                  type="text"
+                  value={formdulieu.hinhAnh}
+                  onChange={e => xulynhap('hinhAnh', e.target.value)}
+                  placeholder="https://example.com/image.jpg"
+                />
+              </S.FormGroup>
+
+              <S.FormGroup>
+                <label>Mô tả</label>
+                <textarea
+                  value={formdulieu.moTa}
+                  onChange={e => xulynhap('moTa', e.target.value)}
+                  placeholder="Nhập mô tả sản phẩm"
+                  rows={4}
+                />
+              </S.FormGroup>
+
+              <S.FormActions>
+                <S.CancelButton type="button" onClick={dongform}>
+                  Hủy
+                </S.CancelButton>
+                <S.SubmitButton type="submit" disabled={dangtai}>
+                  {dangtai ? 'Đang lưu...' : 'Lưu'}
+                </S.SubmitButton>
+              </S.FormActions>
+            </S.Form>
+          </S.ModalContent>
+        </S.Modal>
+      )}
+    </S.Container>
+  );
+};

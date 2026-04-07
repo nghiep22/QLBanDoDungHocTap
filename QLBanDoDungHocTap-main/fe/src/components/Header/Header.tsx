@@ -83,12 +83,11 @@ export const Header = () => {
       <S.NavBar>
         <S.Container>
           <S.NavContent>
-            <S.NavLink to="/danh-muc/but-viet">Bút viết</S.NavLink>
             <S.NavLink to="/danh-muc/van-phong-pham">Văn phòng phẩm</S.NavLink>
-            <S.NavLink to="/danh-muc/dung-cu-hoc-tap">Dụng cụ học tập</S.NavLink>
-            <S.NavLink to="/danh-muc/my-thuat">Mỹ thuật</S.NavLink>
-            <S.NavLink to="/danh-muc/giay-in">Giấy in</S.NavLink>
-            <S.NavLink to="/danh-muc/but-cao-cap">Bút cao cấp</S.NavLink>
+            <S.NavLink to="/danh-muc/sach-vo">Sách & Vở</S.NavLink>
+            <S.NavLink to="/danh-muc/dung-cu-ve">Dụng cụ vẽ</S.NavLink>
+            <S.NavLink to="/danh-muc/ba-lo-tui">Ba lô & Túi</S.NavLink>
+            <S.NavLink to="/danh-muc/dien-tu-hoc-tap">Điện tử học tập</S.NavLink>
           </S.NavContent>
         </S.Container>
       </S.NavBar>
