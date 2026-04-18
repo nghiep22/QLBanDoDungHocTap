@@ -103,6 +103,21 @@ export const QuanLySanPham = () => {
       return;
     }
 
+    if (formdulieu.tenSanPham.length > 200) {
+      hienthithongbao('loi', 'Tên sản phẩm không được vượt quá 200 ký tự');
+      return;
+    }
+
+    if (formdulieu.maSanPham && formdulieu.maSanPham.length > 50) {
+      hienthithongbao('loi', 'Mã sản phẩm không được vượt quá 50 ký tự');
+      return;
+    }
+
+    if (formdulieu.giaBan <= 0 || formdulieu.giaNhap <= 0) {
+      hienthithongbao('loi', 'Giá bán và giá nhập phải lớn hơn 0');
+      return;
+    }
+
     setDangtai(true);
     try {
       if (sanphamdangchinhsua) {
@@ -121,7 +136,16 @@ export const QuanLySanPham = () => {
       dongform();
       taidulieu();
     } catch (error: any) {
-      hienthithongbao('loi', error.message || 'Có lỗi xảy ra');
+      const errorMessage = error.message || 'Có lỗi xảy ra';
+      
+      // Xử lý các lỗi cụ thể
+      if (errorMessage.includes('truncated')) {
+        hienthithongbao('loi', 'Dữ liệu nhập vào quá dài. Vui lòng kiểm tra lại.');
+      } else if (errorMessage.includes('duplicate') || errorMessage.includes('UNIQUE')) {
+        hienthithongbao('loi', 'Mã sản phẩm đã tồn tại. Vui lòng sử dụng mã khác.');
+      } else {
+        hienthithongbao('loi', errorMessage);
+      }
     } finally {
       setDangtai(false);
     }
@@ -215,7 +239,9 @@ export const QuanLySanPham = () => {
                     value={formdulieu.maSanPham}
                     onChange={e => xulynhap('maSanPham', e.target.value)}
                     placeholder="VD: SP001"
+                    maxLength={50}
                   />
+                  <S.HelperText>Tối đa 50 ký tự</S.HelperText>
                 </S.FormGroup>
 
                 <S.FormGroup>
@@ -225,8 +251,10 @@ export const QuanLySanPham = () => {
                     value={formdulieu.tenSanPham}
                     onChange={e => xulynhap('tenSanPham', e.target.value)}
                     placeholder="Nhập tên sản phẩm"
+                    maxLength={200}
                     required
                   />
+                  <S.HelperText>{formdulieu.tenSanPham.length}/200 ký tự</S.HelperText>
                 </S.FormGroup>
               </S.FormRow>
 

@@ -235,6 +235,12 @@ export const FormGroup = styled.div`
   }
 `;
 
+export const HelperText = styled.small`
+  margin-top: 4px;
+  font-size: 12px;
+  color: #666;
+`;
+
 export const FormActions = styled.div`
   display: flex;
   justify-content: flex-end;
