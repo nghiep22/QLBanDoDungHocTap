@@ -21,37 +21,19 @@ export const HeroGrid = styled.section`
 export const Banner = styled.div`
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 35%, #e31e24 100%);
+  background-image: url('https://file.hstatic.net/1000230347/file/banner-spm.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   border-radius: 28px;
   padding: 84px 40px;
   color: white;
-  box-shadow: 0 28px 60px rgba(37, 99, 235, 0.20);
-
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
-  }
-
-  &::before {
-    width: 220px;
-    height: 220px;
-    top: -70px;
-    left: -50px;
-  }
-
-  &::after {
-    width: 260px;
-    height: 260px;
-    bottom: -120px;
-    right: -40px;
-  }
+  box-shadow: 0 28px 60px rgba(37, 99, 235, 0.10);
 
   @media (max-width: 768px) {
     padding: 64px 24px;
     border-radius: 22px;
+    background-position: 68% center;
   }
 `;
 
@@ -223,46 +205,76 @@ export const ViewAllLink = styled(Link)`
   }
 `;
 
-export const QuickCategoryGrid = styled.div`
+export const FeatureBannerCard = styled.div`
+  overflow: hidden;
+  border-radius: 28px;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.10);
+  background: white;
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+`;
+
+export const ProductSectionStack = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 18px;
+  gap: 28px;
 `;
 
-export const QuickCategoryCard = styled.div`
-  display: flex;
-  gap: 16px;
-  align-items: flex-start;
-  padding: 20px;
-  border-radius: 22px;
+export const ProductCategoryBlock = styled.div`
+  display: grid;
+  gap: 20px;
+  padding: 28px;
+  border-radius: 28px;
   background: rgba(255, 255, 255, 0.88);
-  border: 1px solid #eef2f7;
-  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.06);
+  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.07);
+`;
 
-  h3 {
-    margin-bottom: 6px;
-    font-size: 18px;
-    color: #111827;
+export const CategoryBlockHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px;
+`;
+
+export const CategoryBlockTitle = styled.h3`
+  font-size: 24px;
+  font-weight: 800;
+  color: #111827;
+`;
+
+export const CategoryBlockSubtitle = styled.p`
+  margin-top: 6px;
+  color: #6b7280;
+  font-size: 14px;
+`;
+
+export const CollapsibleSection = styled.div`
+  details {
+    border-radius: 20px;
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
   }
 
-  p {
-    color: #6b7280;
-    line-height: 1.5;
-    font-size: 14px;
+  summary {
+    padding: 16px 20px;
+    cursor: pointer;
+    font-weight: 700;
+    color: #1d4ed8;
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
   }
 `;
 
-export const QuickCategoryIcon = styled.div`
-  width: 42px;
-  height: 42px;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  color: #1d4ed8;
-  background: #eff6ff;
-  flex-shrink: 0;
+export const CollapsibleContent = styled.div`
+  padding: 0 20px 20px;
 `;
 
 export const ProductGrid = styled.div`
@@ -271,51 +283,41 @@ export const ProductGrid = styled.div`
   gap: 24px;
 `;
 
+export const ProductInlineBanner = styled.div`
+  overflow: hidden;
+  border-radius: 24px;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.10);
+  background: white;
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+`;
+
 export const ShowcaseSection = styled.section`
   margin: 56px 0;
 `;
 
 export const ShowcaseGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: 1fr;
   gap: 20px;
 `;
 
-export const ShowcaseCard = styled.div<{ $accent: 'blue' | 'red' | 'yellow' | 'green' }>`
-  padding: 28px;
+export const ShowcaseImageCard = styled.div`
+  overflow: hidden;
   border-radius: 26px;
-  color: white;
-  min-height: 220px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  background: ${({ $accent }) =>
-    $accent === 'blue'
-      ? 'linear-gradient(135deg, #1d4ed8 0%, #60a5fa 100%)'
-      : $accent === 'red'
-      ? 'linear-gradient(135deg, #e31e24 0%, #fb7185 100%)'
-      : $accent === 'yellow'
-      ? 'linear-gradient(135deg, #f59e0b 0%, #fcd34d 100%)'
-      : 'linear-gradient(135deg, #059669 0%, #34d399 100%)'};
   box-shadow: 0 18px 40px rgba(15, 23, 42, 0.10);
+  background: white;
 
-  span {
-    display: inline-block;
-    margin-bottom: 12px;
-    font-size: 13px;
-    font-weight: 700;
-    text-transform: uppercase;
-    opacity: 0.88;
-  }
-
-  h3 {
-    font-size: 24px;
-    margin-bottom: 10px;
-  }
-
-  p {
-    line-height: 1.6;
-    opacity: 0.92;
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
   }
 `;
 

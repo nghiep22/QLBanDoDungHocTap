@@ -33,6 +33,15 @@ namespace BLL
             if (req.GiaBan <= 0 || req.GiaNhap <= 0)
                 throw new ArgumentException("Giá bán và giá nhập phải lớn hơn 0");
 
+            if (string.IsNullOrWhiteSpace(req.LoaiCon))
+                throw new ArgumentException("Loại chi tiết không được để trống");
+
+            if (string.IsNullOrWhiteSpace(req.ThuongHieu))
+                throw new ArgumentException("Thương hiệu không được để trống");
+
+            if (string.IsNullOrWhiteSpace(req.MauSac))
+                throw new ArgumentException("Màu sắc không được để trống");
+
             return await _dal.InsertAsync(req);
         }
 
@@ -45,6 +54,15 @@ namespace BLL
             
             if (req.GiaBan <= 0 || req.GiaNhap <= 0)
                 throw new ArgumentException("Giá bán và giá nhập phải lớn hơn 0");
+
+            if (string.IsNullOrWhiteSpace(req.LoaiCon))
+                throw new ArgumentException("Loại chi tiết không được để trống");
+
+            if (string.IsNullOrWhiteSpace(req.ThuongHieu))
+                throw new ArgumentException("Thương hiệu không được để trống");
+
+            if (string.IsNullOrWhiteSpace(req.MauSac))
+                throw new ArgumentException("Màu sắc không được để trống");
 
             return await _dal.UpdateAsync(id, req);
         }

@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
 import { SanPham, LoaiSanPham } from '../../types';
 import { dichVuApi } from '../../services/api';
 import { chuyendoidanhsachsanpham, danhsachloaisanpham } from '../../utils/sanpham';
+import { duLieuSanPhamTinh } from '../../data/staticProducts';
 import * as S from './styles';
 
 const danhMucList: (LoaiSanPham & { slug: string })[] = danhsachloaisanpham.map(l => ({
@@ -30,27 +31,27 @@ const heroSlides = [
   },
 ];
 
-const danhMucNoiBat = [
-  'Top Sale',
-  'Trạm thư Namikokoro',
-  'Sản phẩm mới',
-  'Cẩm nang ưu đãi',
-  'Thư viện Thiên Long',
-  'Kiểm tra đơn hàng',
-  'Giải pháp in ấn',
-  'Văn phòng phẩm doanh nghiệp',
+const bannerNoiBat = {
+  title: 'Sản phẩm cao cấp',
+  image: 'https://cdn.hstatic.net/files/1000230347/collection/1920_x_600___cta__2_6bdac017615d4613955045ae760a0259_1024x1024.jpg',
+};
+
+const chuyenTrang = [
+  {
+    title: 'Chuyên trang học cụ',
+    image: 'https://cdn.hstatic.net/files/1000230347/file/1920x600__15_.webp',
+  },
+  {
+    title: 'Thiên Long bút viết',
+    image: 'https://cdn.hstatic.net/files/1000230347/file/1920_x_600___cta__2.webp',
+  },
+  {
+    title: 'Mỹ thuật sáng tạo',
+    image: 'https://cdn.hstatic.net/files/1000230347/file/1920x600__16_.webp',
+  },
 ];
 
-const chuyenTrang: Array<{
-  title: string;
-  subtitle: string;
-  accent: 'blue' | 'red' | 'yellow' | 'green';
-}> = [
-  { title: 'Chuyên trang học cụ', subtitle: 'Máy tính, tập vở, ba lô, combo học tập', accent: 'blue' },
-  { title: 'Thiên Long bút viết', subtitle: 'Bút gel, bút bi, bút máy, bút xóa', accent: 'red' },
-  { title: 'Mỹ thuật sáng tạo', subtitle: 'Bút lông màu, màu nước, sáp màu, acrylic', accent: 'yellow' },
-  { title: 'Giấy in cao cấp', subtitle: 'A3, A4, IK Copy, Copy Plus', accent: 'green' },
-];
+const soSanPhamMoiMuc = 4;
 
 const baiVietNoiBat = [
   {
@@ -88,7 +89,9 @@ export const Home = () => {
     const taidulieu = async () => {
       try {
         const apiSanPhams = await dichVuApi.layDanhSachSanPham(undefined, true);
-        const sanphams = chuyendoidanhsachsanpham(apiSanPhams);
+        const danhSachTong = [...apiSanPhams, ...duLieuSanPhamTinh];
+        const danhSachKhongTrung = Array.from(new Map(danhSachTong.map((sp) => [sp.sanPham_Id, sp])).values());
+        const sanphams = chuyendoidanhsachsanpham(danhSachKhongTrung);
         setSanPhams(sanphams);
       } catch (error) {
         console.error('Lỗi tải sản phẩm:', error);
@@ -100,24 +103,21 @@ export const Home = () => {
     taidulieu();
   }, []);
 
+  const sanPhamTheoDanhMuc = useMemo(() => {
+    return danhMucList.map((danhMuc) => {
+      const danhSach = sanPhams.filter((sp) => sp.loaiId === danhMuc.id);
+      return {
+        ...danhMuc,
+        sanPhamNoiBat: danhSach.slice(0, soSanPhamMoiMuc),
+        sanPhamThuGon: danhSach.slice(soSanPhamMoiMuc),
+      };
+    }).filter((danhMuc) => danhMuc.sanPhamNoiBat.length > 0);
+  }, [sanPhams]);
+
   return (
     <S.Container>
       <S.HeroGrid>
-        <S.Banner>
-          <S.BannerContent>
-            <S.BadgeLabel>Inspired by thienlong.vn</S.BadgeLabel>
-            <h1>{heroSlides[0].title}</h1>
-            <p>{heroSlides[0].description}</p>
-            <S.HeroActions>
-              <S.PrimaryAction onClick={() => navigate('/danh-muc/van-phong-pham')}>
-                {heroSlides[0].button}
-              </S.PrimaryAction>
-              <S.SecondaryAction onClick={() => navigate('/gio-hang')}>
-                Xem giỏ hàng
-              </S.SecondaryAction>
-            </S.HeroActions>
-          </S.BannerContent>
-        </S.Banner>
+        <S.Banner />
 
         <S.SideHighlights>
           {heroSlides.slice(1).map((item) => (
@@ -146,38 +146,69 @@ export const Home = () => {
 
       <S.QuickCategorySection>
         <S.SectionHeader>
-          <S.SectionTitle>Danh mục nổi bật</S.SectionTitle>
-          <S.SectionText>Mô phỏng các lối tắt nội dung nổi bật từ trang tham chiếu.</S.SectionText>
+          <div>
+            <S.SectionTitle>Danh mục nổi bật</S.SectionTitle>
+            <S.SectionText>Thay thế danh sách mô phỏng bằng banner tham chiếu từ Thiên Long.</S.SectionText>
+          </div>
         </S.SectionHeader>
-        <S.QuickCategoryGrid>
-          {danhMucNoiBat.map((item, index) => (
-            <S.QuickCategoryCard key={item}>
-              <S.QuickCategoryIcon>{index + 1}</S.QuickCategoryIcon>
-              <div>
-                <h3>{item}</h3>
-                <p>Khối nội dung nổi bật giúp người dùng truy cập nhanh hơn.</p>
-              </div>
-            </S.QuickCategoryCard>
-          ))}
-        </S.QuickCategoryGrid>
+        <S.FeatureBannerCard>
+          <img src={bannerNoiBat.image} alt={bannerNoiBat.title} />
+        </S.FeatureBannerCard>
       </S.QuickCategorySection>
 
       <S.Section>
         <S.SectionHeader>
           <div>
-            <S.SectionTitle>Sản phẩm nổi bật</S.SectionTitle>
-            <S.SectionText>Một số sản phẩm đang có trong hệ thống của bạn.</S.SectionText>
+            <S.SectionTitle>Sản phẩm theo từng mục</S.SectionTitle>
+            <S.SectionText>Mỗi mục hiển thị 4 sản phẩm, các sản phẩm còn lại được thu gọn ngay bên dưới mục đó.</S.SectionText>
           </div>
         </S.SectionHeader>
 
         {dangTai ? (
           <S.LoadingText>Đang tải...</S.LoadingText>
         ) : (
-          <S.ProductGrid>
-            {sanPhams.slice(0, 8).map(sp => (
-              <ProductCard key={sp.id} sanPham={sp} />
+          <S.ProductSectionStack>
+            {sanPhamTheoDanhMuc.map((danhMuc, index) => (
+              <S.ProductCategoryBlock key={danhMuc.id}>
+                <S.CategoryBlockHeader>
+                  <div>
+                    <S.CategoryBlockTitle>{danhMuc.ten}</S.CategoryBlockTitle>
+                    <S.CategoryBlockSubtitle>{danhMuc.sanPhamNoiBat.length + danhMuc.sanPhamThuGon.length} sản phẩm</S.CategoryBlockSubtitle>
+                  </div>
+                </S.CategoryBlockHeader>
+
+                <S.ProductGrid>
+                  {danhMuc.sanPhamNoiBat.map((sp) => (
+                    <ProductCard key={sp.id} sanPham={sp} />
+                  ))}
+                </S.ProductGrid>
+
+                {danhMuc.sanPhamThuGon.length > 0 && (
+                  <S.CollapsibleSection>
+                    <details>
+                      <summary>Xem thêm {danhMuc.sanPhamThuGon.length} sản phẩm của mục {danhMuc.ten}</summary>
+                      <S.CollapsibleContent>
+                        <S.ProductGrid>
+                          {danhMuc.sanPhamThuGon.map((sp) => (
+                            <ProductCard key={sp.id} sanPham={sp} />
+                          ))}
+                        </S.ProductGrid>
+                      </S.CollapsibleContent>
+                    </details>
+                  </S.CollapsibleSection>
+                )}
+
+                {chuyenTrang[index % chuyenTrang.length] && (
+                  <S.ProductInlineBanner>
+                    <img
+                      src={chuyenTrang[index % chuyenTrang.length].image}
+                      alt={chuyenTrang[index % chuyenTrang.length].title}
+                    />
+                  </S.ProductInlineBanner>
+                )}
+              </S.ProductCategoryBlock>
             ))}
-          </S.ProductGrid>
+          </S.ProductSectionStack>
         )}
       </S.Section>
 
@@ -190,11 +221,9 @@ export const Home = () => {
         </S.SectionHeader>
         <S.ShowcaseGrid>
           {chuyenTrang.map((item) => (
-            <S.ShowcaseCard key={item.title} $accent={item.accent}>
-              <span>Chuyên trang</span>
-              <h3>{item.title}</h3>
-              <p>{item.subtitle}</p>
-            </S.ShowcaseCard>
+            <S.ShowcaseImageCard key={item.title}>
+              <img src={item.image} alt={item.title} />
+            </S.ShowcaseImageCard>
           ))}
         </S.ShowcaseGrid>
       </S.ShowcaseSection>

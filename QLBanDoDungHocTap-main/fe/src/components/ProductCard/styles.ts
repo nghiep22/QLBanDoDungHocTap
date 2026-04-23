@@ -2,25 +2,25 @@ import styled from 'styled-components';
 
 export const Card = styled.div`
   position: relative;
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(229, 231, 235, 0.9);
-  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid #f1f5f9;
+  border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 14px 36px rgba(15, 23, 42, 0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+  transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
 
   &:hover {
-    box-shadow: 0 22px 50px rgba(15, 23, 42, 0.14);
-    transform: translateY(-6px);
-    border-color: rgba(227, 30, 36, 0.2);
+    box-shadow: 0 18px 42px rgba(15, 23, 42, 0.14);
+    transform: translateY(-4px);
+    border-color: rgba(37, 99, 235, 0.18);
   }
 `;
 
 export const Badge = styled.span<{ color: string }>`
   position: absolute;
-  top: 16px;
-  left: 16px;
-  background: ${props => props.color === 'success' ? '#22c55e' : '#e31e24'};
+  top: 14px;
+  left: 14px;
+  background: ${props => props.color === 'success' ? '#2563eb' : '#e31e24'};
   color: white;
   font-size: 11px;
   font-weight: 700;
@@ -67,16 +67,16 @@ export const Image = styled.img`
 `;
 
 export const Content = styled.div`
-  padding: 20px;
+  padding: 16px 16px 18px;
 `;
 
 export const Title = styled.h3`
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
   color: #1f2937;
   margin-bottom: 10px;
   line-height: 1.5;
-  min-height: 46px;
+  min-height: 42px;
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -98,7 +98,7 @@ export const PriceWrapper = styled.div`
 `;
 
 export const Price = styled.span`
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 800;
   color: #e31e24;
 `;
@@ -116,13 +116,13 @@ export const Actions = styled.div`
 
 export const QuickViewButton = styled.button`
   flex: 1;
-  padding: 12px;
-  background: #fff5f5;
-  color: #b8181d;
-  border: 1px solid #ffd7d8;
-  border-radius: 14px;
+  padding: 11px;
+  background: white;
+  color: #e31e24;
+  border: 1px solid #fecaca;
+  border-radius: 999px;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
   transition: all 0.25s ease;
 
   &:hover {
@@ -133,11 +133,11 @@ export const QuickViewButton = styled.button`
 `;
 
 export const AddToCartButton = styled.button`
-  padding: 12px 18px;
+  padding: 11px 16px;
   background: linear-gradient(135deg, #e31e24 0%, #b8181d 100%);
   color: white;
-  border-radius: 14px;
-  font-weight: 700;
+  border-radius: 999px;
+  font-weight: 800;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 
   &:hover {

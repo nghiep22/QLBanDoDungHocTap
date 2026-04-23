@@ -18,7 +18,7 @@ namespace DAL
             var list = new List<DoHocTap>();
             const string sql = @"
                 SELECT sanPham_id, loai_id, nhaCungCap_id, maSanPham, tenSanPham, 
-                       moTa, giaBan, giaNhap, hinhAnh, trangThai, ngayTao
+                       moTa, giaBan, giaNhap, hinhAnh, loaiCon, thuongHieu, mauSac, trangThai, ngayTao
                 FROM DoHocTap
                 WHERE (@LoaiId IS NULL OR loai_id = @LoaiId)
                   AND (@TrangThai IS NULL OR trangThai = @TrangThai)
@@ -44,7 +44,7 @@ namespace DAL
         {
             const string sql = @"
                 SELECT sanPham_id, loai_id, nhaCungCap_id, maSanPham, tenSanPham, 
-                       moTa, giaBan, giaNhap, hinhAnh, trangThai, ngayTao
+                       moTa, giaBan, giaNhap, hinhAnh, loaiCon, thuongHieu, mauSac, trangThai, ngayTao
                 FROM DoHocTap
                 WHERE sanPham_id = @Id";
 
@@ -66,8 +66,8 @@ namespace DAL
         public async Task<int> InsertAsync(DoHocTapCreateRequest req)
         {
             const string sql = @"
-                INSERT INTO DoHocTap (loai_id, nhaCungCap_id, maSanPham, tenSanPham, moTa, giaBan, giaNhap, hinhAnh)
-                VALUES (@LoaiId, @NhaCungCapId, @MaSanPham, @TenSanPham, @MoTa, @GiaBan, @GiaNhap, @HinhAnh);
+                INSERT INTO DoHocTap (loai_id, nhaCungCap_id, maSanPham, tenSanPham, moTa, giaBan, giaNhap, hinhAnh, loaiCon, thuongHieu, mauSac)
+                VALUES (@LoaiId, @NhaCungCapId, @MaSanPham, @TenSanPham, @MoTa, @GiaBan, @GiaNhap, @HinhAnh, @LoaiCon, @ThuongHieu, @MauSac);
                 SELECT CAST(SCOPE_IDENTITY() AS INT);";
 
             using var conn = new SqlConnection(_connectionString);
@@ -80,6 +80,9 @@ namespace DAL
             cmd.Parameters.AddWithValue("@GiaBan", req.GiaBan);
             cmd.Parameters.AddWithValue("@GiaNhap", req.GiaNhap);
             cmd.Parameters.AddWithValue("@HinhAnh", (object?)req.HinhAnh ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@LoaiCon", (object?)req.LoaiCon ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@ThuongHieu", (object?)req.ThuongHieu ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@MauSac", (object?)req.MauSac ?? DBNull.Value);
 
             await conn.OpenAsync();
             var newId = await cmd.ExecuteScalarAsync();
@@ -92,7 +95,7 @@ namespace DAL
                 UPDATE DoHocTap
                 SET loai_id = @LoaiId, nhaCungCap_id = @NhaCungCapId, maSanPham = @MaSanPham,
                     tenSanPham = @TenSanPham, moTa = @MoTa, giaBan = @GiaBan, giaNhap = @GiaNhap,
-                    hinhAnh = @HinhAnh, trangThai = @TrangThai
+                    hinhAnh = @HinhAnh, loaiCon = @LoaiCon, thuongHieu = @ThuongHieu, mauSac = @MauSac, trangThai = @TrangThai
                 WHERE sanPham_id = @Id";
 
             using var conn = new SqlConnection(_connectionString);
@@ -106,6 +109,9 @@ namespace DAL
             cmd.Parameters.AddWithValue("@GiaBan", req.GiaBan);
             cmd.Parameters.AddWithValue("@GiaNhap", req.GiaNhap);
             cmd.Parameters.AddWithValue("@HinhAnh", (object?)req.HinhAnh ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@LoaiCon", (object?)req.LoaiCon ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@ThuongHieu", (object?)req.ThuongHieu ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@MauSac", (object?)req.MauSac ?? DBNull.Value);
             cmd.Parameters.AddWithValue("@TrangThai", req.TrangThai);
 
             await conn.OpenAsync();
@@ -139,6 +145,9 @@ namespace DAL
                 GiaBan = reader.GetDecimal(reader.GetOrdinal("giaBan")),
                 GiaNhap = reader.GetDecimal(reader.GetOrdinal("giaNhap")),
                 HinhAnh = reader.IsDBNull(reader.GetOrdinal("hinhAnh")) ? null : reader.GetString(reader.GetOrdinal("hinhAnh")),
+                LoaiCon = reader.IsDBNull(reader.GetOrdinal("loaiCon")) ? null : reader.GetString(reader.GetOrdinal("loaiCon")),
+                ThuongHieu = reader.IsDBNull(reader.GetOrdinal("thuongHieu")) ? null : reader.GetString(reader.GetOrdinal("thuongHieu")),
+                MauSac = reader.IsDBNull(reader.GetOrdinal("mauSac")) ? null : reader.GetString(reader.GetOrdinal("mauSac")),
                 TrangThai = reader.GetBoolean(reader.GetOrdinal("trangThai")),
                 NgayTao = reader.GetDateTime(reader.GetOrdinal("ngayTao"))
             };

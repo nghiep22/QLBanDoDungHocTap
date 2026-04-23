@@ -3,9 +3,46 @@
 // ============================================
 
 import type { SanPhamAPI, SanPham } from '../types';
+import { danhMucTinhTheoSlug, danhSachThuocTinhLoc, layDanhMucTheoLoaiId, timMauTheoHexHoacTen } from '../data/categoryData';
+
+const slugTheoLoaiId: Record<number, string> = {
+  1: 'van-phong-pham',
+  2: 'sach-vo',
+  3: 'dung-cu-ve',
+  4: 'ba-lo-tui',
+  5: 'dien-tu-hoc-tap',
+};
+
+const suyRaThuongHieuTuTen = (tenSanPham: string, slug?: string) => {
+  const thuongHieus = slug ? (danhMucTinhTheoSlug[slug]?.brands || []) : danhSachThuocTinhLoc.brands;
+  const ten = tenSanPham.toLowerCase();
+  return thuongHieus.find((thuongHieu) => ten.includes(thuongHieu.toLowerCase())) || 'Thiên Long';
+};
+
+const suyRaLoaiConTuTen = (tenSanPham: string, loaiId: number) => {
+  const danhMuc = layDanhMucTheoLoaiId(loaiId);
+  const ten = tenSanPham.toLowerCase();
+  return (
+    danhMuc?.productTypes.find((loaiCon) => {
+      const tuKhoa = loaiCon.toLowerCase().split(/\s+/);
+      return tuKhoa.some((tu) => tu.length > 2 && ten.includes(tu));
+    }) || danhMuc?.productTypes[0]
+  );
+};
+
+const suyRaMauSacMacDinh = (id: number, loaiId: number) => {
+  const danhMuc = layDanhMucTheoLoaiId(loaiId);
+  if (!danhMuc || danhMuc.colors.length === 0) return undefined;
+  return danhMuc.colors[id % danhMuc.colors.length]?.name;
+};
 
 // Chuyển đổi từ format API sang format frontend
 export const chuyendoisanpham = (apiSanPham: SanPhamAPI): SanPham => {
+  const slug = slugTheoLoaiId[apiSanPham.loai_Id];
+  const mauSac = apiSanPham.mauSac
+    ? (timMauTheoHexHoacTen(apiSanPham.mauSac)?.name || apiSanPham.mauSac)
+    : suyRaMauSacMacDinh(apiSanPham.sanPham_Id, apiSanPham.loai_Id);
+
   return {
     id: apiSanPham.sanPham_Id,
     ma: apiSanPham.maSanPham || `SP${apiSanPham.sanPham_Id}`,
@@ -15,6 +52,9 @@ export const chuyendoisanpham = (apiSanPham: SanPhamAPI): SanPham => {
     giaGoc: apiSanPham.giaNhap,
     hinhAnh: apiSanPham.hinhAnh || 'https://via.placeholder.com/400',
     loaiId: apiSanPham.loai_Id,
+    loaiCon: apiSanPham.loaiCon || suyRaLoaiConTuTen(apiSanPham.tenSanPham, apiSanPham.loai_Id),
+    thuongHieu: apiSanPham.thuongHieu || suyRaThuongHieuTuTen(apiSanPham.tenSanPham, slug),
+    mauSac,
     soLuongTon: 100, // Mặc định, cần API kho để lấy chính xác
     giamGia: 0,
     hot: false,

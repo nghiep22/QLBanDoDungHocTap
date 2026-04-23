@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { dichVuApi } from '../../services/api';
 import type { SanPhamAPI, TaoSanPhamRequest, CapNhatSanPhamRequest, NhaCungCapAPI } from '../../types';
+import { layDanhMucTheoLoaiId, timMauTheoHexHoacTen } from '../../data/categoryData';
 import * as S from './QuanLySanPham.styles.ts';
 
 export const QuanLySanPham = () => {
@@ -21,6 +22,9 @@ export const QuanLySanPham = () => {
     giaBan: 0,
     giaNhap: 0,
     hinhAnh: '',
+    loaiCon: '',
+    thuongHieu: '',
+    mauSac: '',
   });
 
   // Danh sách loại sản phẩm (hardcode từ database)
@@ -31,6 +35,8 @@ export const QuanLySanPham = () => {
     { id: 4, ten: 'Ba lô & Túi' },
     { id: 5, ten: 'Điện tử học tập' },
   ];
+
+  const danhmucdangchon = useMemo(() => layDanhMucTheoLoaiId(formdulieu.loai_Id), [formdulieu.loai_Id]);
 
   useEffect(() => {
     taidulieu();
@@ -69,6 +75,9 @@ export const QuanLySanPham = () => {
         giaBan: sanpham.giaBan,
         giaNhap: sanpham.giaNhap,
         hinhAnh: sanpham.hinhAnh || '',
+        loaiCon: sanpham.loaiCon || '',
+        thuongHieu: sanpham.thuongHieu || '',
+        mauSac: sanpham.mauSac || '',
       });
     } else {
       setSanphamdangchinhsua(null);
@@ -81,6 +90,9 @@ export const QuanLySanPham = () => {
         giaBan: 0,
         giaNhap: 0,
         hinhAnh: '',
+        loaiCon: '',
+        thuongHieu: '',
+        mauSac: '',
       });
     }
     setHienthiform(true);
@@ -92,11 +104,45 @@ export const QuanLySanPham = () => {
   };
 
   const xulynhap = (field: keyof TaoSanPhamRequest, value: any) => {
-    setFormdulieu(prev => ({ ...prev, [field]: value }));
+    setFormdulieu(prev => {
+      const dulieuMoi = { ...prev, [field]: value };
+
+      if (field === 'loai_Id') {
+        const danhMucMoi = layDanhMucTheoLoaiId(value);
+        const loaiConHopLe = danhMucMoi?.productTypes.includes(dulieuMoi.loaiCon || '') ? dulieuMoi.loaiCon : (danhMucMoi?.productTypes[0] || '');
+        const thuongHieuHopLe = danhMucMoi?.brands.includes(dulieuMoi.thuongHieu || '') ? dulieuMoi.thuongHieu : (danhMucMoi?.brands[0] || '');
+        const mauHopLe = timMauTheoHexHoacTen(dulieuMoi.mauSac)?.name;
+        const mauMacDinh = danhMucMoi?.colors.some((item) => item.name === mauHopLe) ? mauHopLe : (danhMucMoi?.colors[0]?.name || '');
+
+        return {
+          ...dulieuMoi,
+          loaiCon: loaiConHopLe,
+          thuongHieu: thuongHieuHopLe,
+          mauSac: mauMacDinh,
+        };
+      }
+
+      return dulieuMoi;
+    });
   };
 
   const xulyluu = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!formdulieu.loaiCon?.trim()) {
+      hienthithongbao('loi', 'Vui lòng chọn loại sản phẩm chi tiết');
+      return;
+    }
+
+    if (!formdulieu.thuongHieu?.trim()) {
+      hienthithongbao('loi', 'Vui lòng chọn thương hiệu');
+      return;
+    }
+
+    if (!formdulieu.mauSac?.trim()) {
+      hienthithongbao('loi', 'Vui lòng chọn màu sắc');
+      return;
+    }
     
     if (!formdulieu.tenSanPham.trim()) {
       hienthithongbao('loi', 'Vui lòng nhập tên sản phẩm');
@@ -290,6 +336,50 @@ export const QuanLySanPham = () => {
 
               <S.FormRow>
                 <S.FormGroup>
+                  <label>Loại chi tiết *</label>
+                  <select
+                    value={formdulieu.loaiCon}
+                    onChange={e => xulynhap('loaiCon', e.target.value)}
+                    required
+                  >
+                    <option value="">Chọn loại chi tiết</option>
+                    {(danhmucdangchon?.productTypes || []).map((loaiCon) => (
+                      <option key={loaiCon} value={loaiCon}>{loaiCon}</option>
+                    ))}
+                  </select>
+                </S.FormGroup>
+
+                <S.FormGroup>
+                  <label>Thương hiệu *</label>
+                  <select
+                    value={formdulieu.thuongHieu}
+                    onChange={e => xulynhap('thuongHieu', e.target.value)}
+                    required
+                  >
+                    <option value="">Chọn thương hiệu</option>
+                    {(danhmucdangchon?.brands || []).map((thuongHieu) => (
+                      <option key={thuongHieu} value={thuongHieu}>{thuongHieu}</option>
+                    ))}
+                  </select>
+                </S.FormGroup>
+              </S.FormRow>
+
+              <S.FormRow>
+                <S.FormGroup>
+                  <label>Màu sắc *</label>
+                  <select
+                    value={formdulieu.mauSac}
+                    onChange={e => xulynhap('mauSac', e.target.value)}
+                    required
+                  >
+                    <option value="">Chọn màu sắc</option>
+                    {(danhmucdangchon?.colors || []).map((mau) => (
+                      <option key={mau.hex} value={mau.name}>{mau.name}</option>
+                    ))}
+                  </select>
+                </S.FormGroup>
+
+                <S.FormGroup>
                   <label>Giá nhập *</label>
                   <input
                     type="number"
@@ -299,7 +389,9 @@ export const QuanLySanPham = () => {
                     required
                   />
                 </S.FormGroup>
+              </S.FormRow>
 
+              <S.FormRow>
                 <S.FormGroup>
                   <label>Giá bán *</label>
                   <input
@@ -310,17 +402,17 @@ export const QuanLySanPham = () => {
                     required
                   />
                 </S.FormGroup>
-              </S.FormRow>
 
-              <S.FormGroup>
-                <label>URL hình ảnh</label>
-                <input
-                  type="text"
-                  value={formdulieu.hinhAnh}
-                  onChange={e => xulynhap('hinhAnh', e.target.value)}
-                  placeholder="https://example.com/image.jpg"
-                />
-              </S.FormGroup>
+                <S.FormGroup>
+                  <label>URL hình ảnh</label>
+                  <input
+                    type="text"
+                    value={formdulieu.hinhAnh}
+                    onChange={e => xulynhap('hinhAnh', e.target.value)}
+                    placeholder="https://example.com/image.jpg"
+                  />
+                </S.FormGroup>
+              </S.FormRow>
 
               <S.FormGroup>
                 <label>Mô tả</label>

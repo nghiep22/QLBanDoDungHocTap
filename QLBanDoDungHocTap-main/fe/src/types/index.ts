@@ -43,6 +43,9 @@ export interface SanPhamAPI {
   giaBan: number;
   giaNhap: number;
   hinhAnh?: string;
+  loaiCon?: string;
+  thuongHieu?: string;
+  mauSac?: string;
   trangThai: boolean;
   ngayTao: string;
 }
@@ -57,6 +60,9 @@ export interface TaoSanPhamRequest {
   giaBan: number;
   giaNhap: number;
   hinhAnh?: string;
+  loaiCon?: string;
+  thuongHieu?: string;
+  mauSac?: string;
 }
 
 // Interface để cập nhật sản phẩm
@@ -93,6 +99,9 @@ export interface SanPham {
   hinhAnh: string;
   loaiId: number;
   tenLoai?: string;
+  loaiCon?: string;
+  thuongHieu?: string;
+  mauSac?: string;
   soLuongTon: number;
   giamGia?: number;
   hot?: boolean;

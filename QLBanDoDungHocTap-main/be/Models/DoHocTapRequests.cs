@@ -10,6 +10,9 @@ namespace Models
         public decimal GiaBan { get; set; }
         public decimal GiaNhap { get; set; }
         public string? HinhAnh { get; set; }
+        public string? LoaiCon { get; set; }
+        public string? ThuongHieu { get; set; }
+        public string? MauSac { get; set; }
     }
 
     public class DoHocTapUpdateRequest
@@ -22,6 +25,9 @@ namespace Models
         public decimal GiaBan { get; set; }
         public decimal GiaNhap { get; set; }
         public string? HinhAnh { get; set; }
+        public string? LoaiCon { get; set; }
+        public string? ThuongHieu { get; set; }
+        public string? MauSac { get; set; }
         public bool TrangThai { get; set; }
     }
 }

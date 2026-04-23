@@ -1,4 +1,4 @@
-﻿CREATE DATABASE BANDODUNGHOCTAP ;
+CREATE DATABASE BANDODUNGHOCTAP ;
 USE BANDODUNGHOCTAP ;
 
 
@@ -63,6 +63,9 @@ CREATE TABLE DoHocTap (
     giaBan          DECIMAL(12,0) NOT NULL,
     giaNhap         DECIMAL(12,0) NOT NULL,
     hinhAnh         VARCHAR(255),
+    loaiCon         NVARCHAR(100),
+    thuongHieu      NVARCHAR(100),
+    mauSac          NVARCHAR(50),
     trangThai       BIT DEFAULT 1,              -- 1: đang bán, 0: ngừng bán
     ngayTao         DATETIME DEFAULT GETDATE(),
     CONSTRAINT FK_DoHocTap_Loai FOREIGN KEY (loai_id) REFERENCES LoaiDoHocTap(loai_id),
@@ -246,12 +249,12 @@ INSERT INTO KhachHang (taiKhoan_id, hoTen, soDienThoai, email) VALUES
 (2, N'Nguyễn Văn A', '0912345678', 'vana@gmail.com'),
 (3, N'Trần Thị B', '0987654321', 'thib@gmail.com');
 
-INSERT INTO DoHocTap (loai_id, nhaCungCap_id, maSanPham, tenSanPham, giaBan, giaNhap, hinhAnh) VALUES
-(1, 1, 'SP001', N'Bút bi Thiên Long TL-027 (hộp 10 cái)', 45000, 28000, 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400'),
-(2, 2, 'SP002', N'Vở ô ly Hồng Hà 200 trang', 18000, 10000, 'https://images.unsplash.com/photo-1544816155-12df9643f363?w=400'),
-(3, 3, 'SP003', N'Màu sáp Deli 24 màu', 35000, 20000, 'https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=400'),
-(4, 1, 'SP004', N'Hộp bút đa năng in 3D', 45000, 25000, 'https://images.unsplash.com/photo-1588075592446-265fd1e6e76f?w=400'),
-(1, 3, 'SP005', N'Thước kẻ nhựa 30cm Deli', 8000, 4000, 'https://images.unsplash.com/photo-1611532736579-6b16e2b50449?w=400');
+INSERT INTO DoHocTap (loai_id, nhaCungCap_id, maSanPham, tenSanPham, giaBan, giaNhap, hinhAnh, loaiCon, thuongHieu, mauSac) VALUES
+(1, 1, 'SP001', N'Bút bi Thiên Long TL-027 (hộp 10 cái)', 45000, 28000, 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400', N'Bút lông bảng - lông dầu', N'Thiên Long', N'Xanh'),
+(2, 2, 'SP002', N'Vở ô ly Hồng Hà 200 trang', 18000, 10000, 'https://images.unsplash.com/photo-1544816155-12df9643f363?w=400', N'Tập học sinh', N'Hồng Hà', N'Đỏ'),
+(3, 3, 'SP003', N'Màu sáp Deli 24 màu', 35000, 20000, 'https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=400', N'Sáp nặn', N'Deli', N'Vàng'),
+(4, 1, 'SP004', N'Hộp bút đa năng in 3D', 45000, 25000, 'https://images.unsplash.com/photo-1588075592446-265fd1e6e76f?w=400', N'Hộp viết', N'Thiên Long', N'Hồng'),
+(1, 3, 'SP005', N'Thước kẻ nhựa 30cm Deli', 8000, 4000, 'https://images.unsplash.com/photo-1611532736579-6b16e2b50449?w=400', N'Băng keo', N'Deli', N'Trắng');
 
 INSERT INTO Kho (sanPham_id, soLuongTon, soLuongToiThieu, viTriKho) VALUES
 (1, 150, 20, N'Kệ A1'), (2, 90, 15, N'Kệ A2'),
