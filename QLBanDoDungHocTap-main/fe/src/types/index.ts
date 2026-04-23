@@ -145,3 +145,40 @@ export interface ChiTietDonHang {
   giaBan: number;
   thanhTien: number;
 }
+
+export interface ChiTietDonHangRequestAPI {
+  sanPham_Id: number;
+  soLuong: number;
+  giaBan: number;
+}
+
+export interface TaoDonHangRequest {
+  khachHang_Id?: number;
+  nhanVien_Id?: number;
+  km_Id?: number;
+  diaChiGiao: string;
+  phuongThucTT: string;
+  ghiChu?: string;
+  chiTiet: ChiTietDonHangRequestAPI[];
+}
+
+export interface DonHangAPI {
+  donHang_Id: number;
+  khachHang_Id?: number | null;
+  nhanVien_Id?: number | null;
+  km_Id?: number | null;
+  maDonHang?: string;
+  ngayDat: string;
+  ngayGiao?: string | null;
+  diaChiGiao?: string;
+  phuongThucTT?: string;
+  trangThaiDH: string;
+  tongTienGoc: number;
+  tienGiam: number;
+  tongThanhToan: number;
+  ghiChu?: string;
+}
+
+export interface CapNhatTrangThaiDonHangRequest {
+  trangThaiDH: string;
+}

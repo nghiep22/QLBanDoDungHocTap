@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useDangNhap } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { QuanLySanPham } from './QuanLySanPham';
+import { QuanLyDonHang } from './QuanLyDonHang';
 import * as S from './styles';
 
 export const Admin = () => {
@@ -115,8 +116,9 @@ export const Admin = () => {
           )}
 
           {activeTab === 'products' && <QuanLySanPham />}
+          {activeTab === 'orders' && <QuanLyDonHang />}
 
-          {activeTab !== 'dashboard' && activeTab !== 'products' && (
+          {activeTab !== 'dashboard' && activeTab !== 'products' && activeTab !== 'orders' && (
             <S.ComingSoon>
               <h2>🚧 Đang phát triển</h2>
               <p>Chức năng {activeTab} đang được xây dựng</p>

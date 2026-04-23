@@ -54,7 +54,7 @@ export const ProtectedRoute = ({
   // → Chuyển về trang chủ
   // ============================================
   if (yeuCauAdmin && nguoiDung?.vaiTro_Id !== 1) {
-    console.log('⚠️ Không có quyền admin, chuyển về trang chủ');
+    console.log(' Không có quyền admin, chuyển về trang chủ');
     return <Navigate to="/" replace />;
   }
 
@@ -62,6 +62,6 @@ export const ProtectedRoute = ({
   // TRƯỜNG HỢP 4: Đã đăng nhập và có quyền
   // → Cho phép truy cập
   // ============================================
-  console.log('✅ Cho phép truy cập route');
+  console.log(' Cho phép truy cập route');
   return <>{children}</>;
 };

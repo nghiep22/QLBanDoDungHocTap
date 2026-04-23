@@ -17,7 +17,7 @@ namespace DAL
         {
             var list = new List<DonHang>();
             const string sql = @"
-                SELECT donHang_id, khachHang_id, nhanVien_id, km_id, maDonHang, ngayDat, ngayGiao,
+                SELECT donHang_id, khachHang_id, km_id, maDonHang, ngayDat, ngayGiao,
                        diaChiGiao, phuongThucTT, trangThaiDH, tongTienGoc, tienGiam, tongThanhToan, ghiChu
                 FROM DonHang
                 WHERE (@TrangThai IS NULL OR trangThaiDH = @TrangThai)
@@ -41,7 +41,7 @@ namespace DAL
         public async Task<DonHang?> GetByIdAsync(int id)
         {
             const string sql = @"
-                SELECT donHang_id, khachHang_id, nhanVien_id, km_id, maDonHang, ngayDat, ngayGiao,
+                SELECT donHang_id, khachHang_id, km_id, maDonHang, ngayDat, ngayGiao,
                        diaChiGiao, phuongThucTT, trangThaiDH, tongTienGoc, tienGiam, tongThanhToan, ghiChu
                 FROM DonHang
                 WHERE donHang_id = @Id";
@@ -64,16 +64,15 @@ namespace DAL
         public async Task<int> InsertAsync(DonHangCreateRequest req, string maDonHang, decimal tongTienGoc, decimal tienGiam, decimal tongThanhToan)
         {
             const string sql = @"
-                INSERT INTO DonHang (khachHang_id, nhanVien_id, km_id, maDonHang, diaChiGiao, phuongThucTT, 
+                INSERT INTO DonHang (khachHang_id, km_id, maDonHang, diaChiGiao, phuongThucTT, 
                                      tongTienGoc, tienGiam, tongThanhToan, ghiChu)
-                VALUES (@KhachHangId, @NhanVienId, @KmId, @MaDonHang, @DiaChiGiao, @PhuongThucTT,
+                VALUES (@KhachHangId, @KmId, @MaDonHang, @DiaChiGiao, @PhuongThucTT,
                         @TongTienGoc, @TienGiam, @TongThanhToan, @GhiChu);
                 SELECT CAST(SCOPE_IDENTITY() AS INT);";
 
             using var conn = new SqlConnection(_connectionString);
             using var cmd = new SqlCommand(sql, conn);
             cmd.Parameters.Add("@KhachHangId", SqlDbType.Int).Value = (object?)req.KhachHang_Id ?? DBNull.Value;
-            cmd.Parameters.Add("@NhanVienId", SqlDbType.Int).Value = (object?)req.NhanVien_Id ?? DBNull.Value;
             cmd.Parameters.Add("@KmId", SqlDbType.Int).Value = (object?)req.Km_Id ?? DBNull.Value;
             cmd.Parameters.AddWithValue("@MaDonHang", maDonHang);
             cmd.Parameters.AddWithValue("@DiaChiGiao", (object?)req.DiaChiGiao ?? DBNull.Value);
@@ -112,7 +111,7 @@ namespace DAL
             {
                 DonHang_Id = reader.GetInt32(reader.GetOrdinal("donHang_id")),
                 KhachHang_Id = reader.IsDBNull(reader.GetOrdinal("khachHang_id")) ? null : reader.GetInt32(reader.GetOrdinal("khachHang_id")),
-                NhanVien_Id = reader.IsDBNull(reader.GetOrdinal("nhanVien_id")) ? null : reader.GetInt32(reader.GetOrdinal("nhanVien_id")),
+                NhanVien_Id = null,
                 Km_Id = reader.IsDBNull(reader.GetOrdinal("km_id")) ? null : reader.GetInt32(reader.GetOrdinal("km_id")),
                 MaDonHang = reader.IsDBNull(reader.GetOrdinal("maDonHang")) ? null : reader.GetString(reader.GetOrdinal("maDonHang")),
                 NgayDat = reader.GetDateTime(reader.GetOrdinal("ngayDat")),

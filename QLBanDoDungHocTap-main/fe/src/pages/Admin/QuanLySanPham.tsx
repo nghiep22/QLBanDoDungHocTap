@@ -27,7 +27,7 @@ export const QuanLySanPham = () => {
     mauSac: '',
   });
 
-  // Danh sách loại sản phẩm (hardcode từ database)
+  
   const danhsachloai = [
     { id: 1, ten: 'Văn phòng phẩm' },
     { id: 2, ten: 'Sách & Vở' },
@@ -38,10 +38,7 @@ export const QuanLySanPham = () => {
 
   const danhmucdangchon = useMemo(() => layDanhMucTheoLoaiId(formdulieu.loai_Id), [formdulieu.loai_Id]);
 
-  useEffect(() => {
-    taidulieu();
-  }, []);
-
+  // tải dữ liệu
   const taidulieu = async () => {
     setDangtai(true);
     try {
@@ -58,11 +55,17 @@ export const QuanLySanPham = () => {
     }
   };
 
+  useEffect(() => {
+    taidulieu();
+  }, []);
+
+  // thông báo
   const hienthithongbao = (loai: 'thanh_cong' | 'loi', noidung: string) => {
     setThongbao({ loai, noidung });
     setTimeout(() => setThongbao(null), 3000);
   };
 
+  // thêm , sửa sản phẩm 1 mở form
   const moform = (sanpham?: SanPhamAPI) => {
     if (sanpham) {
       setSanphamdangchinhsua(sanpham);
@@ -98,11 +101,13 @@ export const QuanLySanPham = () => {
     setHienthiform(true);
   };
 
+  // thêm sản phẩm / sửa sản phẩm - đóng form
   const dongform = () => {
     setHienthiform(false);
     setSanphamdangchinhsua(null);
   };
 
+  // thêm, s sản phẩm 2 nhập liệu form
   const xulynhap = (field: keyof TaoSanPhamRequest, value: any) => {
     setFormdulieu(prev => {
       const dulieuMoi = { ...prev, [field]: value };
@@ -126,6 +131,7 @@ export const QuanLySanPham = () => {
     });
   };
 
+  // thêm sản phẩm / sửa sản phẩm - lưu dữ liệu
   const xulyluu = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -143,7 +149,7 @@ export const QuanLySanPham = () => {
       hienthithongbao('loi', 'Vui lòng chọn màu sắc');
       return;
     }
-    
+
     if (!formdulieu.tenSanPham.trim()) {
       hienthithongbao('loi', 'Vui lòng nhập tên sản phẩm');
       return;
@@ -166,8 +172,8 @@ export const QuanLySanPham = () => {
 
     setDangtai(true);
     try {
+      // sửa sản phẩm
       if (sanphamdangchinhsua) {
-        // Cập nhật
         const dulieucapnhat: CapNhatSanPhamRequest = {
           ...formdulieu,
           trangThai: true,
@@ -175,7 +181,7 @@ export const QuanLySanPham = () => {
         await dichVuApi.capNhatSanPham(sanphamdangchinhsua.sanPham_Id, dulieucapnhat);
         hienthithongbao('thanh_cong', 'Cập nhật sản phẩm thành công');
       } else {
-        // Tạo mới
+        // thêm sản phẩm
         await dichVuApi.taoSanPham(formdulieu);
         hienthithongbao('thanh_cong', 'Thêm sản phẩm thành công');
       }
@@ -183,7 +189,7 @@ export const QuanLySanPham = () => {
       taidulieu();
     } catch (error: any) {
       const errorMessage = error.message || 'Có lỗi xảy ra';
-      
+
       // Xử lý các lỗi cụ thể
       if (errorMessage.includes('truncated')) {
         hienthithongbao('loi', 'Dữ liệu nhập vào quá dài. Vui lòng kiểm tra lại.');
@@ -197,6 +203,7 @@ export const QuanLySanPham = () => {
     }
   };
 
+  // xóa sản phẩm
   const xulyxoa = async (id: number) => {
     if (!confirm('Bạn có chắc muốn xóa sản phẩm này?')) return;
 
@@ -214,19 +221,23 @@ export const QuanLySanPham = () => {
 
   return (
     <S.Container>
+      {/* danh sách sản phẩm - tiêu đề và thao tác thêm */}
       <S.Header>
         <h2>Quản lý sản phẩm</h2>
         <S.Button onClick={() => moform()}>+ Thêm sản phẩm</S.Button>
       </S.Header>
 
+      {/* thông báo */}
       {thongbao && (
         <S.Thongbao $loai={thongbao.loai}>
           {thongbao.noidung}
         </S.Thongbao>
       )}
 
+      {/* trạng thái tải dữ liệu */}
       {dangtai && <S.Loading>Đang tải...</S.Loading>}
 
+      {/* danh sách sản phẩm */}
       <S.Table>
         <thead>
           <tr>
@@ -259,7 +270,10 @@ export const QuanLySanPham = () => {
               </td>
               <td>
                 <S.ActionButtons>
+                  {/* sửa sản phẩm */}
                   <S.EditButton onClick={() => moform(sp)}>Sửa</S.EditButton>
+
+                  {/* xóa sản phẩm */}
                   <S.DeleteButton onClick={() => xulyxoa(sp.sanPham_Id)}>Xóa</S.DeleteButton>
                 </S.ActionButtons>
               </td>
@@ -268,6 +282,7 @@ export const QuanLySanPham = () => {
         </tbody>
       </S.Table>
 
+      {/* thêm sản phẩm / sửa sản phẩm */}
       {hienthiform && (
         <S.Modal onClick={dongform}>
           <S.ModalContent onClick={(e: React.MouseEvent) => e.stopPropagation()}>

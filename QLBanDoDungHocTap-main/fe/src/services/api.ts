@@ -9,7 +9,10 @@ import {
   SanPhamAPI,
   TaoSanPhamRequest,
   CapNhatSanPhamRequest,
-  NhaCungCapAPI
+  NhaCungCapAPI,
+  TaoDonHangRequest,
+  DonHangAPI,
+  CapNhatTrangThaiDonHangRequest
 } from '../types';
 
 // URL gốc của API backend
@@ -243,6 +246,64 @@ class DichVuApi {
     }
     
     return response.json();
+  }
+
+  // Tạo đơn hàng
+  async taoDonHang(data: TaoDonHangRequest): Promise<{ id: number }> {
+    const response = await fetch(`${URL_API_GOC}/api/donhang`, {
+      method: 'POST',
+      headers: this.taoHeaders(true),
+      body: JSON.stringify(data),
+    });
+
+    const noiDung = await response.text();
+
+    if (!response.ok) {
+      try {
+        const error = JSON.parse(noiDung);
+        throw new Error(error.message || 'Không thể tạo đơn hàng');
+      } catch {
+        throw new Error(noiDung || 'Không thể tạo đơn hàng');
+      }
+    }
+
+    return JSON.parse(noiDung);
+  }
+
+  // Lấy danh sách đơn hàng
+  async layDanhSachDonHang(trangThai?: string): Promise<DonHangAPI[]> {
+    const params = new URLSearchParams();
+    if (trangThai) params.append('trangThai', trangThai);
+
+    const url = params.toString() ? `/api/donhang?${params}` : '/api/donhang';
+    const response = await fetch(`${URL_API_GOC}${url}`, {
+      headers: this.taoHeaders(true),
+    });
+
+    if (!response.ok) {
+      throw new Error('Không thể lấy danh sách đơn hàng');
+    }
+
+    return response.json();
+  }
+
+  // Cập nhật trạng thái đơn hàng
+  async capNhatTrangThaiDonHang(id: number, data: CapNhatTrangThaiDonHangRequest): Promise<void> {
+    const response = await fetch(`${URL_API_GOC}/api/donhang/${id}/status`, {
+      method: 'PATCH',
+      headers: this.taoHeaders(true),
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const noiDung = await response.text();
+      try {
+        const error = JSON.parse(noiDung);
+        throw new Error(error.message || 'Không thể cập nhật trạng thái đơn hàng');
+      } catch {
+        throw new Error(noiDung || 'Không thể cập nhật trạng thái đơn hàng');
+      }
+    }
   }
 }
 
