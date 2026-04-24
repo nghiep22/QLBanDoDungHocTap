@@ -33,36 +33,36 @@ export const Admin = () => {
 
         <S.Menu>
           <S.MenuItem $active={activeTab === 'dashboard'} onClick={() => setActiveTab('dashboard')}>
-            📊 Dashboard
+            Dashboard
           </S.MenuItem>
 
           <S.MenuItem $active={activeTab === 'products'} onClick={() => setActiveTab('products')}>
-            📦 Sản phẩm
+            Sản phẩm
           </S.MenuItem>
 
           <S.MenuItem $active={activeTab === 'orders'} onClick={() => setActiveTab('orders')}>
-            ✅ Đơn hàng
+            Đơn hàng
           </S.MenuItem>
 
           <S.MenuItem $active={activeTab === 'customers'} onClick={() => setActiveTab('customers')}>
-            👥 Khách hàng
+            Khách hàng
           </S.MenuItem>
 
           <S.MenuItem $active={activeTab === 'inventory'} onClick={() => setActiveTab('inventory')}>
-            📋 Kho hàng
+            Kho hàng
           </S.MenuItem>
 
           <S.MenuItem $active={activeTab === 'reports'} onClick={() => setActiveTab('reports')}>
-            📈 Báo cáo
+            Báo cáo
           </S.MenuItem>
         </S.Menu>
 
         <S.HomeButton onClick={() => navigate('/')}>
-          🏠 Quay lại trang chủ
+          Quay lại trang chủ
         </S.HomeButton>
 
         <S.LogoutButton onClick={handleLogout}>
-          🚪 Đăng xuất
+          Đăng xuất
         </S.LogoutButton>
       </S.Sidebar>
 
@@ -82,7 +82,7 @@ export const Admin = () => {
           {activeTab === 'dashboard' && (
             <S.DashboardGrid>
               <S.StatCard color="#4caf50">
-                <S.StatIcon>📦</S.StatIcon>
+                <S.StatIcon />
                 <S.StatInfo>
                   <S.StatValue>1,234</S.StatValue>
                   <S.StatLabel>Tổng sản phẩm</S.StatLabel>
@@ -90,7 +90,7 @@ export const Admin = () => {
               </S.StatCard>
 
               <S.StatCard color="#2196f3">
-                <S.StatIcon>🛒</S.StatIcon>
+                <S.StatIcon />
                 <S.StatInfo>
                   <S.StatValue>567</S.StatValue>
                   <S.StatLabel>Đơn hàng</S.StatLabel>
@@ -98,7 +98,7 @@ export const Admin = () => {
               </S.StatCard>
 
               <S.StatCard color="#ff9800">
-                <S.StatIcon>👥</S.StatIcon>
+                <S.StatIcon />
                 <S.StatInfo>
                   <S.StatValue>890</S.StatValue>
                   <S.StatLabel>Khách hàng</S.StatLabel>
@@ -106,7 +106,7 @@ export const Admin = () => {
               </S.StatCard>
 
               <S.StatCard color="#e91e63">
-                <S.StatIcon>💰</S.StatIcon>
+                <S.StatIcon />
                 <S.StatInfo>
                   <S.StatValue>125M</S.StatValue>
                   <S.StatLabel>Doanh thu</S.StatLabel>
@@ -120,7 +120,7 @@ export const Admin = () => {
 
           {activeTab !== 'dashboard' && activeTab !== 'products' && activeTab !== 'orders' && (
             <S.ComingSoon>
-              <h2>🚧 Đang phát triển</h2>
+              <h2>Đang phát triển</h2>
               <p>Chức năng {activeTab} đang được xây dựng</p>
             </S.ComingSoon>
           )}

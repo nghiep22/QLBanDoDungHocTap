@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (tokenDaLuu && nguoiDungDaLuu) {
       setToken(tokenDaLuu);
       setNguoiDung(JSON.parse(nguoiDungDaLuu));
-      console.log('✅ Tự động đăng nhập từ localStorage');
+      console.log('Tự động đăng nhập từ localStorage');
     }
     
     setDangTai(false);
@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // ============================================
   const dangNhap = async (duLieu: YeuCauDangNhap): Promise<KetQuaDangNhap> => {
     try {
-      console.log('🔵 Bắt đầu đăng nhập...');
+      console.log('Bắt đầu đăng nhập...');
       
       // Gọi API đăng nhập
       const ketQua = await dichVuApi.dangNhap(duLieu);
@@ -72,11 +72,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       localStorage.setItem('token', ketQua.token);
       localStorage.setItem('user', JSON.stringify(ketQua.user));
       
-      console.log('✅ Đăng nhập thành công, đã lưu vào localStorage');
+      console.log('Đăng nhập thành công, đã lưu vào localStorage');
       
       return ketQua;
     } catch (loi) {
-      console.error('❌ Lỗi trong hàm dangNhap:', loi);
+      console.error('Lỗi trong hàm dangNhap:', loi);
       throw loi;
     }
   };
@@ -85,7 +85,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // HÀM ĐĂNG XUẤT
   // ============================================
   const dangXuat = () => {
-    console.log('🔵 Đăng xuất...');
+    console.log('Đăng xuất...');
     
     // Xóa state
     setToken(null);
@@ -95,7 +95,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     
-    console.log('✅ Đã đăng xuất và xóa localStorage');
+    console.log('Đã đăng xuất và xóa localStorage');
   };
 
   // ============================================

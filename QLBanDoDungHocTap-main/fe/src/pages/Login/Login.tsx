@@ -36,7 +36,7 @@ export const Login = () => {
     setDangXuLy(true);
 
     try {
-      console.log('🔵 Bắt đầu xử lý đăng nhập...');
+      console.log('Bắt đầu xử lý đăng nhập...');
       
       // Gọi hàm đăng nhập từ Context
       const ketQua = await dangNhap({ 
@@ -44,7 +44,7 @@ export const Login = () => {
         matKhau 
       });
       
-      console.log('✅ Đăng nhập thành công, chuẩn bị điều hướng...');
+      console.log('Đăng nhập thành công, chuẩn bị điều hướng...');
       
       // ============================================
       // PHÂN QUYỀN: Điều hướng theo vai trò
@@ -61,7 +61,7 @@ export const Login = () => {
       
     } catch (loi: any) {
       // Xử lý lỗi
-      console.error('❌ Lỗi đăng nhập:', loi);
+      console.error('Lỗi đăng nhập:', loi);
       setThongBaoLoi(loi.message || 'Đăng nhập thất bại');
     } finally {
       // Tắt trạng thái đang xử lý

@@ -68,7 +68,7 @@ export const Register = () => {
     setDangXuLy(true);
 
     try {
-      console.log('🔵 Bắt đầu xử lý đăng ký...');
+      console.log('Bắt đầu xử lý đăng ký...');
       
       // Gọi API đăng ký
       const ketQuaDangKy = await dichVuApi.dangKy({ 
@@ -76,13 +76,13 @@ export const Register = () => {
         matKhau 
       });
       
-      console.log('✅ Đăng ký thành công!');
+      console.log('Đăng ký thành công!');
 
       // ============================================
       // TỰ ĐỘNG ĐĂNG NHẬP SAU KHI ĐĂNG KÝ THÀNH CÔNG
       // ============================================
       if (ketQuaDangKy && ketQuaDangKy.token) {
-        console.log('🔵 Tự động đăng nhập...');
+        console.log('Tự động đăng nhập...');
         
         // Lưu token và user vào Context
         await dangNhap({ tenDangNhap, matKhau });
@@ -98,7 +98,7 @@ export const Register = () => {
       
     } catch (loi: any) {
       // Xử lý lỗi
-      console.error('❌ Lỗi đăng ký:', loi);
+      console.error('Lỗi đăng ký:', loi);
       setThongBaoLoi(loi.message || 'Đăng ký thất bại');
     } finally {
       // Tắt trạng thái đang xử lý

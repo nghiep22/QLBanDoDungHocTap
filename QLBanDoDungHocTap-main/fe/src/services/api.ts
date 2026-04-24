@@ -43,7 +43,7 @@ class DichVuApi {
   // ============================================
   async dangNhap(duLieu: YeuCauDangNhap): Promise<KetQuaDangNhap> {
     try {
-      console.log('🔵 Gửi yêu cầu đăng nhập:', {
+      console.log('Gửi yêu cầu đăng nhập:', {
         url: `${URL_API_GOC}/login/api/auth/login`,
         duLieu: { ...duLieu, matKhau: '***' } // Ẩn mật khẩu khi log
       });
@@ -55,11 +55,11 @@ class DichVuApi {
         body: JSON.stringify(duLieu),
       });
 
-      console.log('🔵 Trạng thái phản hồi:', phanHoi.status, phanHoi.statusText);
+      console.log('Trạng thái phản hồi:', phanHoi.status, phanHoi.statusText);
 
       // Đọc nội dung phản hồi
       const noiDung = await phanHoi.text();
-      console.log('🔵 Nội dung phản hồi:', noiDung);
+      console.log('Nội dung phản hồi:', noiDung);
       
       // Kiểm tra lỗi
       if (!phanHoi.ok) {
@@ -70,21 +70,21 @@ class DichVuApi {
         } catch {
           thongBaoLoi = noiDung || thongBaoLoi;
         }
-        console.error('❌ Đăng nhập thất bại:', thongBaoLoi);
+        console.error('Đăng nhập thất bại:', thongBaoLoi);
         throw new Error(thongBaoLoi);
       }
 
       // Parse JSON và trả về
       try {
         const ketQua = JSON.parse(noiDung);
-        console.log('✅ Đăng nhập thành công:', { ...ketQua, token: '***' });
+        console.log('Đăng nhập thành công:', { ...ketQua, token: '***' });
         return ketQua;
       } catch (loi) {
-        console.error('❌ Lỗi parse JSON:', loi);
+        console.error('Lỗi parse JSON:', loi);
         throw new Error('Lỗi phản hồi từ server');
       }
     } catch (loi: any) {
-      console.error('❌ Lỗi đăng nhập:', loi);
+      console.error('Lỗi đăng nhập:', loi);
       if (loi.message) throw loi;
       throw new Error('Không thể kết nối đến server. Vui lòng kiểm tra backend đã chạy chưa.');
     }
@@ -95,7 +95,7 @@ class DichVuApi {
   // ============================================
   async dangKy(duLieu: YeuCauDangKy): Promise<KetQuaDangNhap> {
     try {
-      console.log('🔵 Gửi yêu cầu đăng ký:', {
+      console.log('Gửi yêu cầu đăng ký:', {
         url: `${URL_API_GOC}/login/api/auth/register`,
         duLieu: { ...duLieu, matKhau: '***' }
       });
@@ -109,7 +109,7 @@ class DichVuApi {
 
       // Đọc nội dung phản hồi
       const noiDung = await phanHoi.text();
-      console.log('🔵 Nội dung phản hồi đăng ký:', noiDung);
+      console.log('Nội dung phản hồi đăng ký:', noiDung);
 
       // Kiểm tra lỗi
       if (!phanHoi.ok) {
@@ -120,21 +120,21 @@ class DichVuApi {
         } catch {
           thongBaoLoi = noiDung || thongBaoLoi;
         }
-        console.error('❌ Đăng ký thất bại:', thongBaoLoi);
+        console.error('Đăng ký thất bại:', thongBaoLoi);
         throw new Error(thongBaoLoi);
       }
 
       // Parse JSON và trả về
       try {
         const ketQua = JSON.parse(noiDung);
-        console.log('✅ Đăng ký thành công:', { ...ketQua, token: '***' });
+        console.log('Đăng ký thành công:', { ...ketQua, token: '***' });
         return ketQua;
       } catch (loi) {
-        console.error('❌ Lỗi parse JSON:', loi);
+        console.error('Lỗi parse JSON:', loi);
         throw new Error('Lỗi phản hồi từ server');
       }
     } catch (loi: any) {
-      console.error('❌ Lỗi đăng ký:', loi);
+      console.error('Lỗi đăng ký:', loi);
       if (loi.message) throw loi;
       throw new Error('Không thể kết nối đến server. Vui lòng kiểm tra backend đã chạy chưa.');
     }
@@ -155,7 +155,7 @@ class DichVuApi {
 
       return phanHoi.json();
     } catch (loi: any) {
-      console.error('❌ Lỗi lấy thông tin:', loi);
+      console.error('Lỗi lấy thông tin:', loi);
       throw loi;
     }
   }

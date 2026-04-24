@@ -45,7 +45,7 @@ export const ProtectedRoute = ({
   // → Chuyển đến trang đăng nhập
   // ============================================
   if (!daDangNhap) {
-    console.log('⚠️ Chưa đăng nhập, chuyển đến /dang-nhap');
+    console.log('Chưa đăng nhập, chuyển đến /dang-nhap');
     return <Navigate to="/dang-nhap" replace />;
   }
 
