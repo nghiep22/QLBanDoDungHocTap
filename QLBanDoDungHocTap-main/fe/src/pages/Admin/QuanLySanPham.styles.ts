@@ -8,11 +8,38 @@ export const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 16px;
   margin-bottom: 20px;
 
   h2 {
     margin: 0;
     color: #333;
+  }
+`;
+
+export const Toolbar = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+`;
+
+export const SearchForm = styled.form`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+export const SearchInput = styled.input`
+  min-width: 260px;
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+
+  &:focus {
+    outline: none;
+    border-color: #4caf50;
   }
 `;
 

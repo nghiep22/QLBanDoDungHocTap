@@ -89,6 +89,36 @@
       "HttpHandlerOptions": {
         "DangerousAcceptAnyServerCertificateValidator": true
       }
+    },
+    {
+      "UpstreamPathTemplate": "/api/kho",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH" ],
+      "DownstreamPathTemplate": "/api/kho",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5020
+        }
+      ],
+      "HttpHandlerOptions": {
+        "DangerousAcceptAnyServerCertificateValidator": true
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/api/kho/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH" ],
+      "DownstreamPathTemplate": "/api/kho/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5020
+        }
+      ],
+      "HttpHandlerOptions": {
+        "DangerousAcceptAnyServerCertificateValidator": true
+      }
     }
   ],
   "GlobalConfiguration": {

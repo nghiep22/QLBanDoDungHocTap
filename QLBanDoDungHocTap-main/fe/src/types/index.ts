@@ -46,6 +46,8 @@ export interface SanPhamAPI {
   loaiCon?: string;
   thuongHieu?: string;
   mauSac?: string;
+  soLuongTon?: number;
+  soLuongToiThieu?: number;
   trangThai: boolean;
   ngayTao: string;
 }
@@ -181,4 +183,70 @@ export interface DonHangAPI {
 
 export interface CapNhatTrangThaiDonHangRequest {
   trangThaiDH: string;
+}
+
+// ============================================
+// ĐỊNH NGHĨA KIỂU DỮ LIỆU - KHO HÀNG
+// ============================================
+
+export interface KhoTonKhoAPI {
+  kho_Id: number;
+  sanPham_Id: number;
+  maSanPham?: string | null;
+  tenSanPham: string;
+  hinhAnh?: string | null;
+  giaBan: number;
+  giaNhap: number;
+  soLuongTon: number;
+  soLuongToiThieu: number;
+  viTriKho?: string | null;
+  ngayCapNhat: string;
+  canhBaoSapHet?: boolean;
+}
+
+export interface KhoCapNhatRequest {
+  soLuongTon: number;
+  soLuongToiThieu: number;
+  viTriKho?: string | null;
+}
+
+export interface LichSuKhoAPI {
+  loaiGiaoDich: string;
+  soChungTu: string;
+  ngayGiaoDich: string;
+  sanPham_Id: number;
+  tenSanPham: string;
+  soLuong: number;
+  donGia: number;
+  thanhTien: number;
+  doiTuong?: string | null;
+  trangThai?: string | null;
+}
+
+// ============================================
+// ĐỊNH NGHĨA KIỂU DỮ LIỆU - NHẬP HÀNG
+// ============================================
+
+export interface ChiTietHDNhapRequestAPI {
+  sanPham_Id: number;
+  soLuong: number;
+  giaNhap: number;
+}
+
+export interface TaoHoaDonNhapRequest {
+  nhaCungCap_Id: number;
+  nhanVien_Id: number;
+  ghiChu?: string;
+  chiTiet: ChiTietHDNhapRequestAPI[];
+}
+
+export interface HoaDonNhapAPI {
+  hdNhap_Id: number;
+  nhaCungCap_Id: number;
+  nhanVien_Id: number;
+  maHDNhap?: string;
+  ngayNhap: string;
+  tongTien: number;
+  ghiChu?: string | null;
+  trangThai: string;
 }

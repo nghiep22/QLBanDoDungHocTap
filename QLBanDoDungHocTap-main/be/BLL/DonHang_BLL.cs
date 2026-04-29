@@ -32,6 +32,16 @@ namespace BLL
             if (req.ChiTiet == null || req.ChiTiet.Count == 0)
                 throw new ArgumentException("Đơn hàng phải có ít nhất 1 sản phẩm");
 
+            foreach (var item in req.ChiTiet)
+            {
+                if (item.SoLuong <= 0)
+                    throw new ArgumentException("Số lượng sản phẩm phải lớn hơn 0");
+
+                var duKho = await _khoDal.HasEnoughStockAsync(item.SanPham_Id, item.SoLuong);
+                if (!duKho)
+                    throw new ArgumentException("Tồn kho không đủ cho một hoặc nhiều sản phẩm trong giỏ hàng");
+            }
+
             decimal tongTienGoc = req.ChiTiet.Sum(x => x.SoLuong * x.GiaBan);
             decimal tienGiam = 0;
             decimal tongThanhToan = tongTienGoc - tienGiam;
@@ -43,6 +53,7 @@ namespace BLL
             foreach (var item in req.ChiTiet)
             {
                 await _chiTietDal.InsertAsync(donHangId, item);
+                await _khoDal.DecreaseStockAsync(item.SanPham_Id, item.SoLuong);
             }
 
             return donHangId;

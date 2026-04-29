@@ -4,6 +4,11 @@ import type { SanPhamAPI, TaoSanPhamRequest, CapNhatSanPhamRequest, NhaCungCapAP
 import { layDanhMucTheoLoaiId, timMauTheoHexHoacTen } from '../../data/categoryData';
 import * as S from './QuanLySanPham.styles.ts';
 
+const formatCurrency = (value: number | undefined | null) => {
+  const soTien = typeof value === 'number' ? value : 0;
+  return soTien.toLocaleString('vi-VN') + 'đ';
+};
+
 export const QuanLySanPham = () => {
   const [danhsachsanpham, setDanhsachsanpham] = useState<SanPhamAPI[]>([]);
   const [danhsachnhacungcap, setDanhsachnhacungcap] = useState<NhaCungCapAPI[]>([]);
@@ -11,6 +16,10 @@ export const QuanLySanPham = () => {
   const [hienthiform, setHienthiform] = useState(false);
   const [sanphamdangchinhsua, setSanphamdangchinhsua] = useState<SanPhamAPI | null>(null);
   const [thongbao, setThongbao] = useState<{ loai: 'thanh_cong' | 'loi'; noidung: string } | null>(null);
+  const [tukhoaTimKiem, setTukhoaTimKiem] = useState('');
+  const [sanPhamChiTiet, setSanPhamChiTiet] = useState<SanPhamAPI | null>(null);
+  const [dangTaiChiTiet, setDangTaiChiTiet] = useState(false);
+  const [hienThiChiTiet, setHienThiChiTiet] = useState(false);
 
   // Form data
   const [formdulieu, setFormdulieu] = useState<TaoSanPhamRequest>({
@@ -216,6 +225,37 @@ export const QuanLySanPham = () => {
       hienthithongbao('loi', error.message || 'Không thể xóa sản phẩm');
     } finally {
       setDangtai(false);
+    }
+  };
+
+  const xuLyTimKiem = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setDangtai(true);
+    try {
+      const danhSach = tukhoaTimKiem.trim()
+        ? await dichVuApi.timSanPham(tukhoaTimKiem)
+        : await dichVuApi.layDanhSachSanPham();
+      setDanhsachsanpham(danhSach);
+      hienthithongbao('thanh_cong', tukhoaTimKiem.trim() ? 'Đã tìm thấy sản phẩm' : 'Đã tải lại danh sách sản phẩm');
+    } catch (error: any) {
+      hienthithongbao('loi', error.message || 'Không thể tìm kiếm sản phẩm');
+    } finally {
+      setDangtai(false);
+    }
+  };
+
+  const xuLyXemChiTiet = async (sanPhamId: number) => {
+    setDangTaiChiTiet(true);
+    setHienThiChiTiet(true);
+    setSanPhamChiTiet(null);
+    try {
+      const chiTiet = await dichVuApi.layChiTietSanPham(sanPhamId);
+      setSanPhamChiTiet(chiTiet);
+    } catch (error: any) {
+      hienthithongbao('loi', error.message || 'Không thể tải chi tiết sản phẩm');
+      setHienThiChiTiet(false);
+    } finally {
+      setDangTaiChiTiet(false);
     }
   };
 

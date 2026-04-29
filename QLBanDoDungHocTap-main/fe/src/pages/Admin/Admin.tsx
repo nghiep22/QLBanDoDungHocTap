@@ -3,6 +3,8 @@ import { useDangNhap } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { QuanLySanPham } from './QuanLySanPham';
 import { QuanLyDonHang } from './QuanLyDonHang';
+import { QuanLyKho } from './QuanLyKho';
+import { QuanLyNhapHang } from './QuanLyNhapHang';
 import * as S from './styles';
 
 export const Admin = () => {
@@ -44,8 +46,8 @@ export const Admin = () => {
             Đơn hàng
           </S.MenuItem>
 
-          <S.MenuItem $active={activeTab === 'customers'} onClick={() => setActiveTab('customers')}>
-            Khách hàng
+          <S.MenuItem $active={activeTab === 'imports'} onClick={() => setActiveTab('imports')}>
+            Nhập hàng
           </S.MenuItem>
 
           <S.MenuItem $active={activeTab === 'inventory'} onClick={() => setActiveTab('inventory')}>
@@ -54,6 +56,10 @@ export const Admin = () => {
 
           <S.MenuItem $active={activeTab === 'reports'} onClick={() => setActiveTab('reports')}>
             Báo cáo
+          </S.MenuItem>
+
+          <S.MenuItem $active={activeTab === 'customers'} onClick={() => setActiveTab('customers')}>
+            Khách hàng
           </S.MenuItem>
         </S.Menu>
 
@@ -72,9 +78,10 @@ export const Admin = () => {
             {activeTab === 'dashboard' && 'Dashboard'}
             {activeTab === 'products' && 'Quản lý sản phẩm'}
             {activeTab === 'orders' && 'Quản lý đơn hàng'}
-            {activeTab === 'customers' && 'Quản lý khách hàng'}
+            {activeTab === 'imports' && 'Quản lý nhập hàng'}
             {activeTab === 'inventory' && 'Quản lý kho'}
             {activeTab === 'reports' && 'Báo cáo thống kê'}
+            {activeTab === 'customers' && 'Quản lý khách hàng'}
           </S.PageTitle>
         </S.Header>
 
@@ -117,8 +124,10 @@ export const Admin = () => {
 
           {activeTab === 'products' && <QuanLySanPham />}
           {activeTab === 'orders' && <QuanLyDonHang />}
+          {activeTab === 'imports' && <QuanLyNhapHang />}
+          {activeTab === 'inventory' && <QuanLyKho />}
 
-          {activeTab !== 'dashboard' && activeTab !== 'products' && activeTab !== 'orders' && (
+          {activeTab !== 'dashboard' && activeTab !== 'products' && activeTab !== 'orders' && activeTab !== 'imports' && activeTab !== 'inventory' && (
             <S.ComingSoon>
               <h2>Đang phát triển</h2>
               <p>Chức năng {activeTab} đang được xây dựng</p>

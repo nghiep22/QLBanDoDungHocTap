@@ -16,6 +16,7 @@ builder.Services.AddTransient(sp => new Kho_DAL(connStr));
 // BLL
 builder.Services.AddScoped<IDonHang_BLL, DonHang_BLL>();
 builder.Services.AddScoped<IHoaDonNhap_BLL, HoaDonNhap_BLL>();
+builder.Services.AddScoped<IKho_BLL, Kho_BLL>();
 
 // CORS - Allow all origins
 builder.Services.AddCors(opt =>

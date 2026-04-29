@@ -30,6 +30,15 @@ namespace BLL
             if (req.ChiTiet == null || req.ChiTiet.Count == 0)
                 throw new ArgumentException("Hóa đơn nhập phải có ít nhất 1 sản phẩm");
 
+            foreach (var item in req.ChiTiet)
+            {
+                if (item.SoLuong <= 0)
+                    throw new ArgumentException("Số lượng nhập phải lớn hơn 0");
+
+                if (item.GiaNhap <= 0)
+                    throw new ArgumentException("Đơn giá nhập phải lớn hơn 0");
+            }
+
             decimal tongTien = req.ChiTiet.Sum(x => x.SoLuong * x.GiaNhap);
             string maHDNhap = $"HDN{DateTime.Now:yyyyMMddHHmmss}";
 

@@ -12,7 +12,12 @@ import {
   NhaCungCapAPI,
   TaoDonHangRequest,
   DonHangAPI,
-  CapNhatTrangThaiDonHangRequest
+  CapNhatTrangThaiDonHangRequest,
+  KhoTonKhoAPI,
+  KhoCapNhatRequest,
+  LichSuKhoAPI,
+  TaoHoaDonNhapRequest,
+  HoaDonNhapAPI
 } from '../types';
 
 // URL gốc của API backend
@@ -190,6 +195,21 @@ class DichVuApi {
     
     return response.json();
   }
+
+  // Tìm kiếm sản phẩm theo từ khóa
+  async timSanPham(tuKhoa: string): Promise<SanPhamAPI[]> {
+    const params = new URLSearchParams();
+    if (tuKhoa.trim()) params.append('search', tuKhoa.trim());
+
+    const url = params.toString() ? `/api/dohoctap?${params}` : '/api/dohoctap';
+    const response = await fetch(`${URL_API_GOC}${url}`);
+
+    if (!response.ok) {
+      throw new Error('Không thể tìm kiếm sản phẩm');
+    }
+
+    return response.json();
+  }
   
   // Tạo sản phẩm mới
   async taoSanPham(data: TaoSanPhamRequest): Promise<{ id: number }> {
@@ -304,6 +324,145 @@ class DichVuApi {
         throw new Error(noiDung || 'Không thể cập nhật trạng thái đơn hàng');
       }
     }
+  }
+
+  // Lấy toàn bộ tồn kho
+  async layDanhSachTonKho(): Promise<KhoTonKhoAPI[]> {
+    const response = await fetch(`${URL_API_GOC}/api/kho`, {
+      headers: this.taoHeaders(true),
+    });
+
+    if (!response.ok) {
+      throw new Error('Không thể lấy danh sách tồn kho');
+    }
+
+    return response.json();
+  }
+
+  // Lấy danh sách cảnh báo sắp hết hàng
+  async layDanhSachSapHetHang(): Promise<KhoTonKhoAPI[]> {
+    const response = await fetch(`${URL_API_GOC}/api/kho/canh-bao`, {
+      headers: this.taoHeaders(true),
+    });
+
+    if (!response.ok) {
+      throw new Error('Không thể lấy danh sách cảnh báo kho');
+    }
+
+    return response.json();
+  }
+
+  // Lấy tồn kho theo sản phẩm
+  async layKhoTheoSanPhamId(sanPhamId: number): Promise<KhoTonKhoAPI> {
+    const response = await fetch(`${URL_API_GOC}/api/kho/san-pham/${sanPhamId}`, {
+      headers: this.taoHeaders(true),
+    });
+
+    if (!response.ok) {
+      throw new Error('Không thể lấy tồn kho của sản phẩm');
+    }
+
+    return response.json();
+  }
+
+  // Cập nhật tồn kho theo sản phẩm
+  async capNhatTonKho(sanPhamId: number, data: KhoCapNhatRequest): Promise<void> {
+    const response = await fetch(`${URL_API_GOC}/api/kho/san-pham/${sanPhamId}`, {
+      method: 'PUT',
+      headers: this.taoHeaders(true),
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const noiDung = await response.text();
+      try {
+        const error = JSON.parse(noiDung);
+        throw new Error(error.message || 'Không thể cập nhật tồn kho');
+      } catch {
+        throw new Error(noiDung || 'Không thể cập nhật tồn kho');
+      }
+    }
+  }
+
+  // Cập nhật số lượng tồn tăng/giảm
+  async capNhatSoLuongTon(sanPhamId: number, soLuongThayDoi: number): Promise<void> {
+    const response = await fetch(`${URL_API_GOC}/api/kho/san-pham/${sanPhamId}/so-luong`, {
+      method: 'PATCH',
+      headers: this.taoHeaders(true),
+      body: JSON.stringify(soLuongThayDoi),
+    });
+
+    if (!response.ok) {
+      const noiDung = await response.text();
+      try {
+        const error = JSON.parse(noiDung);
+        throw new Error(error.message || 'Không thể cập nhật số lượng tồn');
+      } catch {
+        throw new Error(noiDung || 'Không thể cập nhật số lượng tồn');
+      }
+    }
+  }
+
+  // Lấy lịch sử nhập/xuất kho
+  async layLichSuKho(): Promise<LichSuKhoAPI[]> {
+    const response = await fetch(`${URL_API_GOC}/api/kho/lich-su`, {
+      headers: this.taoHeaders(true),
+    });
+
+    if (!response.ok) {
+      throw new Error('Không thể lấy lịch sử kho');
+    }
+
+    return response.json();
+  }
+
+  // ============================================
+  // NHẬP HÀNG
+  // ============================================
+
+  async layDanhSachHoaDonNhap(): Promise<HoaDonNhapAPI[]> {
+    const response = await fetch(`${URL_API_GOC}/api/hoadonnhap`, {
+      headers: this.taoHeaders(true),
+    });
+
+    if (!response.ok) {
+      throw new Error('Không thể lấy danh sách hóa đơn nhập');
+    }
+
+    return response.json();
+  }
+
+  async layChiTietHoaDonNhap(id: number): Promise<HoaDonNhapAPI> {
+    const response = await fetch(`${URL_API_GOC}/api/hoadonnhap/${id}`, {
+      headers: this.taoHeaders(true),
+    });
+
+    if (!response.ok) {
+      throw new Error('Không thể lấy chi tiết hóa đơn nhập');
+    }
+
+    return response.json();
+  }
+
+  async taoHoaDonNhap(data: TaoHoaDonNhapRequest): Promise<{ id: number }> {
+    const response = await fetch(`${URL_API_GOC}/api/hoadonnhap`, {
+      method: 'POST',
+      headers: this.taoHeaders(true),
+      body: JSON.stringify(data),
+    });
+
+    const noiDung = await response.text();
+
+    if (!response.ok) {
+      try {
+        const error = JSON.parse(noiDung);
+        throw new Error(error.message || 'Không thể tạo hóa đơn nhập');
+      } catch {
+        throw new Error(noiDung || 'Không thể tạo hóa đơn nhập');
+      }
+    }
+
+    return JSON.parse(noiDung);
   }
 }
 

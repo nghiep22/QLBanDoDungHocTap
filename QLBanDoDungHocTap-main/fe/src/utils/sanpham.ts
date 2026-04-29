@@ -55,7 +55,7 @@ export const chuyendoisanpham = (apiSanPham: SanPhamAPI): SanPham => {
     loaiCon: apiSanPham.loaiCon || suyRaLoaiConTuTen(apiSanPham.tenSanPham, apiSanPham.loai_Id),
     thuongHieu: apiSanPham.thuongHieu || suyRaThuongHieuTuTen(apiSanPham.tenSanPham, slug),
     mauSac,
-    soLuongTon: 100, // Mặc định, cần API kho để lấy chính xác
+    soLuongTon: apiSanPham.soLuongTon ?? 0,
     giamGia: 0,
     hot: false,
     moi: false,
