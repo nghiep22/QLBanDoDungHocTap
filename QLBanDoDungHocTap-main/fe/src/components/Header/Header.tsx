@@ -39,6 +39,8 @@ export const Header = () => {
                   )}
                   <button onClick={xuLyDangXuat} style={{ background: 'transparent', border: 'none', color: 'white', cursor: 'pointer', fontWeight: 600 }}>
                     Đăng xuất
+
+                    
                   </button>
                 </>
               ) : (
