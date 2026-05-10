@@ -10,8 +10,10 @@ import { Footer } from './components/Footer/Footer';
 import { Home } from './pages/Home/Home';
 import { Category } from './pages/Category/Category';
 import { Cart } from './pages/Cart/Cart';
+import { SearchResults } from './pages/SearchResults/SearchResults';
 import { Login } from './pages/Login/Login';
 import { Register } from './pages/Register/Register';
+
 import { Admin } from './pages/Admin/Admin';
 
 function App() {
@@ -45,8 +47,10 @@ function App() {
                     <Routes>
                       <Route path="/" element={<Home />} />
                       <Route path="/danh-muc/:slug" element={<Category />} />
+                      <Route path="/tim-kiem" element={<SearchResults />} />
                       <Route path="/gio-hang" element={<Cart />} />
                     </Routes>
+
                     <Footer />
                   </>
                 }

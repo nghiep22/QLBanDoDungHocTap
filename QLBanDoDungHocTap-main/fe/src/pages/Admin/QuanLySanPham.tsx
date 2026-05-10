@@ -228,43 +228,51 @@ export const QuanLySanPham = () => {
     }
   };
 
-  const xuLyTimKiem = async (e: React.FormEvent) => {
+  const xuLyTimKiem = (e: React.FormEvent) => {
     e.preventDefault();
-    setDangtai(true);
-    try {
-      const danhSach = tukhoaTimKiem.trim()
-        ? await dichVuApi.timSanPham(tukhoaTimKiem)
-        : await dichVuApi.layDanhSachSanPham();
-      setDanhsachsanpham(danhSach);
-      hienthithongbao('thanh_cong', tukhoaTimKiem.trim() ? 'Đã tìm thấy sản phẩm' : 'Đã tải lại danh sách sản phẩm');
-    } catch (error: any) {
-      hienthithongbao('loi', error.message || 'Không thể tìm kiếm sản phẩm');
-    } finally {
-      setDangtai(false);
-    }
   };
 
-  const xuLyXemChiTiet = async (sanPhamId: number) => {
-    setDangTaiChiTiet(true);
+  const xuLyXemChiTiet = (sanPham: SanPhamAPI) => {
+    setSanPhamChiTiet(sanPham);
     setHienThiChiTiet(true);
-    setSanPhamChiTiet(null);
-    try {
-      const chiTiet = await dichVuApi.layChiTietSanPham(sanPhamId);
-      setSanPhamChiTiet(chiTiet);
-    } catch (error: any) {
-      hienthithongbao('loi', error.message || 'Không thể tải chi tiết sản phẩm');
-      setHienThiChiTiet(false);
-    } finally {
-      setDangTaiChiTiet(false);
-    }
   };
+
+  const dongChiTiet = () => {
+    setHienThiChiTiet(false);
+    setSanPhamChiTiet(null);
+  };
+
+  const danhSachHienThi = useMemo(() => {
+    const tuKhoa = tukhoaTimKiem.trim().toLowerCase();
+    if (!tuKhoa) return danhsachsanpham;
+
+    return danhsachsanpham.filter((sp) => {
+      const giaTriTimKiem = [sp.maSanPham, sp.tenSanPham, String(sp.sanPham_Id)]
+        .filter((value): value is string => Boolean(value))
+        .map((value) => value.toLowerCase());
+
+      return giaTriTimKiem.some((giaTri) => giaTri.includes(tuKhoa));
+    });
+  }, [danhsachsanpham, tukhoaTimKiem]);
 
   return (
     <S.Container>
       {/* danh sách sản phẩm - tiêu đề và thao tác thêm */}
       <S.Header>
         <h2>Quản lý sản phẩm</h2>
-        <S.Button onClick={() => moform()}>+ Thêm sản phẩm</S.Button>
+        <S.Toolbar>
+          <S.SearchForm onSubmit={xuLyTimKiem}>
+            <S.SearchInput
+              type="text"
+              value={tukhoaTimKiem}
+              onChange={(e) => setTukhoaTimKiem(e.target.value)}
+              placeholder="Tìm theo tên hoặc mã SP..."
+            />
+            <S.Button type="submit">Tìm kiếm</S.Button>
+          </S.SearchForm>
+          <S.Button onClick={() => { setTukhoaTimKiem(''); taidulieu(); }}>Tải lại</S.Button>
+          <S.Button onClick={() => moform()}>+ Thêm sản phẩm</S.Button>
+        </S.Toolbar>
       </S.Header>
 
       {/* thông báo */}
@@ -291,7 +299,7 @@ export const QuanLySanPham = () => {
           </tr>
         </thead>
         <tbody>
-          {danhsachsanpham.map(sp => (
+          {danhSachHienThi.map(sp => (
             <tr key={sp.sanPham_Id}>
               <td>{sp.maSanPham || '-'}</td>
               <td>
@@ -301,8 +309,8 @@ export const QuanLySanPham = () => {
                 </S.ProductInfo>
               </td>
               <td>{danhsachloai.find(l => l.id === sp.loai_Id)?.ten}</td>
-              <td>{sp.giaBan.toLocaleString()}đ</td>
-              <td>{sp.giaNhap.toLocaleString()}đ</td>
+              <td>{formatCurrency(sp.giaBan)}</td>
+              <td>{formatCurrency(sp.giaNhap)}</td>
               <td>
                 <S.Badge $active={sp.trangThai}>
                   {sp.trangThai ? 'Đang bán' : 'Ngừng bán'}
@@ -313,6 +321,8 @@ export const QuanLySanPham = () => {
                   {/* sửa sản phẩm */}
                   <S.EditButton onClick={() => moform(sp)}>Sửa</S.EditButton>
 
+                  <S.EditButton onClick={() => xuLyXemChiTiet(sp)}>Chi tiết</S.EditButton>
+
                   {/* xóa sản phẩm */}
                   <S.DeleteButton onClick={() => xulyxoa(sp.sanPham_Id)}>Xóa</S.DeleteButton>
                 </S.ActionButtons>
@@ -321,6 +331,37 @@ export const QuanLySanPham = () => {
           ))}
         </tbody>
       </S.Table>
+
+      {/* chi tiết sản phẩm */}
+      {hienThiChiTiet && (
+        <S.Modal onClick={dongChiTiet}>
+          <S.ModalContent onClick={(e: React.MouseEvent) => e.stopPropagation()}>
+            <S.ModalHeader>
+              <h3>Chi tiết sản phẩm</h3>
+              <S.CloseButton onClick={dongChiTiet}>×</S.CloseButton>
+            </S.ModalHeader>
+            <div style={{ padding: '20px' }}>
+              {dangTaiChiTiet && <S.Loading>Đang tải chi tiết...</S.Loading>}
+              {!dangTaiChiTiet && sanPhamChiTiet && (
+                <div style={{ display: 'grid', gap: 12 }}>
+                  {sanPhamChiTiet.hinhAnh && (
+                    <img src={sanPhamChiTiet.hinhAnh} alt={sanPhamChiTiet.tenSanPham} style={{ width: '100%', maxHeight: 260, objectFit: 'cover', borderRadius: 8 }} />
+                  )}
+                  <p><strong>Mã SP:</strong> {sanPhamChiTiet.maSanPham || '-'}</p>
+                  <p><strong>Tên SP:</strong> {sanPhamChiTiet.tenSanPham}</p>
+                  <p><strong>Loại:</strong> {danhsachloai.find(l => l.id === sanPhamChiTiet.loai_Id)?.ten || '-'}</p>
+                  <p><strong>Thương hiệu:</strong> {sanPhamChiTiet.thuongHieu || '-'}</p>
+                  <p><strong>Màu sắc:</strong> {sanPhamChiTiet.mauSac || '-'}</p>
+                  <p><strong>Giá bán:</strong> {formatCurrency(sanPhamChiTiet.giaBan)}</p>
+                  <p><strong>Giá nhập:</strong> {formatCurrency(sanPhamChiTiet.giaNhap)}</p>
+                  <p><strong>Trạng thái:</strong> {sanPhamChiTiet.trangThai ? 'Đang bán' : 'Ngừng bán'}</p>
+                  <p><strong>Mô tả:</strong> {sanPhamChiTiet.moTa || 'Chưa có mô tả'}</p>
+                </div>
+              )}
+            </div>
+          </S.ModalContent>
+        </S.Modal>
+      )}
 
       {/* thêm sản phẩm / sửa sản phẩm */}
       {hienthiform && (

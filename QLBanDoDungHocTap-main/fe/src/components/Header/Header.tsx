@@ -12,7 +12,9 @@ export const Header = () => {
 
   const xuLyTimKiem = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Tìm kiếm:', timKiem);
+    const tuKhoa = timKiem.trim();
+    if (!tuKhoa) return;
+    navigate(`/tim-kiem?search=${encodeURIComponent(tuKhoa)}`);
   };
 
   const xuLyDangXuat = () => {
