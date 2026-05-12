@@ -1,16 +1,63 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDangNhap } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { QuanLySanPham } from './QuanLySanPham';
 import { QuanLyDonHang } from './QuanLyDonHang';
 import { QuanLyKho } from './QuanLyKho';
 import { QuanLyNhapHang } from './QuanLyNhapHang';
+import { dichVuApi } from '../../services/api';
 import * as S from './styles';
+
+interface DashboardStats {
+  tongSanPham: number;
+  tongDonHang: number;
+  tongKhachHang: number;
+  tongDoanhThu: number;
+}
 
 export const Admin = () => {
   const { nguoiDung, dangXuat } = useDangNhap();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [dashboardStats, setDashboardStats] = useState<DashboardStats>({
+    tongSanPham: 0,
+    tongDonHang: 0,
+    tongKhachHang: 0,
+    tongDoanhThu: 0,
+  });
+  const [loading, setLoading] = useState(false);
+
+  // Lấy dữ liệu thống kê khi vào dashboard
+  useEffect(() => {
+    if (activeTab === 'dashboard') {
+      loadDashboardStats();
+    }
+  }, [activeTab]);
+
+  const loadDashboardStats = async () => {
+    try {
+      setLoading(true);
+      const stats = await dichVuApi.layThongKeDashboard();
+      setDashboardStats(stats);
+    } catch (error) {
+      console.error('Lỗi khi tải thống kê:', error);
+      // Giữ nguyên giá trị mặc định nếu lỗi
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Format số tiền
+  const formatCurrency = (amount: number): string => {
+    if (amount >= 1000000000) {
+      return `${(amount / 1000000000).toFixed(1)}B`;
+    } else if (amount >= 1000000) {
+      return `${(amount / 1000000).toFixed(1)}M`;
+    } else if (amount >= 1000) {
+      return `${(amount / 1000).toFixed(1)}K`;
+    }
+    return amount.toString();
+  };
 
   const handleLogout = () => {
     dangXuat();
@@ -91,7 +138,9 @@ export const Admin = () => {
               <S.StatCard color="#4caf50">
                 <S.StatIcon />
                 <S.StatInfo>
-                  <S.StatValue>1,234</S.StatValue>
+                  <S.StatValue>
+                    {loading ? '...' : dashboardStats.tongSanPham.toLocaleString()}
+                  </S.StatValue>
                   <S.StatLabel>Tổng sản phẩm</S.StatLabel>
                 </S.StatInfo>
               </S.StatCard>
@@ -99,7 +148,9 @@ export const Admin = () => {
               <S.StatCard color="#2196f3">
                 <S.StatIcon />
                 <S.StatInfo>
-                  <S.StatValue>567</S.StatValue>
+                  <S.StatValue>
+                    {loading ? '...' : dashboardStats.tongDonHang.toLocaleString()}
+                  </S.StatValue>
                   <S.StatLabel>Đơn hàng</S.StatLabel>
                 </S.StatInfo>
               </S.StatCard>
@@ -107,7 +158,9 @@ export const Admin = () => {
               <S.StatCard color="#ff9800">
                 <S.StatIcon />
                 <S.StatInfo>
-                  <S.StatValue>890</S.StatValue>
+                  <S.StatValue>
+                    {loading ? '...' : dashboardStats.tongKhachHang.toLocaleString()}
+                  </S.StatValue>
                   <S.StatLabel>Khách hàng</S.StatLabel>
                 </S.StatInfo>
               </S.StatCard>
@@ -115,7 +168,9 @@ export const Admin = () => {
               <S.StatCard color="#e91e63">
                 <S.StatIcon />
                 <S.StatInfo>
-                  <S.StatValue>125M</S.StatValue>
+                  <S.StatValue>
+                    {loading ? '...' : formatCurrency(dashboardStats.tongDoanhThu)}
+                  </S.StatValue>
                   <S.StatLabel>Doanh thu</S.StatLabel>
                 </S.StatInfo>
               </S.StatCard>

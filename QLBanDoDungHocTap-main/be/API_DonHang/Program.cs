@@ -12,11 +12,13 @@ builder.Services.AddTransient(sp => new ChiTietDonHang_DAL(connStr));
 builder.Services.AddTransient(sp => new HoaDonNhap_DAL(connStr));
 builder.Services.AddTransient(sp => new ChiTietHDNhap_DAL(connStr));
 builder.Services.AddTransient(sp => new Kho_DAL(connStr));
+builder.Services.AddTransient(sp => new ThongKe_DAL(connStr));
 
 // BLL
 builder.Services.AddScoped<IDonHang_BLL, DonHang_BLL>();
 builder.Services.AddScoped<IHoaDonNhap_BLL, HoaDonNhap_BLL>();
 builder.Services.AddScoped<IKho_BLL, Kho_BLL>();
+builder.Services.AddScoped<IThongKe_BLL>(sp => new ThongKe_BLL(connStr));
 
 // CORS - Allow all origins
 builder.Services.AddCors(opt =>

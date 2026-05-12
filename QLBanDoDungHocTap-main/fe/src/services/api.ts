@@ -464,6 +464,72 @@ class DichVuApi {
 
     return JSON.parse(noiDung);
   }
+
+  // ============================================
+  // THỐNG KÊ DASHBOARD
+  // ============================================
+
+  // Lấy thống kê tổng quan cho dashboard
+  async layThongKeDashboard(): Promise<{
+    tongSanPham: number;
+    tongDonHang: number;
+    tongKhachHang: number;
+    tongDoanhThu: number;
+  }> {
+    const response = await fetch(`${URL_API_GOC}/api/thongke/dashboard`, {
+      headers: this.taoHeaders(true),
+    });
+
+    if (!response.ok) {
+      throw new Error('Không thể lấy thống kê dashboard');
+    }
+
+    return response.json();
+  }
+
+  // Lấy doanh thu theo ngày
+  async layDoanhThuTheoNgay(tuNgay?: string, denNgay?: string): Promise<any[]> {
+    const params = new URLSearchParams();
+    if (tuNgay) params.append('tuNgay', tuNgay);
+    if (denNgay) params.append('denNgay', denNgay);
+
+    const url = params.toString() ? `/api/thongke/doanh-thu?${params}` : '/api/thongke/doanh-thu';
+    const response = await fetch(`${URL_API_GOC}${url}`, {
+      headers: this.taoHeaders(true),
+    });
+
+    if (!response.ok) {
+      throw new Error('Không thể lấy doanh thu theo ngày');
+    }
+
+    return response.json();
+  }
+
+  // Lấy top sản phẩm bán chạy
+  async layTopSanPham(limit: number = 10): Promise<any[]> {
+    const response = await fetch(`${URL_API_GOC}/api/thongke/top-san-pham?limit=${limit}`, {
+      headers: this.taoHeaders(true),
+    });
+
+    if (!response.ok) {
+      throw new Error('Không thể lấy top sản phẩm');
+    }
+
+    return response.json();
+  }
+
+  // Lấy đơn hàng theo trạng thái
+  async layDonHangTheoTrangThai(): Promise<any[]> {
+    const response = await fetch(`${URL_API_GOC}/api/thongke/don-hang-theo-trang-thai`, {
+      headers: this.taoHeaders(true),
+    });
+
+    if (!response.ok) {
+      throw new Error('Không thể lấy thống kê đơn hàng theo trạng thái');
+    }
+
+    return response.json();
+  }
 }
 
 // Export instance để sử dụng
