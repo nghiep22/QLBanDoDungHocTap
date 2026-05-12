@@ -15,7 +15,7 @@ const danhMucList: (LoaiSanPham & { slug: string })[] = danhsachloaisanpham.map(
 
 const heroSlides = [
   {
-    title: 'Thiên Long Shop - Đồ dùng học tập & văn phòng phẩm',
+    title: 'StudyHub - Đồ dùng học tập & văn phòng phẩm',
     description: 'Mô phỏng cảm hứng từ thienlong.vn với không gian mua sắm hiện đại, ưu đãi nổi bật và sản phẩm học tập chất lượng.',
     button: 'Khám phá ngay',
   },
@@ -42,7 +42,7 @@ const chuyenTrang = [
     image: 'https://cdn.hstatic.net/files/1000230347/file/1920x600__15_.webp',
   },
   {
-    title: 'Thiên Long bút viết',
+    title: 'StudyHub bút viết',
     image: 'https://cdn.hstatic.net/files/1000230347/file/1920_x_600___cta__2.webp',
   },
   {
@@ -73,11 +73,11 @@ const baiVietNoiBat = [
 
 const sanPhamTieuBieu = [
   { ten: 'Combo 5 Ream giấy A4 70 gsm IK Copy', gia: '382,500₫' },
-  { ten: 'Máy tính khoa học Thiên Long Flexio Fx799VN', gia: '556,800₫' },
+  { ten: 'Máy tính khoa học StudyHub Flexio Fx799VN', gia: '556,800₫' },
   { ten: 'Combo 10 Bút gel Minimalist GEL-071', gia: '102,000₫' },
-  { ten: 'Cặp học sinh Strive Thiên Long', gia: '227,700₫' },
+  { ten: 'Cặp học sinh Strive StudyHub', gia: '227,700₫' },
   { ten: 'Combo 10 Bút gel Joyee GEL-067', gia: '58,000₫' },
-  { ten: 'Máy tính văn phòng Thiên Long Flexio CAL-011', gia: '155,000₫' },
+  { ten: 'Máy tính văn phòng StudyHub Flexio CAL-011', gia: '155,000₫' },
 ];
 
 export const Home = () => {
@@ -148,7 +148,7 @@ export const Home = () => {
         <S.SectionHeader>
           <div>
             <S.SectionTitle>Danh mục nổi bật</S.SectionTitle>
-            <S.SectionText>Thay thế danh sách mô phỏng bằng banner tham chiếu từ Thiên Long.</S.SectionText>
+            <S.SectionText>Thay thế danh sách mô phỏng bằng banner tham chiếu từ StudyHub.</S.SectionText>
           </div>
         </S.SectionHeader>
         <S.FeatureBannerCard>
@@ -160,7 +160,6 @@ export const Home = () => {
         <S.SectionHeader>
           <div>
             <S.SectionTitle>Sản phẩm theo từng mục</S.SectionTitle>
-            <S.SectionText>Mỗi mục hiển thị 4 sản phẩm, các sản phẩm còn lại được thu gọn ngay bên dưới mục đó.</S.SectionText>
           </div>
         </S.SectionHeader>
 
@@ -216,7 +215,7 @@ export const Home = () => {
         <S.SectionHeader>
           <div>
             <S.SectionTitle>Chuyên trang nổi bật</S.SectionTitle>
-            <S.SectionText>Các khối nội dung lớn giống cấu trúc trang chủ Thiên Long.</S.SectionText>
+            <S.SectionText>Các khối nội dung lớn giống cấu trúc trang chủ StudyHub.</S.SectionText>
           </div>
         </S.SectionHeader>
         <S.ShowcaseGrid>
@@ -252,7 +251,7 @@ export const Home = () => {
         <S.BlogPanel>
           <S.SectionHeader>
             <div>
-              <S.SectionTitle>Thư viện Thiên Long</S.SectionTitle>
+              <S.SectionTitle>Thư viện StudyHub</S.SectionTitle>
               <S.SectionText>Mô phỏng khu vực blog / bài viết nổi bật.</S.SectionText>
             </div>
           </S.SectionHeader>

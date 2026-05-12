@@ -68,7 +68,7 @@ export const Admin = () => {
     <S.Container>
       <S.Sidebar>
         <S.Logo>
-          <h2>THIÊN LONG</h2>
+          <h2>StudyHub</h2>
           <span>Admin Panel</span>
         </S.Logo>
 

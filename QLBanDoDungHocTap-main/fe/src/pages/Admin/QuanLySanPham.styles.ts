@@ -104,6 +104,7 @@ export const Table = styled.table`
       td {
         padding: 12px;
         color: #666;
+        vertical-align: middle;
       }
     }
   }
@@ -123,10 +124,16 @@ export const ProductImage = styled.img`
 `;
 
 export const Badge = styled.span<{ $active: boolean }>`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 4px 12px;
   border-radius: 12px;
   font-size: 12px;
   font-weight: 500;
+  white-space: nowrap;
+  line-height: 1;
+  min-width: 86px;
   background: ${props => props.$active ? '#d4edda' : '#f8d7da'};
   color: ${props => props.$active ? '#155724' : '#721c24'};
 `;

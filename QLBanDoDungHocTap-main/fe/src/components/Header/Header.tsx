@@ -60,7 +60,7 @@ export const Header = () => {
         <S.Container>
           <S.HeaderContent>
             <S.Logo to="/">
-              <h1>THIÊN LONG</h1>
+              <h1>StudyHub</h1>
               <span>Shop</span>
             </S.Logo>
 
@@ -87,6 +87,7 @@ export const Header = () => {
       <S.NavBar>
         <S.Container>
           <S.NavContent>
+            <S.NavLink to="/">Trang chủ</S.NavLink>
             <S.NavLink to="/danh-muc/van-phong-pham">Văn phòng phẩm</S.NavLink>
             <S.NavLink to="/danh-muc/sach-vo">Sách & Vở</S.NavLink>
             <S.NavLink to="/danh-muc/dung-cu-ve">Dụng cụ vẽ</S.NavLink>

@@ -114,7 +114,7 @@ export const Register = () => {
       <S.FormWrapper>
         {/* Logo */}
         <S.Logo>
-          <h1>THIÊN LONG</h1>
+          <h1>StudyHub</h1>
           <span>Shop</span>
         </S.Logo>
 

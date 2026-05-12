@@ -8,7 +8,7 @@ export const Footer = () => {
         <S.FooterContent>
           <S.FooterColumn>
             <S.Logo>
-              <h2>THIÊN LONG</h2>
+              <h2>StudyHub</h2>
               <span>Shop</span>
             </S.Logo>
             <S.Description>
@@ -33,7 +33,7 @@ export const Footer = () => {
           </S.FooterColumn>
 
           <S.FooterColumn>
-            <S.ColumnTitle>Về Thiên Long</S.ColumnTitle>
+            <S.ColumnTitle>Về StudyHub</S.ColumnTitle>
             <S.LinkList>
               <li><Link to="/gioi-thieu">Giới thiệu</Link></li>
               <li><Link to="/lien-he">Liên hệ</Link></li>
@@ -56,7 +56,7 @@ export const Footer = () => {
         </S.FooterContent>
 
         <S.FooterBottom>
-          <p>© 2026 Thiên Long Shop. Bản quyền thuộc về Công ty TNHH MTV TM-DV Thiên Long Hoàn Cầu</p>
+          <p>© 2026 StudyHub. Bản quyền thuộc về StudyHub</p>
           <S.SocialLinks>
             <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
               Facebook

@@ -16,7 +16,7 @@ const slugTheoLoaiId: Record<number, string> = {
 const suyRaThuongHieuTuTen = (tenSanPham: string, slug?: string) => {
   const thuongHieus = slug ? (danhMucTinhTheoSlug[slug]?.brands || []) : danhSachThuocTinhLoc.brands;
   const ten = tenSanPham.toLowerCase();
-  return thuongHieus.find((thuongHieu) => ten.includes(thuongHieu.toLowerCase())) || 'Thiên Long';
+  return thuongHieus.find((thuongHieu) => ten.includes(thuongHieu.toLowerCase())) || 'StudyHub';
 };
 
 const suyRaLoaiConTuTen = (tenSanPham: string, loaiId: number) => {

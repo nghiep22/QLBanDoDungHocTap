@@ -26,7 +26,7 @@ export const danhMucTinhTheoSlug: Record<string, DanhMucTinh> = {
     title: 'Văn phòng phẩm',
     bannerImage: 'https://cdn.hstatic.net/files/1000230347/collection/1920x60_8a4beb298da74bd59095726b4717daeb.jpg',
     productTypes: ['Bút lông bảng - lông dầu', 'File bìa hồ sơ', 'Băng keo', 'Kéo văn phòng', 'Giấy ghi chú'],
-    brands: ['Thiên Long', 'Flexoffice', 'Bizner', 'Colokit'],
+    brands: ['StudyHub', 'Flexoffice', 'Bizner', 'Colokit'],
     priceRanges: [
       { id: 'under-100', label: 'Giá dưới 100.000đ', max: 100000 },
       { id: '100-300', label: '100.000đ - 300.000đ', min: 100000, max: 300000 },
@@ -49,7 +49,7 @@ export const danhMucTinhTheoSlug: Record<string, DanhMucTinh> = {
     title: 'Sách & Vở',
     bannerImage: 'https://cdn.hstatic.net/files/1000230347/collection/1920x600_511a25c61c4f474a8f35c20ef6ee95dc.jpg',
     productTypes: ['Tập học sinh', 'Sổ tay', 'Nhãn vở', 'Bìa bao', 'Combo học tập'],
-    brands: ['Thiên Long', 'Colokit', 'Flexoffice'],
+    brands: ['StudyHub', 'Colokit', 'Flexoffice'],
     priceRanges: [
       { id: 'under-100', label: 'Giá dưới 100.000đ', max: 100000 },
       { id: '100-300', label: '100.000đ - 300.000đ', min: 100000, max: 300000 },
@@ -72,7 +72,7 @@ export const danhMucTinhTheoSlug: Record<string, DanhMucTinh> = {
     title: 'Dụng cụ vẽ',
     bannerImage: 'https://cdn.hstatic.net/files/1000230347/collection/1920x600_58707374375e4b61b1f67558eb918335.png',
     productTypes: ['Bút lông màu', 'Bút chì màu', 'Màu nước', 'Sáp nặn', 'Acrylic Marker'],
-    brands: ['Colokit', 'Thiên Long', 'Flexoffice'],
+    brands: ['Colokit', 'StudyHub', 'Flexoffice'],
     priceRanges: [
       { id: 'under-100', label: 'Giá dưới 100.000đ', max: 100000 },
       { id: '100-300', label: '100.000đ - 300.000đ', min: 100000, max: 300000 },
@@ -99,7 +99,7 @@ export const danhMucTinhTheoSlug: Record<string, DanhMucTinh> = {
     title: 'Ba lô & Túi',
     bannerImage: 'https://cdn.hstatic.net/files/1000230347/collection/1920x600_511a25c61c4f474a8f35c20ef6ee95dc.jpg',
     productTypes: ['Ba lô học sinh', 'Cặp chống gù', 'Túi đựng dụng cụ', 'Hộp viết'],
-    brands: ['Thiên Long', 'Flexoffice'],
+    brands: ['StudyHub', 'Flexoffice'],
     priceRanges: [
       { id: 'under-100', label: 'Giá dưới 100.000đ', max: 100000 },
       { id: '100-300', label: '100.000đ - 300.000đ', min: 100000, max: 300000 },
@@ -122,7 +122,7 @@ export const danhMucTinhTheoSlug: Record<string, DanhMucTinh> = {
     title: 'Điện tử học tập',
     bannerImage: 'https://cdn.hstatic.net/files/1000230347/collection/1920x600_511a25c61c4f474a8f35c20ef6ee95dc.jpg',
     productTypes: ['Máy tính khoa học', 'Máy tính văn phòng', 'Phụ kiện học tập'],
-    brands: ['Thiên Long', 'Flexoffice'],
+    brands: ['StudyHub', 'Flexoffice'],
     priceRanges: [
       { id: 'under-100', label: 'Giá dưới 100.000đ', max: 100000 },
       { id: '100-300', label: '100.000đ - 300.000đ', min: 100000, max: 300000 },

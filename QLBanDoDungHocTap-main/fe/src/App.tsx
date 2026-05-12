@@ -15,6 +15,7 @@ import { Login } from './pages/Login/Login';
 import { Register } from './pages/Register/Register';
 
 import { Admin } from './pages/Admin/Admin';
+import { ProductDetail } from './pages/ProductDetail/ProductDetail';
 
 function App() {
   return (
@@ -48,7 +49,9 @@ function App() {
                       <Route path="/" element={<Home />} />
                       <Route path="/danh-muc/:slug" element={<Category />} />
                       <Route path="/tim-kiem" element={<SearchResults />} />
-                      <Route path="/gio-hang" element={<Cart />} />
+                       <Route path="/gio-hang" element={<Cart />} />
+                       <Route path="/san-pham/:id" element={<ProductDetail />} />
+
                     </Routes>
 
                     <Footer />
