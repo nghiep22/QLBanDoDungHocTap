@@ -1,0 +1,172 @@
+{
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/login/api/auth/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH" ],
+      "DownstreamPathTemplate": "/api/auth/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5010
+        }
+      ],
+      "HttpHandlerOptions": {
+        "DangerousAcceptAnyServerCertificateValidator": true
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/api/auth/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH" ],
+      "DownstreamPathTemplate": "/api/auth/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5010
+        }
+      ],
+      "HttpHandlerOptions": {
+        "DangerousAcceptAnyServerCertificateValidator": true
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/api/dohoctap/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH" ],
+      "DownstreamPathTemplate": "/api/dohoctap/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5020
+        }
+      ],
+      "HttpHandlerOptions": {
+        "DangerousAcceptAnyServerCertificateValidator": true
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/api/nhacungcap/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH" ],
+      "DownstreamPathTemplate": "/api/nhacungcap/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5020
+        }
+      ],
+      "HttpHandlerOptions": {
+        "DangerousAcceptAnyServerCertificateValidator": true
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/api/donhang/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH" ],
+      "DownstreamPathTemplate": "/api/donhang/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5030
+        }
+      ],
+      "HttpHandlerOptions": {
+        "DangerousAcceptAnyServerCertificateValidator": true
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/api/hoadonnhap/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH" ],
+      "DownstreamPathTemplate": "/api/hoadonnhap/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5030
+        }
+      ],
+      "HttpHandlerOptions": {
+        "DangerousAcceptAnyServerCertificateValidator": true
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/api/kho",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH" ],
+      "DownstreamPathTemplate": "/api/kho",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5020
+        }
+      ],
+      "HttpHandlerOptions": {
+        "DangerousAcceptAnyServerCertificateValidator": true
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/api/kho/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH" ],
+      "DownstreamPathTemplate": "/api/kho/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5020
+        }
+      ],
+      "HttpHandlerOptions": {
+        "DangerousAcceptAnyServerCertificateValidator": true
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/api/thongke/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH" ],
+      "DownstreamPathTemplate": "/api/thongke/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5030
+        }
+      ],
+      "HttpHandlerOptions": {
+        "DangerousAcceptAnyServerCertificateValidator": true
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/api/khachhang",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH" ],
+      "DownstreamPathTemplate": "/api/khachhang",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5030
+        }
+      ],
+      "HttpHandlerOptions": {
+        "DangerousAcceptAnyServerCertificateValidator": true
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/api/khachhang/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH" ],
+      "DownstreamPathTemplate": "/api/khachhang/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5030
+        }
+      ],
+      "HttpHandlerOptions": {
+        "DangerousAcceptAnyServerCertificateValidator": true
+      }
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:5000"
+  }
+}

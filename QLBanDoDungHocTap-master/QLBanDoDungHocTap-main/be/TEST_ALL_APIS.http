@@ -1,0 +1,235 @@
+### ============================================
+### TEST ALL APIs - Quản lý bán đồ dùng học tập
+### ============================================
+
+### Variables
+@gateway = http://localhost:5000
+@apiLogin = https://localhost:5010
+@apiSanPham = https://localhost:5020
+@apiDonHang = https://localhost:5030
+
+### ============================================
+### 1. API LOGIN - Authentication
+### ============================================
+
+### 1.1 Đăng ký tài khoản mới
+POST {{gateway}}/api/auth/register
+Content-Type: application/json
+
+{
+  "tenDangNhap": "testuser",
+  "matKhau": "123456",
+  "vaiTro_Id": 2
+}
+
+### 1.2 Đăng nhập
+# @name login
+POST {{gateway}}/api/auth/login
+Content-Type: application/json
+
+{
+  "tenDangNhap": "admin",
+  "matKhau": "admin"
+}
+
+### 1.3 Lấy thông tin user (cần token)
+@token = {{login.response.body.token}}
+GET {{gateway}}/api/auth/me
+Authorization: Bearer {{token}}
+
+### ============================================
+### 2. API SẢN PHẨM - Đồ học tập (KHÔNG CẦN TOKEN)
+### ============================================
+
+### 2.1 Lấy tất cả sản phẩm
+GET {{gateway}}/api/dohoctap
+
+### 2.2 Lấy sản phẩm theo ID
+GET {{gateway}}/api/dohoctap/1
+
+### 2.3 Lấy sản phẩm theo loại
+GET {{gateway}}/api/dohoctap?loaiId=1
+
+### 2.4 Lấy sản phẩm đang hoạt động
+GET {{gateway}}/api/dohoctap?trangThai=true
+
+### 2.5 Tạo sản phẩm mới
+POST {{gateway}}/api/dohoctap
+Content-Type: application/json
+
+{
+  "tenSP": "Bút bi xanh",
+  "loaiDoHocTap_Id": 1,
+  "donGia": 5000,
+  "soLuongTon": 100,
+  "moTa": "Bút bi xanh chất lượng cao",
+  "trangThai": true
+}
+
+### 2.6 Cập nhật sản phẩm
+PUT {{gateway}}/api/dohoctap/1
+Content-Type: application/json
+
+{
+  "tenSP": "Bút bi xanh (Updated)",
+  "loaiDoHocTap_Id": 1,
+  "donGia": 6000,
+  "soLuongTon": 150,
+  "moTa": "Bút bi xanh chất lượng cao - Cập nhật",
+  "trangThai": true
+}
+
+### 2.7 Xóa sản phẩm
+DELETE {{gateway}}/api/dohoctap/1
+
+### ============================================
+### 3. API NHÀ CUNG CẤP (KHÔNG CẦN TOKEN)
+### ============================================
+
+### 3.1 Lấy tất cả nhà cung cấp
+GET {{gateway}}/api/nhacungcap
+
+### 3.2 Lấy nhà cung cấp đang hoạt động
+GET {{gateway}}/api/nhacungcap?trangThai=true
+
+### 3.3 Lấy nhà cung cấp theo ID
+GET {{gateway}}/api/nhacungcap/1
+
+### 3.4 Tạo nhà cung cấp mới
+POST {{gateway}}/api/nhacungcap
+Content-Type: application/json
+
+{
+  "tenNCC": "Công ty TNHH ABC",
+  "diaChi": "123 Đường ABC, Quận 1, TP.HCM",
+  "soDienThoai": "0901234567",
+  "email": "abc@example.com",
+  "trangThai": true
+}
+
+### 3.5 Cập nhật nhà cung cấp
+PUT {{gateway}}/api/nhacungcap/1
+Content-Type: application/json
+
+{
+  "tenNCC": "Công ty TNHH ABC (Updated)",
+  "diaChi": "456 Đường XYZ, Quận 2, TP.HCM",
+  "soDienThoai": "0901234567",
+  "email": "abc@example.com",
+  "trangThai": true
+}
+
+### ============================================
+### 4. API ĐỐN HÀNG (KHÔNG CẦN TOKEN)
+### ============================================
+
+### 4.1 Lấy tất cả đơn hàng
+GET {{gateway}}/api/donhang
+
+### 4.2 Lấy đơn hàng theo trạng thái
+GET {{gateway}}/api/donhang?trangThai=Chờ xử lý
+
+### 4.3 Lấy đơn hàng theo ID
+GET {{gateway}}/api/donhang/1
+
+### 4.4 Tạo đơn hàng mới
+POST {{gateway}}/api/donhang
+Content-Type: application/json
+
+{
+  "khachHang_Id": 1,
+  "nhanVien_Id": 1,
+  "ngayDat": "2024-03-31T10:00:00",
+  "trangThaiDH": "Chờ xử lý",
+  "tongTien": 50000,
+  "chiTietDonHangs": [
+    {
+      "doHocTap_Id": 1,
+      "soLuong": 5,
+      "donGia": 10000
+    }
+  ]
+}
+
+### 4.5 Cập nhật trạng thái đơn hàng
+PATCH {{gateway}}/api/donhang/1/status
+Content-Type: application/json
+
+{
+  "trangThaiDH": "Đang xử lý"
+}
+
+### ============================================
+### 5. API HÓA ĐƠN NHẬP (KHÔNG CẦN TOKEN)
+### ============================================
+
+### 5.1 Lấy tất cả hóa đơn nhập
+GET {{gateway}}/api/hoadonnhap
+
+### 5.2 Lấy hóa đơn nhập theo ID
+GET {{gateway}}/api/hoadonnhap/1
+
+### 5.3 Tạo hóa đơn nhập mới
+POST {{gateway}}/api/hoadonnhap
+Content-Type: application/json
+
+{
+  "nhaCungCap_Id": 1,
+  "nhanVien_Id": 1,
+  "ngayNhap": "2024-03-31T10:00:00",
+  "tongTien": 100000,
+  "chiTietHDNhaps": [
+    {
+      "doHocTap_Id": 1,
+      "soLuong": 10,
+      "donGia": 10000
+    }
+  ]
+}
+
+### ============================================
+### 6. TEST TRỰC TIẾP (Không qua Gateway)
+### ============================================
+
+### 6.1 Test API Login trực tiếp
+POST {{apiLogin}}/api/auth/login
+Content-Type: application/json
+
+{
+  "tenDangNhap": "admin",
+  "matKhau": "admin"
+}
+
+### 6.2 Test API SanPham trực tiếp
+GET {{apiSanPham}}/api/dohoctap
+
+### 6.3 Test API DonHang trực tiếp
+GET {{apiDonHang}}/api/donhang
+
+### ============================================
+### 7. TEST LỖI (Error Cases)
+### ============================================
+
+### 7.1 Đăng nhập sai mật khẩu
+POST {{gateway}}/api/auth/login
+Content-Type: application/json
+
+{
+  "tenDangNhap": "admin",
+  "matKhau": "wrongpassword"
+}
+
+### 7.2 Đăng ký username đã tồn tại
+POST {{gateway}}/api/auth/register
+Content-Type: application/json
+
+{
+  "tenDangNhap": "admin",
+  "matKhau": "123456"
+}
+
+### 7.3 Lấy sản phẩm không tồn tại
+GET {{gateway}}/api/dohoctap/99999
+
+### 7.4 Lấy đơn hàng không tồn tại
+GET {{gateway}}/api/donhang/99999
