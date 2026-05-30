@@ -347,6 +347,23 @@ class DichVuApi {
   // KHÁCH HÀNG
   // ============================================
 
+  async huyDonHang(id: number): Promise<void> {
+    const response = await fetch(`${URL_API_GOC}/api/donhang/${id}/cancel`, {
+      method: 'PATCH',
+      headers: this.taoHeaders(true),
+    });
+
+    if (!response.ok) {
+      const noiDung = await response.text();
+      try {
+        const error = JSON.parse(noiDung);
+        throw new Error(error.message || 'Khong the huy don hang');
+      } catch {
+        throw new Error(noiDung || 'Khong the huy don hang');
+      }
+    }
+  }
+
   async layDanhSachKhachHang(search?: string): Promise<KhachHangAPI[]> {
     const params = new URLSearchParams();
     if (search?.trim()) params.append('search', search.trim());

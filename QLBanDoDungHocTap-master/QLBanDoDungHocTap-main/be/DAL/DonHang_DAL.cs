@@ -63,6 +63,59 @@ namespace DAL
             return list;
         }
 
+        public async Task<List<DonHang>> GetByTaiKhoanIdAsync(int taiKhoanId)
+        {
+            var list = new List<DonHang>();
+            const string sql = @"
+                SELECT dh.donHang_id, dh.khachHang_id, dh.km_id, dh.maDonHang, dh.ngayDat, dh.ngayGiao,
+                       dh.diaChiGiao, dh.phuongThucTT, dh.trangThaiDH, dh.tongTienGoc, dh.tienGiam, dh.tongThanhToan, dh.ghiChu
+                FROM DonHang dh
+                INNER JOIN KhachHang kh ON dh.khachHang_id = kh.khachHang_id
+                WHERE kh.taiKhoan_id = @TaiKhoanId
+                   OR dh.khachHang_id = @TaiKhoanId
+                ORDER BY dh.ngayDat DESC";
+
+            using var conn = new SqlConnection(_connectionString);
+            using var cmd = new SqlCommand(sql, conn);
+            cmd.Parameters.Add("@TaiKhoanId", SqlDbType.Int).Value = taiKhoanId;
+
+            await conn.OpenAsync();
+            using var reader = await cmd.ExecuteReaderAsync();
+
+            while (await reader.ReadAsync())
+            {
+                list.Add(MapDonHang(reader));
+            }
+
+            return list;
+        }
+
+        public async Task<DonHang?> GetByIdForTaiKhoanAsync(int id, int taiKhoanId)
+        {
+            const string sql = @"
+                SELECT dh.donHang_id, dh.khachHang_id, dh.km_id, dh.maDonHang, dh.ngayDat, dh.ngayGiao,
+                       dh.diaChiGiao, dh.phuongThucTT, dh.trangThaiDH, dh.tongTienGoc, dh.tienGiam, dh.tongThanhToan, dh.ghiChu
+                FROM DonHang dh
+                INNER JOIN KhachHang kh ON dh.khachHang_id = kh.khachHang_id
+                WHERE dh.donHang_id = @Id
+                  AND (kh.taiKhoan_id = @TaiKhoanId OR dh.khachHang_id = @TaiKhoanId)";
+
+            using var conn = new SqlConnection(_connectionString);
+            using var cmd = new SqlCommand(sql, conn);
+            cmd.Parameters.Add("@Id", SqlDbType.Int).Value = id;
+            cmd.Parameters.Add("@TaiKhoanId", SqlDbType.Int).Value = taiKhoanId;
+
+            await conn.OpenAsync();
+            using var reader = await cmd.ExecuteReaderAsync();
+
+            if (await reader.ReadAsync())
+            {
+                return MapDonHang(reader);
+            }
+
+            return null;
+        }
+
         public async Task<DonHang?> GetByIdAsync(int id)
         {
             const string sql = @"

@@ -16,5 +16,6 @@ namespace Models
         public decimal TienGiam { get; set; } = 0;
         public decimal TongThanhToan { get; set; } = 0;
         public string? GhiChu { get; set; }
+        public List<ChiTietDonHang> ChiTiet { get; set; } = new();
     }
 }

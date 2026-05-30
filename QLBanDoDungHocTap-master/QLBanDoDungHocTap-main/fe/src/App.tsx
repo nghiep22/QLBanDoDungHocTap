@@ -5,6 +5,7 @@ import { theme } from './styles/theme';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import { ScrollToTop } from './components/ScrollToTop';
 import { Header } from './components/Header/Header';
 import { Footer } from './components/Footer/Footer';
 import { Home } from './pages/Home/Home';
@@ -25,6 +26,7 @@ function App() {
       <AuthProvider>
         <CartProvider>
           <BrowserRouter>
+            <ScrollToTop />
             <Routes>
               {/* Auth routes - no header/footer */}
               <Route path="/dang-nhap" element={<Login />} />

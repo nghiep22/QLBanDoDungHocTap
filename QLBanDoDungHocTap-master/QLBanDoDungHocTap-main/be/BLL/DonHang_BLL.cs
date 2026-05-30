@@ -18,18 +18,36 @@ namespace BLL
 
         public async Task<List<DonHang>> GetAllAsync(string? trangThai = null)
         {
-            return await _dal.GetAllAsync(trangThai);
+            var list = await _dal.GetAllAsync(trangThai);
+            await GanChiTietAsync(list);
+            return list;
         }
 
         public async Task<List<DonHang>> GetByKhachHangIdAsync(int khachHangId)
         {
-            return await _dal.GetByKhachHangIdAsync(khachHangId);
+            var list = await _dal.GetByKhachHangIdAsync(khachHangId);
+            await GanChiTietAsync(list);
+            return list;
+        }
+
+        public async Task<List<DonHang>> GetByTaiKhoanIdAsync(int taiKhoanId)
+        {
+            if (taiKhoanId <= 0) throw new ArgumentException("ID khong hop le");
+            var list = await _dal.GetByTaiKhoanIdAsync(taiKhoanId);
+            await GanChiTietAsync(list);
+            return list;
         }
 
         public async Task<DonHang?> GetByIdAsync(int id)
         {
             if (id <= 0) throw new ArgumentException("ID không hợp lệ");
-            return await _dal.GetByIdAsync(id);
+            var donHang = await _dal.GetByIdAsync(id);
+            if (donHang != null)
+            {
+                donHang.ChiTiet = await _chiTietDal.GetByDonHangIdAsync(donHang.DonHang_Id);
+            }
+
+            return donHang;
         }
 
         public async Task<int> CreateAsync(DonHangCreateRequest req)
@@ -71,6 +89,43 @@ namespace BLL
                 throw new ArgumentException("Trạng thái không được để trống");
 
             return await _dal.UpdateStatusAsync(id, trangThai);
+        }
+
+        public async Task<bool> CancelByTaiKhoanIdAsync(int id, int taiKhoanId)
+        {
+            if (id <= 0) throw new ArgumentException("ID khong hop le");
+            if (taiKhoanId <= 0) throw new ArgumentException("ID nguoi dung khong hop le");
+
+            var donHang = await _dal.GetByIdForTaiKhoanAsync(id, taiKhoanId);
+            if (donHang == null)
+                return false;
+
+            if (donHang.TrangThaiDH == "da_huy")
+                return true;
+
+            var trangThaiCoTheHuy = new[] { "cho_xac_nhan", "dang_xu_ly" };
+            if (!trangThaiCoTheHuy.Contains(donHang.TrangThaiDH))
+                throw new ArgumentException("Chi co the huy don hang dang cho xac nhan hoac dang xu ly");
+
+            var success = await _dal.UpdateStatusAsync(id, "da_huy");
+            if (!success)
+                return false;
+
+            var chiTiet = await _chiTietDal.GetByDonHangIdAsync(id);
+            foreach (var item in chiTiet)
+            {
+                await _khoDal.UpdateSoLuongAsync(item.SanPham_Id, item.SoLuong);
+            }
+
+            return true;
+        }
+
+        private async Task GanChiTietAsync(List<DonHang> danhSachDonHang)
+        {
+            foreach (var donHang in danhSachDonHang)
+            {
+                donHang.ChiTiet = await _chiTietDal.GetByDonHangIdAsync(donHang.DonHang_Id);
+            }
         }
     }
 }

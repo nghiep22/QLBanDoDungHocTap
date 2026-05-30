@@ -17,9 +17,11 @@ namespace DAL
         {
             var list = new List<ChiTietDonHang>();
             const string sql = @"
-                SELECT chiTiet_id, donHang_id, sanPham_id, soLuong, giaBan
-                FROM ChiTietDonHang
-                WHERE donHang_id = @DonHangId";
+                SELECT ct.chiTiet_id, ct.donHang_id, ct.sanPham_id, sp.maSanPham,
+                       sp.tenSanPham, sp.hinhAnh, ct.soLuong, ct.giaBan
+                FROM ChiTietDonHang ct
+                LEFT JOIN DoHocTap sp ON ct.sanPham_id = sp.sanPham_id
+                WHERE ct.donHang_id = @DonHangId";
 
             using var conn = new SqlConnection(_connectionString);
             using var cmd = new SqlCommand(sql, conn);
@@ -35,8 +37,11 @@ namespace DAL
                     ChiTiet_Id = reader.GetInt32(0),
                     DonHang_Id = reader.GetInt32(1),
                     SanPham_Id = reader.GetInt32(2),
-                    SoLuong = reader.GetInt32(3),
-                    GiaBan = reader.GetDecimal(4)
+                    MaSanPham = reader.IsDBNull(3) ? null : reader.GetString(3),
+                    TenSanPham = reader.IsDBNull(4) ? null : reader.GetString(4),
+                    HinhAnh = reader.IsDBNull(5) ? null : reader.GetString(5),
+                    SoLuong = reader.GetInt32(6),
+                    GiaBan = reader.GetDecimal(7)
                 });
             }
 

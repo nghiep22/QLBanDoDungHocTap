@@ -7,11 +7,13 @@ namespace BLL
     {
         private readonly HoaDonNhap_DAL _dal;
         private readonly ChiTietHDNhap_DAL _chiTietDal;
+        private readonly Kho_DAL _khoDal;
 
-        public HoaDonNhap_BLL(HoaDonNhap_DAL dal, ChiTietHDNhap_DAL chiTietDal)
+        public HoaDonNhap_BLL(HoaDonNhap_DAL dal, ChiTietHDNhap_DAL chiTietDal, Kho_DAL khoDal)
         {
             _dal = dal;
             _chiTietDal = chiTietDal;
+            _khoDal = khoDal;
         }
 
         public async Task<List<HoaDonNhap>> GetAllAsync()
@@ -47,6 +49,9 @@ namespace BLL
             foreach (var item in req.ChiTiet)
             {
                 await _chiTietDal.InsertAsync(hdNhapId, item);
+                var daCongKho = await _khoDal.AddStockAsync(item.SanPham_Id, item.SoLuong);
+                if (!daCongKho)
+                    throw new InvalidOperationException("Khong the cap nhat ton kho sau khi nhap hang");
             }
 
             return hdNhapId;

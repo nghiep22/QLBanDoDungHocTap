@@ -41,7 +41,7 @@ namespace API_DonHang.Controllers
                 if (string.IsNullOrWhiteSpace(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
                     return Unauthorized(new { message = "Không tìm thấy thông tin người dùng" });
 
-                var list = await _bll.GetByKhachHangIdAsync(userId);
+                var list = await _bll.GetByTaiKhoanIdAsync(userId);
                 return Ok(list);
             }
             catch (Exception ex)
@@ -95,6 +95,32 @@ namespace API_DonHang.Controllers
                     return NotFound(new { message = "Không tìm thấy đơn hàng" });
 
                 return Ok(new { message = "Cập nhật trạng thái thành công" });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
+        [Authorize]
+        [HttpPatch("{id}/cancel")]
+        public async Task<IActionResult> CancelMine(int id)
+        {
+            try
+            {
+                var userIdClaim = User.FindFirst("UserId")?.Value;
+                if (string.IsNullOrWhiteSpace(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
+                    return Unauthorized(new { message = "Khong tim thay thong tin nguoi dung" });
+
+                var success = await _bll.CancelByTaiKhoanIdAsync(id, userId);
+                if (!success)
+                    return NotFound(new { message = "Khong tim thay don hang cua ban" });
+
+                return Ok(new { message = "Huy don hang thanh cong" });
             }
             catch (ArgumentException ex)
             {

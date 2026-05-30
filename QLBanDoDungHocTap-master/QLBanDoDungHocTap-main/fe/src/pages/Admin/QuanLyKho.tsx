@@ -126,7 +126,7 @@ export const QuanLyKho = () => {
         </div>
         <div style={{ background: '#fff', borderRadius: 12, padding: 20, boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }}>
           <div style={{ color: '#666', marginBottom: 8 }}>Sắp hết hàng</div>
-          <strong style={{ fontSize: 28, color: '#e31e24' }}>{tongSapHet}</strong>
+          <strong style={{ fontSize: 28, color: '#38bdf8' }}>{tongSapHet}</strong>
         </div>
         <div style={{ background: '#fff', borderRadius: 12, padding: 20, boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }}>
           <div style={{ color: '#666', marginBottom: 8 }}>Tổng tồn</div>

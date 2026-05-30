@@ -1,244 +1,292 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  display: flex;
   min-height: 100vh;
-  background: #f5f5f5;
+  background: #f7fbff;
 `;
 
 export const Sidebar = styled.aside`
-  width: 260px;
-  background: #1a1a1a;
-  color: white;
+  width: 270px;
+  height: 100vh;
+  position: fixed;
+  inset: 0 auto 0 0;
   display: flex;
   flex-direction: column;
-  position: fixed;
-  height: 100vh;
-  left: 0;
-  top: 0;
+  color: #17415f;
+  background: #eaf6ff;
+  border-right: 1px solid #cfe7f7;
 `;
 
 export const Logo = styled.div`
-  padding: 24px 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 24px 22px;
+  border-bottom: 1px solid #cfe7f7;
 
   h2 {
-    color: ${({ theme }) => theme.colors.primary};
-    font-size: 20px;
-    margin: 0 0 4px 0;
+    margin: 0 0 4px;
+    color: #17415f;
+    font-size: 24px;
+    font-weight: 900;
   }
 
   span {
+    color: #5f7f96;
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.6);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 `;
 
 export const UserInfo = styled.div`
-  padding: 20px;
   display: flex;
   align-items: center;
   gap: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 18px;
+  padding: 14px;
+  border: 1px solid #cfe7f7;
+  border-radius: 12px;
+  background: #f8fcff;
 `;
 
 export const Avatar = styled.div`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: ${({ theme }) => theme.colors.primary};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: #cfe7f7;
+  color: #17415f;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
   font-size: 18px;
 `;
 
 export const UserName = styled.div`
-  font-weight: 500;
+  max-width: 150px;
+  overflow: hidden;
+  color: #17415f;
+  font-weight: 800;
   font-size: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 export const UserRole = styled.div`
+  margin-top: 3px;
+  color: #5f7f96;
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.6);
 `;
 
 export const Menu = styled.nav`
   flex: 1;
-  padding: 20px 0;
+  display: grid;
+  align-content: start;
+  gap: 4px;
+  padding: 10px 12px;
   overflow-y: auto;
 `;
 
 export const MenuItem = styled.button<{ $active?: boolean }>`
   width: 100%;
-  padding: 12px 20px;
+  min-height: 42px;
+  padding: 0 14px;
   display: flex;
   align-items: center;
   gap: 12px;
-  background: ${({ $active, theme }) => ($active ? theme.colors.primary : 'transparent')};
-  color: white;
-  border: none;
+  border: 1px solid ${({ $active }) => ($active ? '#b8d9ee' : 'transparent')};
+  border-radius: 10px;
+  background: ${({ $active }) => ($active ? '#dff1fb' : 'transparent')};
+  color: ${({ $active }) => ($active ? '#17415f' : '#40657d')};
   cursor: pointer;
   font-size: 14px;
-  transition: all 0.2s;
+  font-weight: ${({ $active }) => ($active ? 800 : 700)};
+  text-align: left;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
 
   &:hover {
-    background: ${({ $active, theme }) => ($active ? theme.colors.primary : 'rgba(255, 255, 255, 0.1)')};
-  }
-
-  svg {
-    opacity: 0.8;
+    background: ${({ $active }) => ($active ? '#d6edf9' : '#f4fbff')};
+    color: #17415f;
   }
 `;
 
 export const LogoutButton = styled.button`
-  margin: 20px;
-  padding: 12px;
+  min-height: 42px;
+  margin: 0 18px 18px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
-  border: none;
-  border-radius: 8px;
+  background: transparent;
+  color: #8a3a3a;
+  border: 1px solid #f2caca;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 14px;
-  transition: all 0.2s;
+  font-weight: 800;
+  transition: background 0.2s, border-color 0.2s;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: #fff4f4;
+    border-color: #e9b5b5;
   }
 `;
 
 export const HomeButton = styled.button`
-  margin: 0 20px 10px 20px;
-  padding: 12px;
+  min-height: 42px;
+  margin: 0 18px 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: ${({ theme }) => theme.colors.primary};
-  color: white;
-  border: none;
-  border-radius: 8px;
+  background: #dff1fb;
+  color: #17415f;
+  border: 1px solid #b8d9ee;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 14px;
-  font-weight: 500;
-  transition: all 0.2s;
+  font-weight: 800;
+  transition: background 0.2s, transform 0.2s;
 
   &:hover {
-    opacity: 0.9;
+    background: #cfe7f7;
     transform: translateY(-1px);
   }
 `;
 
 export const MainContent = styled.main`
-  flex: 1;
-  margin-left: 260px;
+  min-height: 100vh;
+  margin-left: 270px;
   display: flex;
   flex-direction: column;
 `;
 
 export const Header = styled.header`
-  background: white;
-  padding: 24px 32px;
-  border-bottom: 1px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.92);
+  padding: 20px 28px;
+  border-bottom: 1px solid #e8eef7;
+  backdrop-filter: blur(12px);
 `;
 
 export const PageTitle = styled.h1`
-  font-size: 24px;
-  font-weight: 600;
-  color: #1a1a1a;
   margin: 0;
+  color: #17415f;
+  font-size: 26px;
+  font-weight: 900;
 `;
 
 export const Content = styled.div`
-  padding: 32px;
   flex: 1;
+  padding: 28px;
 `;
 
 export const DashboardGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 24px;
-  margin-bottom: 32px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+
+  @media (max-width: 1280px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (max-width: 720px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 export const StatCard = styled.div<{ color: string }>`
-  background: white;
-  padding: 24px;
+  background: #fff;
+  padding: 22px;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e8eef7;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
   display: flex;
   align-items: center;
   gap: 16px;
-  border-left: 4px solid ${({ color }) => color};
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    background: ${({ color }) => color};
+  }
 `;
 
 export const StatIcon = styled.div`
-  font-size: 32px;
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: #f8fafc;
+  border: 1px solid #eef2f7;
 `;
 
 export const StatInfo = styled.div`
   flex: 1;
+  min-width: 0;
 `;
 
 export const StatValue = styled.div`
+  color: #0f3f5f;
   font-size: 28px;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin-bottom: 4px;
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 5px;
 `;
 
 export const StatLabel = styled.div`
+  color: #64748b;
   font-size: 14px;
-  color: #666;
+  font-weight: 700;
 `;
 
 export const ChartGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1.1fr 1fr;
-  gap: 24px;
-  margin-bottom: 32px;
+  gap: 16px;
+  margin-bottom: 28px;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1280px) {
     grid-template-columns: 1fr;
   }
 `;
 
 export const ChartCard = styled.div`
-  background: white;
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  min-height: 320px;
+  min-height: 318px;
+  background: #fff;
+  border: 1px solid #e8eef7;
+  border-radius: 12px;
+  padding: 22px;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
 `;
 
 export const ChartHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 `;
 
 export const ChartTitle = styled.h3`
   margin: 0;
+  color: #0f3f5f;
   font-size: 18px;
-  color: #1a1a1a;
+  font-weight: 900;
 `;
 
 export const ChartSubtitle = styled.p`
   margin: 6px 0 0;
-  color: #6b7280;
+  color: #64748b;
   font-size: 13px;
 `;
 
 export const DonutWrap = styled.div`
   display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: 20px;
+  grid-template-columns: 190px minmax(0, 1fr);
+  gap: 18px;
   align-items: center;
 
   @media (max-width: 768px) {
@@ -247,10 +295,10 @@ export const DonutWrap = styled.div`
 `;
 
 export const DonutRing = styled.div`
-  width: 220px;
-  height: 220px;
+  width: 190px;
+  height: 190px;
   border-radius: 50%;
-  background: conic-gradient(#2196f3 0 35%, #4caf50 35% 62%, #ff9800 62% 82%, #e91e63 82% 100%);
+  background: conic-gradient(#7fb9de 0 35%, #9fcce8 35% 62%, #c8e3f4 62% 82%, #edf7fc 82% 100%);
   display: grid;
   place-items: center;
   margin: 0 auto;
@@ -259,8 +307,8 @@ export const DonutRing = styled.div`
   &::after {
     content: '';
     position: absolute;
-    inset: 26px;
-    background: white;
+    inset: 24px;
+    background: #fff;
     border-radius: 50%;
   }
 `;
@@ -272,59 +320,63 @@ export const DonutCenter = styled.div`
 
   strong {
     display: block;
-    font-size: 34px;
-    color: #1a1a1a;
+    color: #0f3f5f;
+    font-size: 32px;
+    font-weight: 900;
   }
 
   span {
-    color: #6b7280;
+    color: #64748b;
     font-size: 13px;
+    font-weight: 700;
   }
 `;
 
 export const LegendList = styled.div`
   display: grid;
-  gap: 12px;
+  gap: 10px;
 `;
 
 export const LegendItem = styled.div<{ $index: number }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 14px;
-  border-radius: 12px;
-  background: ${({ $index }) => ['#eff6ff', '#ecfdf5', '#fff7ed', '#fdf2f8'][$index % 4]};
+  gap: 12px;
+  padding: 11px 13px;
+  border-radius: 10px;
+  background: ${({ $index }) => ['#e0f2fe', '#f0f9ff', '#ecfeff', '#f8fafc'][$index % 4]};
   color: #1f2937;
+  font-weight: 700;
 `;
 
 export const BarChart = styled.div`
   display: grid;
-  gap: 14px;
+  gap: 13px;
 `;
 
 export const BarRow = styled.div`
   display: grid;
-  grid-template-columns: 110px 1fr 90px;
+  grid-template-columns: 120px minmax(120px, 1fr) 88px;
   gap: 12px;
   align-items: center;
   font-size: 13px;
 
   span {
-    color: #374151;
+    color: #334155;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
   strong {
+    color: #0f3f5f;
     text-align: right;
-    color: #111827;
   }
 `;
 
 export const BarTrack = styled.div`
   width: 100%;
-  height: 12px;
+  height: 11px;
   border-radius: 999px;
   background: #eef2f7;
   overflow: hidden;
@@ -334,52 +386,59 @@ export const BarFill = styled.div<{ $width: number }>`
   height: 100%;
   width: ${({ $width }) => `${$width}%`};
   border-radius: inherit;
-  background: linear-gradient(90deg, #4caf50, #2196f3);
+  background: linear-gradient(90deg, #d9edf8, #9fcce8, #6caed8);
 `;
 
 export const ReportPanel = styled.div`
   display: grid;
-  gap: 24px;
+  gap: 20px;
 `;
 
 export const ReportHero = styled.div`
   display: flex;
   justify-content: space-between;
-  gap: 16px;
   align-items: flex-start;
-  background: linear-gradient(135deg, #fff 0%, #f8fbff 100%);
-  border-radius: 18px;
+  gap: 16px;
+  background: #fff;
+  border: 1px solid #e8eef7;
+  border-radius: 12px;
   padding: 24px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+
+  @media (max-width: 720px) {
+    flex-direction: column;
+  }
 `;
 
 export const ReportTitle = styled.h2`
   margin: 0;
+  color: #0f3f5f;
   font-size: 28px;
-  color: #111827;
+  font-weight: 900;
 `;
 
 export const ReportSubTitle = styled.p`
   margin: 8px 0 0;
-  color: #6b7280;
+  color: #64748b;
 `;
 
 export const ReportNote = styled.div`
-  background: #e0f2fe;
-  color: #0369a1;
-  padding: 10px 14px;
+  padding: 9px 13px;
   border-radius: 999px;
+  background: #edf7fc;
+  color: #42769a;
   font-size: 13px;
+  font-weight: 800;
   white-space: nowrap;
 `;
 
 export const ReportGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
 
   @media (max-width: 1200px) {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   @media (max-width: 640px) {
@@ -388,39 +447,45 @@ export const ReportGrid = styled.div`
 `;
 
 export const ReportMiniCard = styled.div`
-  background: white;
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  background: #fff;
+  border: 1px solid #e8eef7;
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
   display: grid;
   gap: 6px;
 
   span {
-    font-size: 13px;
-    color: #6b7280;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: .04em;
   }
 
   strong {
+    color: #0f3f5f;
     font-size: 22px;
-    color: #111827;
+    font-weight: 900;
   }
 
   small {
-    color: #9ca3af;
+    color: #94a3b8;
   }
 `;
 
 export const ReportTable = styled.table`
   width: 100%;
+  min-width: 720px;
   background: #fff;
-  border-radius: 16px;
+  border: 1px solid #e8eef7;
+  border-radius: 12px;
   overflow: hidden;
-  border-collapse: collapse;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  border-collapse: separate;
+  border-spacing: 0;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
 
-  th, td {
+  th,
+  td {
     padding: 14px 16px;
     text-align: left;
     border-bottom: 1px solid #eef2f7;
@@ -428,30 +493,33 @@ export const ReportTable = styled.table`
 
   th {
     background: #f8fafc;
-    color: #111827;
+    color: #475569;
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
   }
 
   tbody tr:hover {
-    background: #f9fbff;
+    background: #fbfdff;
   }
 `;
 
 export const ComingSoon = styled.div`
-  background: white;
-  padding: 60px;
+  background: #fff;
+  padding: 54px 24px;
+  border: 1px solid #e8eef7;
   border-radius: 12px;
   text-align: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
 
   h2 {
-    font-size: 32px;
-    margin: 0 0 12px 0;
-    color: #1a1a1a;
+    margin: 0 0 10px;
+    color: #0f3f5f;
+    font-size: 30px;
   }
 
   p {
-    font-size: 16px;
-    color: #666;
     margin: 0;
+    color: #64748b;
   }
 `;

@@ -73,6 +73,31 @@ namespace DAL
             return await cmd.ExecuteNonQueryAsync() > 0;
         }
 
+        public async Task<bool> AddStockAsync(int sanPhamId, int soLuong)
+        {
+            const string sql = @"
+                IF EXISTS (SELECT 1 FROM Kho WHERE sanPham_id = @SanPhamId)
+                BEGIN
+                    UPDATE Kho
+                    SET soLuongTon = soLuongTon + @SoLuong,
+                        ngayCapNhat = GETDATE()
+                    WHERE sanPham_id = @SanPhamId
+                END
+                ELSE
+                BEGIN
+                    INSERT INTO Kho (sanPham_id, soLuongTon, soLuongToiThieu, ngayCapNhat)
+                    VALUES (@SanPhamId, @SoLuong, 0, GETDATE())
+                END";
+
+            using var conn = new SqlConnection(_connectionString);
+            using var cmd = new SqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("@SanPhamId", sanPhamId);
+            cmd.Parameters.AddWithValue("@SoLuong", soLuong);
+
+            await conn.OpenAsync();
+            return await cmd.ExecuteNonQueryAsync() > 0;
+        }
+
         public async Task<bool> HasEnoughStockAsync(int sanPhamId, int soLuongCan)
         {
             const string sql = @"

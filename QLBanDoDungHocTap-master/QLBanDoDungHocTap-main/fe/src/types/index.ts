@@ -141,8 +141,13 @@ export interface DonHang {
 }
 
 export interface ChiTietDonHang {
+  chiTiet_Id?: number;
+  donHang_Id?: number;
   sanPhamId: number;
+  sanPham_Id?: number;
+  maSanPham?: string | null;
   tenSanPham: string;
+  hinhAnh?: string | null;
   soLuong: number;
   giaBan: number;
   thanhTien: number;
@@ -179,6 +184,7 @@ export interface DonHangAPI {
   tienGiam: number;
   tongThanhToan: number;
   ghiChu?: string;
+  chiTiet?: ChiTietDonHang[];
 }
 
 export interface CapNhatTrangThaiDonHangRequest {

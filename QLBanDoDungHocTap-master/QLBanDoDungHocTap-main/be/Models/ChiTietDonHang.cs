@@ -5,6 +5,9 @@ namespace Models
         public int ChiTiet_Id { get; set; }
         public int DonHang_Id { get; set; }
         public int SanPham_Id { get; set; }
+        public string? MaSanPham { get; set; }
+        public string? TenSanPham { get; set; }
+        public string? HinhAnh { get; set; }
         public int SoLuong { get; set; }
         public decimal GiaBan { get; set; }
         public decimal ThanhTien => SoLuong * GiaBan;
