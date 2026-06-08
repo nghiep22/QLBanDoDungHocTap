@@ -13,7 +13,7 @@ export const Header = styled.div`
 
   h2 {
     margin: 0;
-    color: #0f3f5f;
+    color: #111827;
     font-size: 24px;
     font-weight: 800;
     letter-spacing: 0;
@@ -52,17 +52,17 @@ export const SearchInput = styled.input`
   min-width: 280px;
   min-height: 42px;
   padding: 0 14px;
-  border: 1px solid #dbe3ee;
+  border: 1px solid #d1d5db;
   border-radius: 10px;
-  color: #0f3f5f;
-  background: #fff;
+  color: #111827;
+  background: #ffffff;
   font-size: 14px;
   transition: border-color 0.2s, box-shadow 0.2s;
 
   &:focus {
     outline: none;
-    border-color: #38bdf8;
-    box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.16);
+    border-color: #2563eb;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.16);
   }
 
   @media (max-width: 640px) {
@@ -74,9 +74,9 @@ export const SearchInput = styled.input`
 export const Button = styled.button`
   min-height: 42px;
   padding: 0 16px;
-  background: #38bdf8;
-  color: #075985;
-  border: 1px solid #7dd3fc;
+  background: #2563eb;
+  color: #ffffff;
+  border: 1px solid #2563eb;
   border-radius: 10px;
   cursor: pointer;
   font-size: 14px;
@@ -85,8 +85,8 @@ export const Button = styled.button`
   transition: background 0.2s, border-color 0.2s, transform 0.2s;
 
   &:hover:not(:disabled) {
-    background: #0ea5e9;
-    border-color: #0ea5e9;
+    background: #1d4ed8;
+    border-color: #1d4ed8;
     color: #fff;
     transform: translateY(-1px);
   }
@@ -100,17 +100,17 @@ export const Button = styled.button`
 export const Thongbao = styled.div<{ $loai: 'thanh_cong' | 'loi' }>`
   padding: 14px 16px;
   border-radius: 10px;
-  background: ${props => props.$loai === 'thanh_cong' ? '#ecfdf5' : '#fff7ed'};
+  background: ${props => props.$loai === 'thanh_cong' ? '#ecfdf5' : '#fef2f2'};
   color: ${props => props.$loai === 'thanh_cong' ? '#047857' : '#b91c1c'};
-  border: 1px solid ${props => props.$loai === 'thanh_cong' ? '#bbf7d0' : '#fecaca'};
+  border: 1px solid ${props => props.$loai === 'thanh_cong' ? '#86efac' : '#fecaca'};
   font-weight: 600;
 `;
 
 export const Loading = styled.div`
   padding: 20px;
-  color: #64748b;
-  background: #fff;
-  border: 1px solid #eef2f7;
+  color: #374151;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
   border-radius: 12px;
   text-align: center;
   font-weight: 600;
@@ -121,24 +121,24 @@ export const Table = styled.table`
   min-width: 860px;
   border-collapse: separate;
   border-spacing: 0;
-  background: #fff;
-  border: 1px solid #e8eef7;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+  box-shadow: 0 12px 28px rgba(17, 24, 39, 0.08);
 
   thead {
-    background: #f0f9ff;
+    background: #1f2937;
 
     th {
       padding: 14px 16px;
       text-align: left;
       font-size: 12px;
       font-weight: 800;
-      color: #475569;
+      color: #f8fafc;
       text-transform: uppercase;
       white-space: nowrap;
-      border-bottom: 1px solid #e8eef7;
+      border-bottom: 1px solid #1f2937;
     }
   }
 
@@ -147,16 +147,16 @@ export const Table = styled.table`
       transition: background 0.2s;
 
       &:hover {
-        background: #f7fcff;
+        background: #f3f4f6;
       }
 
       &:not(:last-child) td {
-        border-bottom: 1px solid #eef2f7;
+        border-bottom: 1px solid #e5e7eb;
       }
 
       td {
         padding: 14px 16px;
-        color: #334155;
+        color: #374151;
         vertical-align: middle;
         font-size: 14px;
       }
@@ -176,7 +176,7 @@ export const ProductInfo = styled.div`
   min-width: 220px;
 
   strong {
-    color: #0f3f5f;
+    color: #111827;
   }
 `;
 
@@ -185,8 +185,8 @@ export const ProductImage = styled.img`
   height: 48px;
   object-fit: cover;
   border-radius: 10px;
-  border: 1px solid #e8eef7;
-  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
 `;
 
 export const Badge = styled.span<{ $active: boolean }>`
@@ -200,8 +200,8 @@ export const Badge = styled.span<{ $active: boolean }>`
   font-weight: 800;
   white-space: nowrap;
   line-height: 1;
-  background: ${props => props.$active ? '#e0f2fe' : '#ffedd5'};
-  color: ${props => props.$active ? '#0369a1' : '#b91c1c'};
+  background: ${props => props.$active ? '#dcfce7' : '#fee2e2'};
+  color: ${props => props.$active ? '#166534' : '#991b1b'};
 `;
 
 export const ActionButtons = styled.div`
@@ -223,20 +223,20 @@ const SmallActionButton = styled.button`
 `;
 
 export const EditButton = styled(SmallActionButton)`
-  background: #e0f2fe;
-  color: #0284c7;
-  border-color: #bae6fd;
+  background: #dbeafe;
+  color: #1d4ed8;
+  border-color: #bfdbfe;
 
   &:hover {
-    background: #0284c7;
+    background: #1d4ed8;
     color: #fff;
-    border-color: #0284c7;
+    border-color: #1d4ed8;
   }
 `;
 
 export const DeleteButton = styled(SmallActionButton)`
-  background: #fff7ed;
-  color: #ef4444;
+  background: #fef2f2;
+  color: #dc2626;
   border-color: #fecaca;
 
   &:hover {
@@ -249,7 +249,7 @@ export const DeleteButton = styled(SmallActionButton)`
 export const Modal = styled.div`
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.56);
+  background: rgba(15, 23, 42, 0.68);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -261,9 +261,9 @@ export const ModalContent = styled.div`
   width: min(780px, 100%);
   max-height: 90vh;
   overflow-y: auto;
-  background: white;
+  background: #ffffff;
   border-radius: 12px;
-  border: 1px solid #e8eef7;
+  border: 1px solid #e5e7eb;
   box-shadow: 0 24px 70px rgba(15, 23, 42, 0.24);
 `;
 
@@ -276,12 +276,12 @@ export const ModalHeader = styled.div`
   align-items: center;
   gap: 16px;
   padding: 20px 22px;
-  background: #fff;
-  border-bottom: 1px solid #eef2f7;
+  background: #1f2937;
+  border-bottom: 1px solid #1f2937;
 
   h3 {
     margin: 0;
-    color: #0f3f5f;
+    color: #f8fafc;
     font-size: 20px;
     font-weight: 800;
   }
@@ -292,10 +292,10 @@ export const CloseButton = styled.button`
   height: 38px;
   display: grid;
   place-items: center;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #d1d5db;
   border-radius: 999px;
-  background: #f8fafc;
-  color: #64748b;
+  background: #ffffff;
+  color: #374151;
   cursor: pointer;
   font-size: 24px;
 
@@ -327,7 +327,7 @@ export const FormGroup = styled.div`
 
   label {
     margin-bottom: 7px;
-    color: #334155;
+    color: #374151;
     font-weight: 700;
     font-size: 13px;
   }
@@ -337,18 +337,18 @@ export const FormGroup = styled.div`
   textarea {
     min-height: 42px;
     padding: 10px 12px;
-    border: 1px solid #dbe3ee;
+    border: 1px solid #d1d5db;
     border-radius: 10px;
-    color: #0f3f5f;
-    background: #fff;
+    color: #111827;
+    background: #ffffff;
     font-size: 14px;
     font-family: inherit;
     transition: border-color 0.2s, box-shadow 0.2s;
 
     &:focus {
       outline: none;
-      border-color: #38bdf8;
-      box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.16);
+      border-color: #2563eb;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.16);
     }
   }
 
@@ -361,7 +361,7 @@ export const FormGroup = styled.div`
 export const HelperText = styled.small`
   margin-top: 5px;
   font-size: 12px;
-  color: #64748b;
+  color: #6b7280;
 `;
 
 export const FormActions = styled.div`
@@ -370,7 +370,7 @@ export const FormActions = styled.div`
   gap: 10px;
   margin-top: 22px;
   padding-top: 18px;
-  border-top: 1px solid #eef2f7;
+  border-top: 1px solid #e5e7eb;
 
   @media (max-width: 640px) {
     flex-direction: column;
@@ -380,34 +380,34 @@ export const FormActions = styled.div`
 export const CancelButton = styled.button`
   min-height: 42px;
   padding: 0 18px;
-  background: #fff;
-  color: #334155;
-  border: 1px solid #dbe3ee;
+  background: #ffffff;
+  color: #374151;
+  border: 1px solid #d1d5db;
   border-radius: 999px;
   cursor: pointer;
   font-size: 14px;
   font-weight: 700;
 
   &:hover {
-    background: #f8fafc;
+    background: #f3f4f6;
   }
 `;
 
 export const SubmitButton = styled.button`
   min-height: 42px;
   padding: 0 20px;
-  background: #38bdf8;
-  color: #075985;
-  border: 1px solid #7dd3fc;
+  background: #059669;
+  color: #ffffff;
+  border: 1px solid #059669;
   border-radius: 999px;
   cursor: pointer;
   font-size: 14px;
   font-weight: 800;
-  box-shadow: 0 12px 24px rgba(125, 211, 252, 0.24);
+  box-shadow: 0 12px 24px rgba(5, 150, 105, 0.22);
 
   &:hover:not(:disabled) {
-    background: #0ea5e9;
-    border-color: #0ea5e9;
+    background: #047857;
+    border-color: #047857;
     color: #fff;
   }
 

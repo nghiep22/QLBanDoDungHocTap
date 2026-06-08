@@ -7,6 +7,8 @@ export interface NguoiDung {
   taiKhoan_Id: number;
   tenDangNhap: string;
   vaiTro_Id: number;
+  trangThai?: boolean;
+  ngayTao?: string;
 }
 
 // Interface cho request đăng nhập
@@ -24,8 +26,19 @@ export interface YeuCauDangKy {
 
 // Interface cho response đăng nhập/đăng ký
 export interface KetQuaDangNhap {
+  message?: string;
   token: string;
   user: NguoiDung;
+}
+
+export interface CapNhatTaiKhoanRequest {
+  tenDangNhap: string;
+}
+
+export interface DoiMatKhauRequest {
+  matKhauCu: string;
+  matKhauMoi: string;
+  xacNhanMatKhauMoi: string;
 }
 
 // ============================================

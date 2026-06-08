@@ -61,5 +61,74 @@ namespace BLL
 
             return (true, "Đăng ký thành công", newTaiKhoan);
         }
+
+        public Task<TaiKhoan?> LayTheoIdAsync(int taiKhoanId)
+        {
+            return _taiKhoanDal.GetByIdAsync(taiKhoanId);
+        }
+
+        public async Task<(bool Success, string Message, TaiKhoan? TaiKhoan)> CapNhatTaiKhoanAsync(int taiKhoanId, string tenDangNhap)
+        {
+            if (string.IsNullOrWhiteSpace(tenDangNhap))
+                return (false, "Tên đăng nhập không được để trống", null);
+
+            tenDangNhap = tenDangNhap.Trim();
+
+            if (tenDangNhap.Length < 3)
+                return (false, "Tên đăng nhập phải có ít nhất 3 ký tự", null);
+
+            var taiKhoan = await _taiKhoanDal.GetByIdAsync(taiKhoanId);
+            if (taiKhoan == null)
+                return (false, "Không tìm thấy tài khoản", null);
+
+            if (!string.Equals(taiKhoan.TenDangNhap, tenDangNhap, StringComparison.OrdinalIgnoreCase))
+            {
+                var exists = await _taiKhoanDal.CheckTenDangNhapExistsAsync(tenDangNhap);
+                if (exists)
+                    return (false, "Tên đăng nhập đã tồn tại", null);
+            }
+
+            var updated = await _taiKhoanDal.UpdateTenDangNhapAsync(taiKhoanId, tenDangNhap);
+            if (!updated)
+                return (false, "Không thể cập nhật tài khoản", null);
+
+            taiKhoan.TenDangNhap = tenDangNhap;
+            return (true, "Cập nhật tài khoản thành công", taiKhoan);
+        }
+
+        public async Task<(bool Success, string Message)> DoiMatKhauAsync(
+            int taiKhoanId,
+            string matKhauCu,
+            string matKhauMoi,
+            string xacNhanMatKhauMoi)
+        {
+            if (string.IsNullOrWhiteSpace(matKhauCu))
+                return (false, "Mật khẩu hiện tại không được để trống");
+
+            if (string.IsNullOrWhiteSpace(matKhauMoi))
+                return (false, "Mật khẩu mới không được để trống");
+
+            if (matKhauMoi.Length < 6)
+                return (false, "Mật khẩu mới phải có ít nhất 6 ký tự");
+
+            if (matKhauMoi != xacNhanMatKhauMoi)
+                return (false, "Xác nhận mật khẩu mới không khớp");
+
+            var taiKhoan = await _taiKhoanDal.GetByIdAsync(taiKhoanId);
+            if (taiKhoan == null)
+                return (false, "Không tìm thấy tài khoản");
+
+            if (taiKhoan.MatKhau != matKhauCu)
+                return (false, "Mật khẩu hiện tại không đúng");
+
+            if (taiKhoan.MatKhau == matKhauMoi)
+                return (false, "Mật khẩu mới phải khác mật khẩu hiện tại");
+
+            var updated = await _taiKhoanDal.UpdateMatKhauAsync(taiKhoanId, matKhauMoi);
+            if (!updated)
+                return (false, "Không thể đổi mật khẩu");
+
+            return (true, "Đổi mật khẩu thành công");
+        }
     }
 }

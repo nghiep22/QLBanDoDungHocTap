@@ -43,6 +43,36 @@ namespace DAL
             };
         }
 
+        public async Task<TaiKhoan?> GetByIdAsync(int taiKhoanId)
+        {
+            const string sql = @"
+                SELECT taiKhoan_id, tenDangNhap, matKhau, vaiTro_id, trangThai, ngayTao
+                FROM TaiKhoan
+                WHERE taiKhoan_id = @taiKhoanId AND trangThai = 1";
+
+            using var conn = new SqlConnection(_connectionString);
+            using var cmd = new SqlCommand(sql, conn);
+
+            cmd.Parameters.Add("@taiKhoanId", SqlDbType.Int).Value = taiKhoanId;
+
+            await conn.OpenAsync();
+
+            using var reader = await cmd.ExecuteReaderAsync();
+
+            if (!await reader.ReadAsync())
+                return null;
+
+            return new TaiKhoan
+            {
+                TaiKhoan_Id = reader.GetInt32(reader.GetOrdinal("taiKhoan_id")),
+                TenDangNhap = reader.GetString(reader.GetOrdinal("tenDangNhap")),
+                MatKhau = reader.GetString(reader.GetOrdinal("matKhau")),
+                VaiTro_Id = reader.GetInt32(reader.GetOrdinal("vaiTro_id")),
+                TrangThai = reader.GetBoolean(reader.GetOrdinal("trangThai")),
+                NgayTao = reader.GetDateTime(reader.GetOrdinal("ngayTao"))
+            };
+        }
+
         public async Task<bool> CheckTenDangNhapExistsAsync(string tenDangNhap)
         {
             const string sql = "SELECT COUNT(1) FROM TaiKhoan WHERE tenDangNhap = @user";
@@ -54,7 +84,7 @@ namespace DAL
 
             await conn.OpenAsync();
 
-            var count = (int)await cmd.ExecuteScalarAsync();
+            var count = Convert.ToInt32(await cmd.ExecuteScalarAsync());
             return count > 0;
         }
 
@@ -76,8 +106,46 @@ namespace DAL
 
             await conn.OpenAsync();
 
-            var newId = (int)await cmd.ExecuteScalarAsync();
+            var newId = Convert.ToInt32(await cmd.ExecuteScalarAsync());
             return newId;
+        }
+
+        public async Task<bool> UpdateTenDangNhapAsync(int taiKhoanId, string tenDangNhap)
+        {
+            const string sql = @"
+                UPDATE TaiKhoan
+                SET tenDangNhap = @tenDangNhap
+                WHERE taiKhoan_id = @taiKhoanId AND trangThai = 1";
+
+            using var conn = new SqlConnection(_connectionString);
+            using var cmd = new SqlCommand(sql, conn);
+
+            cmd.Parameters.Add("@taiKhoanId", SqlDbType.Int).Value = taiKhoanId;
+            cmd.Parameters.Add("@tenDangNhap", SqlDbType.VarChar, 100).Value = tenDangNhap;
+
+            await conn.OpenAsync();
+
+            var affectedRows = await cmd.ExecuteNonQueryAsync();
+            return affectedRows > 0;
+        }
+
+        public async Task<bool> UpdateMatKhauAsync(int taiKhoanId, string matKhauMoi)
+        {
+            const string sql = @"
+                UPDATE TaiKhoan
+                SET matKhau = @matKhauMoi
+                WHERE taiKhoan_id = @taiKhoanId AND trangThai = 1";
+
+            using var conn = new SqlConnection(_connectionString);
+            using var cmd = new SqlCommand(sql, conn);
+
+            cmd.Parameters.Add("@taiKhoanId", SqlDbType.Int).Value = taiKhoanId;
+            cmd.Parameters.Add("@matKhauMoi", SqlDbType.VarChar, 255).Value = matKhauMoi;
+
+            await conn.OpenAsync();
+
+            var affectedRows = await cmd.ExecuteNonQueryAsync();
+            return affectedRows > 0;
         }
     }
 }

@@ -6,6 +6,7 @@ import { QuanLyDonHang } from './QuanLyDonHang';
 import { QuanLyKho } from './QuanLyKho';
 import { QuanLyNhapHang } from './QuanLyNhapHang';
 import { QuanLyKhachHang } from './QuanLyKhachHang';
+import { QuanLyKhachHang2 } from './QuanLyKhachHang2';
 import { dichVuApi } from '../../services/api';
 import * as S from './styles';
 
@@ -138,6 +139,9 @@ export const Admin = () => {
           <S.MenuItem $active={activeTab === 'customers'} onClick={() => setActiveTab('customers')}>
             Khách hàng
           </S.MenuItem>
+          <S.MenuItem $active={activeTab === 'customers2'} onClick={() => setActiveTab('customers2')}>
+            Khách hàng 2
+          </S.MenuItem>
         </S.Menu>
 
         <S.HomeButton onClick={() => navigate('/')}>
@@ -159,6 +163,7 @@ export const Admin = () => {
             {activeTab === 'inventory' && 'Quản lý kho'}
             {activeTab === 'reports' && 'Báo cáo thống kê'}
             {activeTab === 'customers' && 'Quản lý khách hàng'}
+            {activeTab === 'customers2' && 'Quản lý khách hàng 2'}
           </S.PageTitle>
         </S.Header>
 
@@ -166,7 +171,7 @@ export const Admin = () => {
           {activeTab === 'dashboard' && (
             <>
               <S.DashboardGrid>
-                <S.StatCard color="#4caf50">
+                <S.StatCard color="#2563eb">
                 <S.StatIcon />
                 <S.StatInfo>
                   <S.StatValue>
@@ -176,7 +181,7 @@ export const Admin = () => {
                 </S.StatInfo>
               </S.StatCard>
 
-              <S.StatCard color="#2196f3">
+              <S.StatCard color="#059669">
                 <S.StatIcon />
                 <S.StatInfo>
                   <S.StatValue>
@@ -186,7 +191,7 @@ export const Admin = () => {
                 </S.StatInfo>
               </S.StatCard>
 
-              <S.StatCard color="#ff9800">
+              <S.StatCard color="#f59e0b">
                 <S.StatIcon />
                 <S.StatInfo>
                   <S.StatValue>
@@ -196,7 +201,7 @@ export const Admin = () => {
                 </S.StatInfo>
               </S.StatCard>
 
-              <S.StatCard color="#e91e63">
+              <S.StatCard color="#2563eb">
                 <S.StatIcon />
                 <S.StatInfo>
                   <S.StatValue>
@@ -281,6 +286,7 @@ export const Admin = () => {
           {activeTab === 'imports' && <QuanLyNhapHang />}
           {activeTab === 'inventory' && <QuanLyKho />}
           {activeTab === 'customers' && <QuanLyKhachHang />}
+          {activeTab === 'customers2' && <QuanLyKhachHang2 />}
           {activeTab === 'reports' && (
             <S.ReportPanel>
               <S.ReportHero>
@@ -335,7 +341,7 @@ export const Admin = () => {
             </S.ReportPanel>
           )}
 
-          {activeTab !== 'dashboard' && activeTab !== 'products' && activeTab !== 'orders' && activeTab !== 'imports' && activeTab !== 'inventory' && activeTab !== 'customers' && activeTab !== 'reports' && (
+          {activeTab !== 'dashboard' && activeTab !== 'products' && activeTab !== 'orders' && activeTab !== 'imports' && activeTab !== 'inventory' && activeTab !== 'customers' && activeTab !== 'customers2' && activeTab !== 'reports' && (
             <S.ComingSoon>
               <h2>Đang phát triển</h2>
               <p>Chức năng {activeTab} đang được xây dựng</p>

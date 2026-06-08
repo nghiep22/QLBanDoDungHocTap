@@ -6,6 +6,8 @@ import {
   YeuCauDangNhap, 
   YeuCauDangKy, 
   KetQuaDangNhap,
+  CapNhatTaiKhoanRequest,
+  DoiMatKhauRequest,
   SanPhamAPI,
   TaoSanPhamRequest,
   CapNhatSanPhamRequest,
@@ -362,6 +364,52 @@ class DichVuApi {
         throw new Error(noiDung || 'Khong the huy don hang');
       }
     }
+  }
+
+  async capNhatTaiKhoanCuaToi(duLieu: CapNhatTaiKhoanRequest): Promise<KetQuaDangNhap> {
+    const phanHoi = await fetch(`${URL_API_GOC}/login/api/auth/profile`, {
+      method: 'PUT',
+      headers: this.taoHeaders(true),
+      body: JSON.stringify(duLieu),
+    });
+
+    const noiDung = await phanHoi.text();
+
+    if (!phanHoi.ok) {
+      let thongBaoLoi = 'Không thể cập nhật tài khoản';
+      try {
+        const loi = JSON.parse(noiDung);
+        thongBaoLoi = loi.message || thongBaoLoi;
+      } catch {
+        thongBaoLoi = noiDung || thongBaoLoi;
+      }
+      throw new Error(thongBaoLoi);
+    }
+
+    return JSON.parse(noiDung);
+  }
+
+  async doiMatKhau(duLieu: DoiMatKhauRequest): Promise<{ message: string }> {
+    const phanHoi = await fetch(`${URL_API_GOC}/login/api/auth/change-password`, {
+      method: 'PUT',
+      headers: this.taoHeaders(true),
+      body: JSON.stringify(duLieu),
+    });
+
+    const noiDung = await phanHoi.text();
+
+    if (!phanHoi.ok) {
+      let thongBaoLoi = 'Không thể đổi mật khẩu';
+      try {
+        const loi = JSON.parse(noiDung);
+        thongBaoLoi = loi.message || thongBaoLoi;
+      } catch {
+        thongBaoLoi = noiDung || thongBaoLoi;
+      }
+      throw new Error(thongBaoLoi);
+    }
+
+    return JSON.parse(noiDung);
   }
 
   async layDanhSachKhachHang(search?: string): Promise<KhachHangAPI[]> {

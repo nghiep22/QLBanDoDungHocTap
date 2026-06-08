@@ -33,16 +33,23 @@ export const Header = () => {
             <S.TopBarRight>
               {daDangNhap ? (
                 <>
-                  <span>Xin chào, {nguoiDung?.tenDangNhap}</span>
+                  <Link to="/tai-khoan">Xin chào, {nguoiDung?.tenDangNhap}</Link>
                   {nguoiDung?.vaiTro_Id === 1 && (
                     <Link to="/admin" style={{ color: '#ffd700', fontWeight: 'bold' }}>
                       Quản trị
                     </Link>
                   )}
-                  <button onClick={xuLyDangXuat} style={{ background: 'transparent', border: 'none', color: 'white', cursor: 'pointer', fontWeight: 600 }}>
+                  <button
+                    onClick={xuLyDangXuat}
+                    style={{
+                      background: 'transparent',
+                      border: 'none',
+                      color: 'white',
+                      cursor: 'pointer',
+                      fontWeight: 600,
+                    }}
+                  >
                     Đăng xuất
-
-                    
                   </button>
                 </>
               ) : (
@@ -71,23 +78,20 @@ export const Header = () => {
                 value={timKiem}
                 onChange={(e) => setTimKiem(e.target.value)}
               />
-              <S.SearchButton type="submit">
-                Tìm
-              </S.SearchButton>
+              <S.SearchButton type="submit">Tìm</S.SearchButton>
             </S.SearchForm>
 
-              <S.CartActions>
-                {daDangNhap && (
-                  <S.OrderButton to="/don-da-mua">
-                    Đơn đã mua
-                  </S.OrderButton>
-                )}
-                <S.CartButton to="/gio-hang">
-                  Giỏ hàng
-                  {tongSoLuong > 0 && <S.CartBadge>{tongSoLuong}</S.CartBadge>}
-                </S.CartButton>
-              </S.CartActions>
-
+            <S.CartActions>
+              {daDangNhap && (
+                <S.OrderButton to="/don-da-mua">
+                  Đơn đã mua
+                </S.OrderButton>
+              )}
+              <S.CartButton to="/gio-hang">
+                Giỏ hàng
+                {tongSoLuong > 0 && <S.CartBadge>{tongSoLuong}</S.CartBadge>}
+              </S.CartButton>
+            </S.CartActions>
           </S.HeaderContent>
         </S.Container>
       </S.MainHeader>

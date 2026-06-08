@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using API_Login.Services;
 using Models;
+using System.Security.Claims;
 
 namespace API_Login.Controllers
 {
@@ -72,13 +73,78 @@ namespace API_Login.Controllers
 
         [HttpGet("me")]
         [Authorize]
-        public IActionResult Me()
+        public async Task<IActionResult> Me()
         {
+            var userId = LayTaiKhoanIdTuToken();
+            if (userId == null)
+                return Unauthorized(new { message = "Token không hợp lệ" });
+
+            var taiKhoan = await _taiKhoanBll.LayTheoIdAsync(userId.Value);
+            if (taiKhoan == null)
+                return NotFound(new { message = "Không tìm thấy tài khoản" });
+
             return Ok(new
             {
-                UserName = User.Identity?.Name,
-                Claims = User.Claims.Select(c => new { c.Type, c.Value })
+                taiKhoan.TaiKhoan_Id,
+                taiKhoan.TenDangNhap,
+                taiKhoan.VaiTro_Id,
+                taiKhoan.TrangThai,
+                taiKhoan.NgayTao
             });
+        }
+
+        [HttpPut("profile")]
+        [Authorize]
+        public async Task<IActionResult> UpdateProfile([FromBody] CapNhatTaiKhoanRequest request)
+        {
+            var userId = LayTaiKhoanIdTuToken();
+            if (userId == null)
+                return Unauthorized(new { message = "Token không hợp lệ" });
+
+            var (success, message, taiKhoan) = await _taiKhoanBll.CapNhatTaiKhoanAsync(userId.Value, request.TenDangNhap);
+            if (!success || taiKhoan == null)
+                return BadRequest(new { message });
+
+            var token = _jwtTokenService.GenerateToken(taiKhoan);
+
+            return Ok(new
+            {
+                message,
+                token,
+                user = new
+                {
+                    taiKhoan.TaiKhoan_Id,
+                    taiKhoan.TenDangNhap,
+                    taiKhoan.VaiTro_Id
+                }
+            });
+        }
+
+        [HttpPut("change-password")]
+        [Authorize]
+        public async Task<IActionResult> ChangePassword([FromBody] DoiMatKhauRequest request)
+        {
+            var userId = LayTaiKhoanIdTuToken();
+            if (userId == null)
+                return Unauthorized(new { message = "Token không hợp lệ" });
+
+            var (success, message) = await _taiKhoanBll.DoiMatKhauAsync(
+                userId.Value,
+                request.MatKhauCu,
+                request.MatKhauMoi,
+                request.XacNhanMatKhauMoi
+            );
+
+            if (!success)
+                return BadRequest(new { message });
+
+            return Ok(new { message });
+        }
+
+        private int? LayTaiKhoanIdTuToken()
+        {
+            var userIdValue = User.FindFirstValue("UserId");
+            return int.TryParse(userIdValue, out var userId) ? userId : null;
         }
     }
 }

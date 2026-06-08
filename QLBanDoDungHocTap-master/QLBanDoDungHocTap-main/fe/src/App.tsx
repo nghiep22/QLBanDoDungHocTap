@@ -18,6 +18,7 @@ import { Register } from './pages/Register/Register';
 import { Admin } from './pages/Admin/Admin';
 import { ProductDetail } from './pages/ProductDetail/ProductDetail';
 import { DonDaMua } from './pages/DonDaMua/DonDaMua';
+import { TaiKhoan } from './pages/TaiKhoan/TaiKhoan';
 
 function App() {
   return (
@@ -54,6 +55,7 @@ function App() {
                       <Route path="/tim-kiem" element={<SearchResults />} />
                         <Route path="/gio-hang" element={<Cart />} />
                         <Route path="/don-da-mua" element={<DonDaMua />} />
+                        <Route path="/tai-khoan" element={<TaiKhoan />} />
                         <Route path="/san-pham/:id" element={<ProductDetail />} />
 
 
